@@ -1,14 +1,16 @@
-# warehouse_replenishment/warehouse_replenishment/services/forecast_service.py
-from datetime import date, datetime
+# warehouse_replenishment/services/forecast_service.py
+from datetime import date, datetime, timedelta
 from typing import List, Dict, Tuple, Optional, Union, Any
 import logging
+import uuid
 
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, or_
 from sqlalchemy.orm import Session
 
 from ..models import (
     Item, DemandHistory, Company, SeasonalProfile, 
-    SeasonalProfileIndex, HistoryException
+    SeasonalProfileIndex, HistoryException, BuyerClassCode, 
+    SystemClassCode, ForecastMethod
 )
 from ..core.demand_forecast import (
     calculate_initial_forecast, calculate_madp_from_history,
@@ -16,7 +18,7 @@ from ..core.demand_forecast import (
     calculate_enhanced_avs_forecast, apply_seasonality_to_forecast,
     calculate_composite_line, generate_seasonal_indices,
     detect_demand_spike, detect_tracking_signal_exception,
-    adjust_history_value, filter_history, calculate_lost_sales,
+    filter_history, calculate_lost_sales,
     calculate_expected_zero_periods
 )
 from ..utils.date_utils import (
@@ -241,22 +243,26 @@ class ForecastService:
     
     def create_seasonal_profile(
         self,
-        profile_id: str,
         description: str,
         periodicity: int,
-        indices: List[float]
-    ) -> bool:
+        indices: List[float],
+        profile_id: str = None
+    ) -> str:
         """Create a new seasonal profile.
         
         Args:
-            profile_id: Profile ID
             description: Profile description
             periodicity: Profile periodicity
             indices: List of seasonal indices
+            profile_id: Optional profile ID (generated if not provided)
             
         Returns:
-            True if profile was created successfully
+            Profile ID
         """
+        # Generate profile ID if not provided
+        if profile_id is None:
+            profile_id = f"P{uuid.uuid4().hex[:8].upper()}"
+        
         # Check if profile already exists
         existing_profile = self.session.query(SeasonalProfile).filter(
             SeasonalProfile.profile_id == profile_id
@@ -285,7 +291,7 @@ class ForecastService:
         
         try:
             self.session.commit()
-            return True
+            return profile_id
         except Exception as e:
             self.session.rollback()
             raise ForecastError(f"Failed to create seasonal profile: {str(e)}")
@@ -360,6 +366,14 @@ class ForecastService:
         
         # Apply seasonality to forecast
         base_forecast = item.demand_4weekly
+        
+        # Calculate average seasonal index to normalize
+        avg_index = sum(seasonal_indices) / len(seasonal_indices)
+        if avg_index > 0:
+            # Deseasonalize the base forecast
+            base_forecast = base_forecast / seasonal_indices[(current_period - 1) % len(seasonal_indices)] * avg_index
+        
+        # Apply seasonality to forecast periods
         seasonal_forecast = apply_seasonality_to_forecast(
             base_forecast, seasonal_indices, current_period
         )
@@ -396,7 +410,7 @@ class ForecastService:
         if not item:
             raise ForecastError(f"Item with ID {item_id} not found")
         
-        if item.system_class != 'UNINITIALIZED':
+        if item.system_class != SystemClassCode.UNINITIALIZED:
             return False
         
         # Set initial forecast
@@ -417,7 +431,7 @@ class ForecastService:
         item.demand_yearly = initial_forecast * 13
         
         # Update system class
-        item.system_class = 'NEW'
+        item.system_class = SystemClassCode.NEW
         
         # Set forecast date
         item.forecast_date = datetime.now()
@@ -433,6 +447,7 @@ class ForecastService:
         self,
         item_id: int,
         new_forecast: float,
+        forecast_type: str = '4weekly',
         freeze_until_date: date = None
     ) -> bool:
         """Manually update forecast for an item.
@@ -440,6 +455,7 @@ class ForecastService:
         Args:
             item_id: Item ID
             new_forecast: New forecast value
+            forecast_type: Type of forecast to update (4weekly, weekly, monthly, quarterly, yearly)
             freeze_until_date: Optional date until which to freeze the forecast
             
         Returns:
@@ -449,12 +465,39 @@ class ForecastService:
         if not item:
             raise ForecastError(f"Item with ID {item_id} not found")
         
-        # Update forecasts
-        item.demand_4weekly = new_forecast
-        item.demand_weekly = new_forecast / 4
-        item.demand_monthly = new_forecast * (365/12) / (365/13)
-        item.demand_quarterly = new_forecast * 3
-        item.demand_yearly = new_forecast * 13
+        # Update forecasts based on type
+        if forecast_type == '4weekly':
+            item.demand_4weekly = new_forecast
+            item.demand_weekly = new_forecast / 4
+            item.demand_monthly = new_forecast * (365/12) / (365/13)
+            item.demand_quarterly = new_forecast * 3
+            item.demand_yearly = new_forecast * 13
+        elif forecast_type == 'weekly':
+            item.demand_weekly = new_forecast
+            item.demand_4weekly = new_forecast * 4
+            item.demand_monthly = new_forecast * (365/12) / 7
+            item.demand_quarterly = new_forecast * (365/4) / 7
+            item.demand_yearly = new_forecast * 52
+        elif forecast_type == 'monthly':
+            item.demand_monthly = new_forecast
+            item.demand_4weekly = new_forecast * (365/13) / (365/12)
+            item.demand_weekly = item.demand_4weekly / 4
+            item.demand_quarterly = new_forecast * 3
+            item.demand_yearly = new_forecast * 12
+        elif forecast_type == 'quarterly':
+            item.demand_quarterly = new_forecast
+            item.demand_yearly = new_forecast * 4
+            item.demand_monthly = new_forecast / 3
+            item.demand_4weekly = item.demand_monthly * (365/13) / (365/12)
+            item.demand_weekly = item.demand_4weekly / 4
+        elif forecast_type == 'yearly':
+            item.demand_yearly = new_forecast
+            item.demand_quarterly = new_forecast / 4
+            item.demand_monthly = new_forecast / 12
+            item.demand_4weekly = item.demand_monthly * (365/13) / (365/12)
+            item.demand_weekly = item.demand_4weekly / 4
+        else:
+            raise ForecastError(f"Invalid forecast type: {forecast_type}")
         
         # Set freeze until date if provided
         if freeze_until_date:
@@ -573,10 +616,10 @@ class ForecastService:
         item.track = track
         
         # Determine forecast method
-        forecast_method = item.forecast_method or 'E3_REGULAR_AVS'
+        forecast_method = item.forecast_method or ForecastMethod.E3_REGULAR_AVS
         
         # Calculate new forecast
-        if forecast_method == 'E3_ENHANCED_AVS':
+        if forecast_method == ForecastMethod.E3_ENHANCED_AVS:
             # Get Enhanced AVS specific parameters
             periods_with_zero_demand = getattr(item, 'periods_with_zero_demand', 0)
             expected_zero_periods = calculate_expected_zero_periods(current_forecast, madp)
@@ -636,11 +679,11 @@ class ForecastService:
         annual_forecast = item.demand_yearly
         
         if annual_forecast <= self.company_settings['slow_mover_limit']:
-            item.system_class = 'SLOW'
+            item.system_class = SystemClassCode.SLOW
         elif madp >= self.company_settings['lumpy_demand_limit']:
-            item.system_class = 'LUMPY'
+            item.system_class = SystemClassCode.LUMPY
         else:
-            item.system_class = 'REGULAR'
+            item.system_class = SystemClassCode.REGULAR
         
         try:
             self.session.commit()
@@ -679,7 +722,7 @@ class ForecastService:
             query = query.filter(Item.id.in_(item_ids))
         
         # Only include active items (Regular or Watch)
-        query = query.filter(Item.buyer_class.in_(['REGULAR', 'WATCH']))
+        query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
         
         # Exclude items with frozen forecasts
         query = query.filter(
@@ -745,7 +788,7 @@ class ForecastService:
             query = query.filter(Item.id.in_(item_ids))
         
         # Only include active items (Regular or Watch)
-        query = query.filter(Item.buyer_class.in_(['REGULAR', 'WATCH']))
+        query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
         
         # Exclude items with frozen forecasts
         query = query.filter(
@@ -917,7 +960,8 @@ class ForecastService:
             HistoryException.item_id == item_id,
             HistoryException.exception_type == exception_type,
             HistoryException.period_number == period_number,
-            HistoryException.period_year == period_year
+            HistoryException.period_year == period_year,
+            HistoryException.is_resolved == False
         ).first()
         
         if existing_exception:
@@ -1050,8 +1094,3 @@ class ForecastService:
         except Exception as e:
             self.session.rollback()
             raise ForecastError(f"Failed to resolve exception: {str(e)}")
-        
-    
-    def get_current_period(self, periodicity: int):
-        from ..utils.date_utils import get_current_period as utils_get_current_period
-        return utils_get_current_period(periodicity)
