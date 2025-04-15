@@ -43,7 +43,11 @@ The Advanced Warehouse Replenishment (AWR) system automates inventory replenishm
 
 4. Configure the database:
    ```bash
+   # Set up a new database
    python main.py --setup-db
+   
+   # To drop existing tables and recreate them
+   python main.py --setup-db --drop-db
    ```
 
 ## Project Structure
@@ -52,18 +56,18 @@ The Advanced Warehouse Replenishment (AWR) system automates inventory replenishm
 warehouse_replenishment/
 │
 ├── config/                 # Configuration files
-│   └── settings.ini        # Main settings file
+│   ├── settings.ini        # Main settings file
+│   └── config.py           # Configuration manager
 │
 ├── logs/                   # Log files directory
 │
 ├── scripts/                # Utility scripts
-│   ├── setup_db.py         # Database setup script
+│   ├── setup_db.py         # Database setup and schema creation
 │   └── import_data.py      # Data import script
 │
 ├── warehouse_replenishment/  # Main package
 │   ├── __init__.py         # Package initialization
 │   ├── models.py           # Database models
-│   ├── config.py           # Configuration manager
 │   ├── db.py               # Database connection manager
 │   ├── logging_setup.py    # Logging framework
 │   ├── exceptions.py       # Custom exceptions
@@ -132,6 +136,16 @@ warehouse_replenishment/
 5. At period end, demand forecasts are updated based on actual sales
 
 ## Usage
+
+### Database Management
+
+```bash
+# Set up a new database
+python main.py --setup-db
+
+# Drop existing tables and recreate them
+python main.py --drop-db --setup-db
+```
 
 ### Running the Application
 
