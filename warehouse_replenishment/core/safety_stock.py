@@ -3,8 +3,16 @@ import math
 from typing import Dict, List, Tuple, Optional, Union
 import numpy as np
 from scipy import stats
+import sys
+import os
+from pathlib import Path
 
-from ..exceptions import SafetyStockError
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from warehouse_replenishment.exceptions import SafetyStockError
 
 def calculate_safety_stock(
     service_level_goal: float,
