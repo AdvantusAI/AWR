@@ -1050,3 +1050,8 @@ class ForecastService:
         except Exception as e:
             self.session.rollback()
             raise ForecastError(f"Failed to resolve exception: {str(e)}")
+        
+    
+    def get_current_period(self, periodicity: int):
+        from ..utils.date_utils import get_current_period as utils_get_current_period
+        return utils_get_current_period(periodicity)

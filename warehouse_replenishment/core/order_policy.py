@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple, Optional, Union
 import numpy as np
 from scipy import optimize
 
-from ..exceptions import OPAError
+from warehouse_replenishment.exceptions import OPAError
 
 def calculate_acquisition_cost(
     order_header_cost: float, 

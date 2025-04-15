@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from contextlib import contextmanager
 
+# Fix the import path
 from config import config
 
 Base = declarative_base()
@@ -46,12 +47,12 @@ class Database:
     
     def create_all_tables(self):
         """Create all tables defined in the models."""
-        from models import Base
+        from warehouse_replenishment.models import Base
         Base.metadata.create_all(self._engine)
     
     def drop_all_tables(self):
         """Drop all tables from the database."""
-        from models import Base
+        from warehouse_replenishment.models import Base
         Base.metadata.drop_all(self._engine)
     
     @property

@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, date
 from pathlib import Path
 
+# Fix the imports to use proper relative imports
 from config import config
 from db import db, session_scope
 from logging_setup import logger, get_logger
@@ -32,6 +33,7 @@ def generate_forecast(args):
         calculate_forecast, calculate_madp_from_history, 
         calculate_track_from_history, apply_seasonality_to_forecast
     )
+    # Import the ForecastService implementation
     from services.forecast_service import ForecastService
     
     log = get_logger('forecast')
@@ -66,7 +68,7 @@ def generate_forecast(args):
             
             # Only include active items (Regular or Watch)
             if not args.include_inactive:
-                query = query.filter(Item.buyer_class.in_(['REGULAR', 'WATCH']))
+                query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
             
             # Get items
             items = query.all()
@@ -214,7 +216,7 @@ def main():
     args = parser.parse_args()
     
     if args.setup_db:
-        from scripts.setup_db import setup_database
+        from warehouse_replenishment.scripts.setup_db import setup_database
         setup_database(args.drop_db)
         return
     

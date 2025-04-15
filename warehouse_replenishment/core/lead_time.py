@@ -1,10 +1,19 @@
 # warehouse_replenishment/core/lead_time.py
 import math
+from pathlib import Path
+import sys
+import os
+
 from typing import Dict, List, Tuple, Optional, Union
 import numpy as np
 from scipy import stats
 
-from ..exceptions import LeadTimeError
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from warehouse_replenishment.exceptions import ForecastError
 
 def forecast_lead_time(
     historical_lead_times: List[float],

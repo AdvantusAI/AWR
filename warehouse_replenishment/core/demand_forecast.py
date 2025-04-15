@@ -3,8 +3,16 @@ import math
 from typing import List, Dict, Tuple, Optional, Union
 import numpy as np
 from scipy import stats
+import sys
+import os
+from pathlib import Path
 
-from ..exceptions import ForecastError
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from warehouse_replenishment.exceptions import ForecastError
 
 def calculate_forecast(
     history: List[float], 
