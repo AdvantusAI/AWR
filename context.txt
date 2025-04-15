@@ -1,0 +1,10 @@
+I'm building an Advanced Warehouse Replenishment (AWR) system in Python with a PostgreSQL database. This system handles inventory replenishment through automated calculations of when and how much to order based on four key components:
+
+Demand forecasting (predicting future sales)
+Safety stock (buffer inventory to maintain service levels)
+Lead time forecasting (time between order and availability)
+Order policy analysis (determining optimal order frequency)
+The system includes vendor management (super/sub vendors), order processing, exception handling, seasonal profiling, and reporting capabilities. Each module has specific database models and business logic services.
+
+The database schema is already defined in SQLAlchemy models, and I need to implement the core business logic for the various modules. I'm focusing on backend Python scripts (no APIs or UI) that will process data in the database.
+

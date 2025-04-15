@@ -1,0 +1,147 @@
+2025-04-14 20:43:39,228 - db_setup - INFO - Creating database tables...
+2025-04-14 20:43:39,382 - db_setup - ERROR - Error setting up database: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+2025-04-14 20:43:39,382 - db_setup - ERROR - 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\scripts\setup_db.py", line 34, in setup_database
+    db.create_all_tables()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db.py", line 50, in create_all_tables
+    Base.metadata.create_all(self._engine)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\schema.py", line 5925, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3248, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3238, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 713, in checkout
+    rec = pool._do_get()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 179, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 675, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 901, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\psycopg2\__init__.py", line 135, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+2025-04-14 20:52:04,546 - db_setup - INFO - Creating database tables...
+2025-04-14 20:52:04,612 - db_setup - ERROR - Error setting up database: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+2025-04-14 20:52:04,613 - db_setup - ERROR - 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\scripts\setup_db.py", line 34, in setup_database
+    db.create_all_tables()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db.py", line 50, in create_all_tables
+    Base.metadata.create_all(self._engine)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\schema.py", line 5925, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3248, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3238, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 713, in checkout
+    rec = pool._do_get()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 179, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 675, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 901, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\psycopg2\__init__.py", line 135, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+2025-04-14 22:18:59,513 - db_setup - INFO - Creating database tables...
+2025-04-14 22:18:59,699 - db_setup - INFO - Database tables created successfully.
+2025-04-14 22:18:59,699 - db_setup - INFO - Initializing default configuration...
+2025-04-14 22:18:59,736 - db_setup - INFO - Creating default company record...
+2025-04-14 22:18:59,737 - db_setup - INFO - Default company record created.

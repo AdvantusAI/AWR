@@ -1,0 +1,160 @@
+# Advanced Warehouse Replenishment System
+
+A Python-based automated inventory replenishment system that calculates when and how much to order based on demand forecasting, safety stock, lead time, and order policy analysis.
+
+## Overview
+
+The Advanced Warehouse Replenishment (AWR) system automates inventory replenishment decisions by analyzing historical demand data, calculating accurate forecasts, and generating optimal order quantities. The system uses sophisticated algorithms to balance service level goals with inventory costs.
+
+## Key Features
+
+- **Demand Forecasting**: Regular and Enhanced AVS algorithms for accurate demand prediction
+- **Safety Stock Calculation**: Service level-based safety stock computation
+- **Lead Time Management**: Lead time forecasting and variance tracking
+- **Order Management**: Order generation with bracket-based building
+- **Exception Handling**: History and management exception detection
+- **Vendor Management**: Support for super/sub vendors and order policy analysis
+- **Seasonal Profiling**: Management of seasonal demand patterns
+- **Batch Processing**: Nightly, weekly, and period-end processing
+
+## System Requirements
+
+- Python 3.8+
+- PostgreSQL 12+
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/warehouse-replenishment.git
+   cd warehouse-replenishment
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configure the database:
+   ```bash
+   python main.py --setup-db
+   ```
+
+## Project Structure
+
+```
+warehouse_replenishment/
+│
+├── config/                 # Configuration files
+│   └── settings.ini        # Main settings file
+│
+├── logs/                   # Log files directory
+│
+├── scripts/                # Utility scripts
+│   ├── setup_db.py         # Database setup script
+│   └── import_data.py      # Data import script
+│
+├── warehouse_replenishment/  # Main package
+│   ├── __init__.py         # Package initialization
+│   ├── models.py           # Database models
+│   ├── config.py           # Configuration manager
+│   ├── db.py               # Database connection manager
+│   ├── logging_setup.py    # Logging framework
+│   ├── exceptions.py       # Custom exceptions
+│   │
+│   ├── core/               # Core functionality
+│   │   ├── __init__.py
+│   │   ├── demand_forecast.py     # Demand forecasting logic
+│   │   ├── safety_stock.py        # Safety stock calculations
+│   │   ├── lead_time.py           # Lead time forecasting
+│   │   └── order_policy.py        # Order policy analysis
+│   │
+│   ├── services/           # Business logic services
+│   │   ├── __init__.py
+│   │   ├── vendor_service.py      # Vendor management
+│   │   ├── item_service.py        # Item management
+│   │   ├── order_service.py       # Order generation and management
+│   │   ├── exception_service.py   # Exception handling
+│   │   └── reporting_service.py   # Reporting functionality
+│   │
+│   ├── batch/              # Batch processing
+│   │   ├── __init__.py
+│   │   ├── nightly_job.py         # Nightly processing
+│   │   ├── weekly_job.py          # Weekly processing
+│   │   ├── period_end_job.py      # Period-end processing
+│   │   └── time_based_params.py   # Time-based parameter processing
+│   │
+│   └── utils/              # Utility functions
+│       ├── __init__.py
+│       ├── date_utils.py          # Date and time utilities
+│       ├── math_utils.py          # Mathematical utilities
+│       └── validation.py          # Data validation utilities
+│
+└── main.py                 # Application entry point
+```
+
+## Key Components
+
+### Four Key Components of Replenishment
+
+1. **Demand Forecasting**
+   - Predicts future sales based on historical data
+   - Supports Regular AVS for normal items and Enhanced AVS for slow-moving items
+   - Handles seasonal patterns with customizable profiles
+
+2. **Safety Stock**
+   - Calculates buffer inventory based on service level goals
+   - Accounts for demand variability (MADP) and lead time variance
+   - Provides empirical buffering options
+
+3. **Lead Time Forecasting**
+   - Predicts the time between ordering and availability for sale
+   - Tracks variance in supplier performance
+   - Adjusts safety stock based on lead time reliability
+
+4. **Order Policy Analysis (OPA)**
+   - Determines optimal ordering frequency
+   - Balances acquisition costs vs. carrying costs
+   - Accounts for vendor brackets and discounts
+
+### Workflow
+
+1. Items are analyzed nightly to determine replenishment needs
+2. Orders become due when enough items reach their order points
+3. Due orders are generated with suggested order quantities (SOQs)
+4. Orders can be adjusted to meet vendor brackets or other requirements
+5. At period end, demand forecasts are updated based on actual sales
+
+## Usage
+
+### Running the Application
+
+```bash
+python main.py
+```
+
+### Setting Up a New Database
+
+```bash
+python main.py --setup-db
+```
+
+### Running Period End Processing
+
+```bash
+python -m warehouse_replenishment.batch.period_end_job
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+This system is based on industry standard replenishment methodologies and JDA software concepts.
