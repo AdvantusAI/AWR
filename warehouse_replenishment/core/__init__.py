@@ -5,7 +5,8 @@ from .demand_forecast import (
     calculate_enhanced_avs_forecast, calculate_composite_line,
     generate_seasonal_indices, detect_demand_spike,
     detect_tracking_signal_exception, adjust_history_value,
-    filter_history, calculate_lost_sales, calculate_expected_zero_periods
+    filter_history, calculate_lost_sales, calculate_expected_zero_periods,
+    reforecast
 )
 from .safety_stock import calculate_safety_stock, calculate_service_level
 from .lead_time import forecast_lead_time, calculate_variance
@@ -27,6 +28,7 @@ __all__ = [
     'filter_history',
     'calculate_lost_sales',
     'calculate_expected_zero_periods',
+    'reforecast',
     'calculate_safety_stock',
     'calculate_service_level',
     'forecast_lead_time',

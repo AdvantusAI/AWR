@@ -3,31 +3,45 @@ from datetime import date, datetime, timedelta
 from typing import List, Dict, Tuple, Optional, Union, Any
 import logging
 import uuid
+import sys
+import os
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 from sqlalchemy import and_, func, or_
 from sqlalchemy.orm import Session
 
-from ..models import (
-    Item, DemandHistory, Company, SeasonalProfile, 
-    SeasonalProfileIndex, HistoryException, BuyerClassCode, 
-    SystemClassCode, ForecastMethod
+from warehouse_replenishment.models import (
+    Item, DemandHistory, Company, Vendor, SeasonalProfile, 
+    SeasonalProfileIndex, HistoryException, ItemForecast, ForecastMethod,
+    SystemClassCode, BuyerClassCode
 )
-from ..core.demand_forecast import (
-    calculate_initial_forecast, calculate_madp_from_history,
-    calculate_track_from_history, calculate_regular_avs_forecast,
-    calculate_enhanced_avs_forecast, apply_seasonality_to_forecast,
-    calculate_composite_line, generate_seasonal_indices,
-    detect_demand_spike, detect_tracking_signal_exception,
-    filter_history, calculate_lost_sales,
-    calculate_expected_zero_periods
+from warehouse_replenishment.core.demand_forecast import (
+    calculate_forecast, calculate_madp_from_history, calculate_track_from_history,
+    apply_seasonality_to_forecast, calculate_lost_sales, adjust_history_value,
+    calculate_enhanced_avs_forecast, calculate_expected_zero_periods,
+    calculate_regular_avs_forecast, calculate_initial_forecast, detect_demand_spike, 
+    detect_tracking_signal_exception, calculate_composite_line
 )
-from ..utils.date_utils import (
+
+from warehouse_replenishment.core.safety_stock import (
+    calculate_safety_stock, calculate_safety_stock_units
+)
+from warehouse_replenishment.utils.date_utils import (
     get_current_period, get_previous_period, get_period_dates,
     get_period_for_date, is_period_end_day
 )
-from ..exceptions import ForecastError
+from warehouse_replenishment.exceptions import ForecastError
+from warehouse_replenishment.utils.math_utils import calculate_madp
 
+from warehouse_replenishment.logging_setup import logger
 logger = logging.getLogger(__name__)
+
+
 
 class ForecastService:
     """Service for handling demand forecasting operations."""
@@ -616,7 +630,7 @@ class ForecastService:
         item.track = track
         
         # Determine forecast method
-        forecast_method = item.forecast_method or ForecastMethod.E3_REGULAR_AVS
+        forecast_method = item.forecast_method or ForecastMethod.E3_ENHANCED_AVS
         
         # Calculate new forecast
         if forecast_method == ForecastMethod.E3_ENHANCED_AVS:
@@ -1094,3 +1108,247 @@ class ForecastService:
         except Exception as e:
             self.session.rollback()
             raise ForecastError(f"Failed to resolve exception: {str(e)}")
+        
+    def get_current_period(self, periodicity: int) -> Tuple[int, int]:
+        """Get the current period number and year.
+        
+        Args:
+            periodicity: Periodicity (12=monthly, 13=4-weekly, 52=weekly)
+            
+        Returns:
+            Tuple with period number and year
+        """
+        from ..utils.date_utils import get_current_period as get_period
+        return get_period(periodicity)
+
+# Add these methods to your ForecastService class in warehouse_replenishment/services/forecast_service.py
+
+    def save_forecast_history(
+        self,
+        item_id: int,
+        period_number: int,
+        period_year: int,
+        forecast_value: float,
+        madp: float,
+        track: float,
+        forecast_method: ForecastMethod = None,
+        seasonality_applied: bool = False,
+        seasonal_profile_id: Optional[str] = None,
+        notes: Optional[str] = None,
+        created_by: Optional[str] = None
+    ) -> int:
+        """Save a forecast to the forecast history.
+        
+        Args:
+            item_id: Item ID
+            period_number: Period number
+            period_year: Period year
+            forecast_value: Forecast value
+            madp: MADP value
+            track: Track value
+            forecast_method: Forecast method used (defaults to item's current method)
+            seasonality_applied: Whether seasonality was applied
+            seasonal_profile_id: Seasonal profile ID if applicable
+            notes: Optional notes
+            created_by: Optional user who created the forecast
+            
+        Returns:
+            ID of the created forecast record
+        """
+        # Check if item exists
+        item = self.session.query(Item).get(item_id)
+        if not item:
+            raise ForecastError(f"Item with ID {item_id} not found")
+        
+        # Get forecast method if not provided
+        if forecast_method is None:
+            forecast_method = item.forecast_method
+        
+        # Check if a forecast for this item and period already exists
+        existing_forecast = self.session.query(ItemForecast).filter(
+            ItemForecast.item_id == item_id,
+            ItemForecast.period_number == period_number,
+            ItemForecast.period_year == period_year
+        ).first()
+        
+        if existing_forecast:
+            # Update existing forecast
+            existing_forecast.forecast_value = forecast_value
+            existing_forecast.madp = madp
+            existing_forecast.track = track
+            existing_forecast.forecast_method = forecast_method
+            existing_forecast.seasonality_applied = seasonality_applied
+            existing_forecast.seasonal_profile_id = seasonal_profile_id
+            existing_forecast.forecast_date = datetime.now()
+            
+            if notes:
+                existing_forecast.notes = notes
+            
+            if created_by:
+                existing_forecast.created_by = created_by
+            
+            try:
+                self.session.commit()
+                return existing_forecast.id
+            except Exception as e:
+                self.session.rollback()
+                raise ForecastError(f"Failed to update forecast history: {str(e)}")
+        
+        # Create new forecast history record
+        forecast_history = ItemForecast(
+            item_id=item_id,
+            period_number=period_number,
+            period_year=period_year,
+            forecast_value=forecast_value,
+            madp=madp,
+            track=track,
+            forecast_method=forecast_method,
+            seasonality_applied=seasonality_applied,
+            seasonal_profile_id=seasonal_profile_id,
+            forecast_date=datetime.now(),
+            notes=notes,
+            created_by=created_by
+        )
+        
+        self.session.add(forecast_history)
+        
+        try:
+            self.session.commit()
+            return forecast_history.id
+        except Exception as e:
+            self.session.rollback()
+            raise ForecastError(f"Failed to save forecast history: {str(e)}")
+
+    def update_actual_values(
+        self,
+        item_id: int,
+        period_number: int,
+        period_year: int,
+        actual_value: float
+    ) -> bool:
+        """Update the actual value for a forecast period.
+        
+        Args:
+            item_id: Item ID
+            period_number: Period number
+            period_year: Period year
+            actual_value: Actual demand value
+            
+        Returns:
+            True if successful
+        """
+        # Find the forecast record
+        forecast = self.session.query(ItemForecast).filter(
+            ItemForecast.item_id == item_id,
+            ItemForecast.period_number == period_number,
+            ItemForecast.period_year == period_year
+        ).first()
+        
+        if not forecast:
+            raise ForecastError(f"Forecast record not found for item {item_id}, period {period_number}/{period_year}")
+        
+        # Update actual value and calculate error
+        forecast.actual_value = actual_value
+        
+        if forecast.forecast_value is not None and forecast.forecast_value != 0:
+            forecast.error = actual_value - forecast.forecast_value
+            
+            if actual_value != 0:
+                forecast.error_pct = (abs(forecast.error) / actual_value) * 100
+        
+        try:
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            raise ForecastError(f"Failed to update actual values: {str(e)}")
+
+    def get_forecast_accuracy(
+        self,
+        item_id: int,
+        periods: int = 6
+    ) -> Dict:
+        """Get forecast accuracy metrics for an item.
+        
+        Args:
+            item_id: Item ID
+            periods: Number of periods to analyze
+            
+        Returns:
+            Dictionary with accuracy metrics
+        """
+        # Get forecasts with actual values for this item
+        forecasts = self.session.query(ItemForecast).filter(
+            ItemForecast.item_id == item_id,
+            ItemForecast.actual_value.isnot(None)
+        ).order_by(
+            ItemForecast.period_year.desc(),
+            ItemForecast.period_number.desc()
+        ).limit(periods).all()
+        
+        if not forecasts:
+            return {
+                'item_id': item_id,
+                'periods_analyzed': 0,
+                'mape': None,
+                'wape': None,
+                'bias': None,
+                'forecast_periods': []
+            }
+        
+        # Calculate accuracy metrics
+        total_abs_error = 0
+        total_error = 0
+        total_actual = 0
+        
+        forecast_periods = []
+        
+        for forecast in forecasts:
+            # Skip if missing values
+            if forecast.forecast_value is None or forecast.actual_value is None:
+                continue
+            
+            # Add to totals
+            error = forecast.error or (forecast.actual_value - forecast.forecast_value)
+            abs_error = abs(error)
+            
+            total_error += error
+            total_abs_error += abs_error
+            total_actual += forecast.actual_value
+            
+            # Add period data
+            forecast_periods.append({
+                'period_number': forecast.period_number,
+                'period_year': forecast.period_year,
+                'forecast_value': forecast.forecast_value,
+                'actual_value': forecast.actual_value,
+                'error': error,
+                'error_pct': forecast.error_pct or (abs_error / forecast.actual_value * 100 if forecast.actual_value != 0 else None)
+            })
+        
+        # Calculate metrics
+        mape = None  # Mean Absolute Percentage Error
+        wape = None  # Weighted Absolute Percentage Error
+        bias = None  # Bias (average error)
+        
+        if forecast_periods:
+            # MAPE - average of percentage errors
+            error_pcts = [p['error_pct'] for p in forecast_periods if p['error_pct'] is not None]
+            if error_pcts:
+                mape = sum(error_pcts) / len(error_pcts)
+            
+            # WAPE - sum of absolute errors divided by sum of actuals
+            if total_actual > 0:
+                wape = (total_abs_error / total_actual) * 100
+            
+            # Bias - average error (can be positive or negative)
+            bias = total_error / len(forecast_periods)
+        
+        return {
+            'item_id': item_id,
+            'periods_analyzed': len(forecast_periods),
+            'mape': round(mape, 2) if mape is not None else None,
+            'wape': round(wape, 2) if wape is not None else None,
+            'bias': round(bias, 2) if bias is not None else None,
+            'forecast_periods': forecast_periods
+        }

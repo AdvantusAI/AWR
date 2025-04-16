@@ -1,24 +1,33 @@
-# warehouse_replenishment/warehouse_replenishment/services/history_manager.py
+# warehouse_replenishment/services/history_manager.py
 from datetime import date, datetime, timedelta
 from typing import List, Dict, Tuple, Optional, Union, Any
 import logging
+import sys
+import os
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 
-from ..models import (
+from warehouse_replenishment.models import (
     Item, DemandHistory, Company, SeasonalProfile, SeasonalProfileIndex, 
     ArchivedHistoryException
 )
-from ..core.demand_forecast import (
+from warehouse_replenishment.core.demand_forecast import (
     calculate_lost_sales, adjust_history_value
 )
-from ..utils.date_utils import (
+from warehouse_replenishment.utils.date_utils import (
     get_current_period, get_previous_period, get_period_dates,
     get_period_for_date, is_period_end_day
 )
-from ..exceptions import ForecastError
+from warehouse_replenishment.exceptions import ForecastError
 
+from warehouse_replenishment.logging_setup import logger
 logger = logging.getLogger(__name__)
 
 class HistoryManager:
@@ -597,7 +606,7 @@ class HistoryManager:
         }
         
         # Get count of all resolved exceptions
-        from ..models import HistoryException
+        from warehouse_replenishment.models import HistoryException
         total_exceptions = self.session.query(func.count(HistoryException.id)).filter(
             HistoryException.is_resolved == True,
             HistoryException.resolution_date < cutoff_date

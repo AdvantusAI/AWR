@@ -4,11 +4,20 @@ import logging
 from datetime import datetime, date
 from pathlib import Path
 
+# Add parent directory to path for imports
+parent_dir = str(Path(__file__).parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
 # Fix the imports to use proper relative imports
-from config import config
-from db import db, session_scope
-from logging_setup import logger, get_logger
-from models import Item, Company
+from warehouse_replenishment.config import config
+from warehouse_replenishment.db import db, session_scope
+from warehouse_replenishment.logging_setup import logger, get_logger
+from warehouse_replenishment.models import Item, Company, BuyerClassCode
+from warehouse_replenishment.core.demand_forecast import (calculate_forecast, calculate_madp_from_history, 
+    calculate_track_from_history, 
+    apply_seasonality_to_forecast
+)
 
 def init_application():
     """Initialize application components."""
@@ -29,12 +38,9 @@ def generate_forecast(args):
     Args:
         args: Command-line arguments with forecast parameters
     """
-    from core.demand_forecast import (
-        calculate_forecast, calculate_madp_from_history, 
-        calculate_track_from_history, apply_seasonality_to_forecast
-    )
-    # Import the ForecastService implementation
-    from services.forecast_service import ForecastService
+    from warehouse_replenishment.models import Item, Company, BuyerClassCode, SystemClassCode, ForecastMethod
+    from warehouse_replenishment.services.forecast_service import ForecastService
+    from warehouse_replenishment.utils.date_utils import get_current_period
     
     log = get_logger('forecast')
     log.info(f"Starting forecast generation with parameters: {args}")
@@ -48,9 +54,11 @@ def generate_forecast(args):
                 return False
             
             # Create forecast service
+            log.info("Create forecast service")
             forecast_service = ForecastService(session)
             
             # Build query for items
+            log.info("Build query for items")
             query = session.query(Item)
             
             # Apply filters based on args
@@ -68,7 +76,9 @@ def generate_forecast(args):
             
             # Only include active items (Regular or Watch)
             if not args.include_inactive:
-                query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+                log.info("Only include active items (Regular or Watch)")
+                buyer_classes = [BuyerClassCode.REGULAR, BuyerClassCode.WATCH]
+                query = query.filter(Item.buyer_class.in_(buyer_classes))
             
             # Get items
             items = query.all()
@@ -84,9 +94,14 @@ def generate_forecast(args):
                 'total_items': len(items),
                 'processed': 0,
                 'updated': 0,
+                'forecast_history_created': 0,
                 'errors': 0,
                 'error_items': []
             }
+            
+            # Get current period
+            periodicity = company.forecasting_periodicity_default
+            current_period, current_year = get_current_period(periodicity)
             
             # Process each item
             for item in items:
@@ -120,13 +135,10 @@ def generate_forecast(args):
                     track = calculate_track_from_history(base_forecast, history_values)
                     
                     # Apply seasonality if needed
+                    seasonality_applied = False
                     final_forecast = base_forecast
                     if seasonal_indices and not args.ignore_seasonality:
-                        # Get current period
-                        current_period, _ = forecast_service.get_current_period(
-                            item.forecasting_periodicity or company.forecasting_periodicity_default
-                        )
-                        
+                        seasonality_applied = True
                         final_forecast = apply_seasonality_to_forecast(
                             base_forecast, 
                             seasonal_indices,
@@ -151,6 +163,24 @@ def generate_forecast(args):
                         # Set forecast date
                         item.forecast_date = datetime.now()
                         
+                        # Save forecast history
+                        try:
+                            forecast_service.save_forecast_history(
+                                item_id=item.id,
+                                period_number=current_period,
+                                period_year=current_year,
+                                forecast_value=final_forecast,
+                                madp=madp,
+                                track=track,
+                                forecast_method=item.forecast_method,
+                                seasonality_applied=seasonality_applied,
+                                seasonal_profile_id=item.demand_profile if seasonality_applied else None,
+                                notes=f"Generated by forecast command, using {args.periods} periods of history"
+                            )
+                            results['forecast_history_created'] += 1
+                        except Exception as e:
+                            log.warning(f"Could not save forecast history for item {item.item_id}: {str(e)}")
+                        
                         results['updated'] += 1
                     
                     # Print output if verbose
@@ -173,6 +203,7 @@ def generate_forecast(args):
             if args.update:
                 session.commit()
                 log.info(f"Updated forecasts for {results['updated']} items")
+                log.info(f"Created forecast history records for {results['forecast_history_created']} items")
             
             log.info(f"Forecast generation completed: {results['processed']} processed, {results['errors']} errors")
             

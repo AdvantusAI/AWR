@@ -1,5 +1,5 @@
-# warehouse_replenishment/warehouse_replenishment/models.py
-from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text, Enum
+# warehouse_replenishment/models.py
+from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text, Enum, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -115,7 +115,8 @@ class Vendor(Base):
     id = Column(Integer, primary_key=True)
     vendor_id = Column(String(20), nullable=False)
     name = Column(String(100), nullable=False)
-    warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id')) 
     
     # Vendor Control Factors
     service_level_goal = Column(Float)
@@ -227,7 +228,7 @@ class Item(Base):
     item_id = Column(String(50), nullable=False)
     description = Column(String(255))
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id')) 
     
     # Item Detail
     service_level_goal = Column(Float)
@@ -323,6 +324,12 @@ class Item(Base):
     demand_history = relationship("DemandHistory", back_populates="item")
     item_prices = relationship("ItemPrice", back_populates="item")
     
+    forecasts = relationship("ItemForecast", back_populates="item")
+    vendor = relationship("Vendor", back_populates="items")
+    warehouse = relationship("Warehouse", back_populates="items")
+    demand_history = relationship("DemandHistory", back_populates="item")
+    item_prices = relationship("ItemPrice", back_populates="item")
+
     __table_args__ = (
         # Unique constraint for item_id, vendor_id and warehouse_id combination
         {'sqlite_autoincrement': True},
@@ -363,7 +370,8 @@ class Order(Base):
     
     id = Column(Integer, primary_key=True)
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))  # Change to String
+    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
     order_date = Column(DateTime, default=func.now())
     
     # Order status
@@ -486,7 +494,8 @@ class ManagementException(Base):
     __tablename__ = 'management_exception'
     
     id = Column(Integer, primary_key=True)
-    warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))  # Change to String
     exception_type = Column(String(50), nullable=False)  # TOP_SELLING_ITEMS, FORECAST_GREATER_THAN_AVERAGE, etc.
     
     # Exception parameters
@@ -577,3 +586,47 @@ class ArchivedHistoryException(Base):
     
     resolution_action = Column(String(50))
     resolution_notes = Column(Text)
+
+# Add this to your models.py file
+
+class ItemForecast(Base):
+    """Model for tracking forecast history and accuracy over time."""
+    __tablename__ = 'item_forecast'
+    
+    id = Column(Integer, primary_key=True)
+    item_id = Column(Integer, ForeignKey('item.id'), nullable=False)
+    forecast_date = Column(DateTime, default=func.now(), nullable=False)
+    period_number = Column(Integer, nullable=False)
+    period_year = Column(Integer, nullable=False)
+    
+    # Forecast values
+    forecast_value = Column(Float, default=0.0)
+    madp = Column(Float, default=0.0)
+    track = Column(Float, default=0.0)
+    
+    # Forecast method and parameters
+    forecast_method = Column(Enum(ForecastMethod), default=ForecastMethod.E3_REGULAR_AVS)
+    seasonality_applied = Column(Boolean, default=False)
+    seasonal_profile_id = Column(String(20))
+    
+    # Actual values (filled after the period)
+    actual_value = Column(Float)
+    error = Column(Float)
+    error_pct = Column(Float)
+    
+    # Additional metadata
+    notes = Column(Text)
+    created_by = Column(String(50))
+    
+    # Relationships
+    item = relationship("Item", back_populates="forecasts")
+    
+    __table_args__ = (
+        # Index for faster lookups by item and period
+        Index('idx_item_forecast_item_period', 'item_id', 'period_year', 'period_number'),
+        # Index for faster lookups by date
+        Index('idx_item_forecast_date', 'forecast_date'),
+    )
+
+# Add to the Item class
+forecasts = relationship("ItemForecast", back_populates="item")

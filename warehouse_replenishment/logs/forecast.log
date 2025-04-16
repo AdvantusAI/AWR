@@ -1,0 +1,1052 @@
+2025-04-15 10:21:50,188 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:21:50,310 - forecast - ERROR - Error generating forecasts: Mapper 'Mapper[Item(item)]' has no property 'forecasts'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-04-15 10:21:50,310 - forecast - ERROR - Mapper 'Mapper[Item(item)]' has no property 'forecasts'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2522, in get_property
+    return self._props[key]
+           ~~~~~~~~~~~^^^^^
+KeyError: 'forecasts'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 45, in generate_forecast
+    company = session.query(Company).first()
+              ~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2955, in query
+    return self._query_cls(entities, self, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 289, in _set_entities
+    coercions.expect(
+    ~~~~~~~~~~~~~~~~^
+        roles.ColumnsClauseRole,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        post_inspect=True,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\coercions.py", line 388, in expect
+    insp._post_inspect
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 1257, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ~~~~~~~~~^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2724, in _post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2401, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 4214, in _configure_registries
+    _do_configure_registries(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 4255, in _do_configure_registries
+    mapper._post_configure_properties()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2418, in _post_configure_properties
+    prop.init()
+    ~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\relationships.py", line 1661, in do_init
+    self._generate_backref()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\relationships.py", line 2147, in _generate_backref
+    self._add_reverse_property(self.back_populates)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\relationships.py", line 1592, in _add_reverse_property
+    other = self.mapper.get_property(key, _configure_mappers=False)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2524, in get_property
+    raise sa_exc.InvalidRequestError(
+    ...<3 lines>...
+    ) from err
+sqlalchemy.exc.InvalidRequestError: Mapper 'Mapper[Item(item)]' has no property 'forecasts'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2025-04-15 10:23:59,272 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:23:59,410 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 10:23:59,411 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 71, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 10:26:54,135 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:26:54,254 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 10:26:54,254 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 71, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 10:27:41,503 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:27:41,631 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 10:27:41,631 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 71, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 10:29:01,035 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:29:01,160 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 10:29:01,160 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 74, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 10:30:03,168 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 10:30:03,290 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 10:30:03,290 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 71, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 16:47:30,720 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 16:47:30,927 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 16:47:30,927 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 71, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 16:49:35,973 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 16:49:36,092 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 16:49:36,093 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 16:50:42,430 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 16:50:42,653 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 16:50:42,653 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 74, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 16:52:24,466 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 16:52:24,597 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 16:52:24,598 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 74, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:04:36,265 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:04:36,439 - forecast - INFO - Create forecast service
+2025-04-15 17:04:36,441 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:04:36,441 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 75, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:04:57,350 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:04:57,469 - forecast - INFO - Create forecast service
+2025-04-15 17:04:57,469 - forecast - INFO - Build query for items
+2025-04-15 17:04:57,470 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:04:57,470 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:05:19,331 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:05:19,453 - forecast - INFO - Create forecast service
+2025-04-15 17:05:19,454 - forecast - INFO - Build query for items
+2025-04-15 17:05:19,455 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:05:19,455 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:05:50,534 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:05:50,659 - forecast - INFO - Create forecast service
+2025-04-15 17:05:50,660 - forecast - INFO - Build query for items
+2025-04-15 17:05:50,660 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:05:50,661 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:05:50,661 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:06:22,899 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:06:23,050 - forecast - INFO - Create forecast service
+2025-04-15 17:06:23,050 - forecast - INFO - Build query for items
+2025-04-15 17:06:23,050 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:06:23,051 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:06:23,051 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:06:36,594 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:06:36,722 - forecast - INFO - Create forecast service
+2025-04-15 17:06:36,722 - forecast - INFO - Build query for items
+2025-04-15 17:06:36,722 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:06:36,723 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:06:36,723 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:06:58,437 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:06:58,555 - forecast - INFO - Create forecast service
+2025-04-15 17:06:58,555 - forecast - INFO - Build query for items
+2025-04-15 17:06:58,556 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:06:58,556 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:06:58,556 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:06:58,557 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 78, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:07:47,839 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:07:47,967 - forecast - INFO - Create forecast service
+2025-04-15 17:07:47,967 - forecast - INFO - Build query for items
+2025-04-15 17:07:47,967 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:07:47,967 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:07:47,968 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 17:07:47,968 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:07:47,968 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 79, in generate_forecast
+    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:08:09,811 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:08:09,941 - forecast - INFO - Create forecast service
+2025-04-15 17:08:09,941 - forecast - INFO - Build query for items
+2025-04-15 17:08:09,942 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:08:09,942 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:08:09,942 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 17:08:09,943 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:08:09,943 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Fixed: Use string values instead of enum values
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:14:47,462 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:14:47,583 - forecast - INFO - Create forecast service
+2025-04-15 17:14:47,583 - forecast - INFO - Build query for items
+2025-04-15 17:14:47,583 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:14:47,583 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:14:47,583 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 17:14:47,584 - forecast - ERROR - Error generating forecasts: name 'logger' is not defined
+2025-04-15 17:14:47,584 - forecast - ERROR - name 'logger' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 81, in generate_forecast
+    query = query.filter(Item.buyer_class.in_(buyer_classes))
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
+    x = fn(self, *args, **kw)
+  File "<string>", line 2, in filter
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\base.py", line 306, in generate
+    fn(self, *args, **kw)
+    ~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1903, in filter
+    logger.info("filter...")
+    ^^^^^^
+NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
+2025-04-15 17:15:42,555 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:15:42,691 - forecast - INFO - Create forecast service
+2025-04-15 17:15:42,692 - forecast - INFO - Build query for items
+2025-04-15 17:15:42,692 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:15:42,692 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:15:42,692 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 17:15:42,693 - forecast - INFO - Get items
+2025-04-15 17:15:42,713 - forecast - INFO - Found 24 items to forecast
+2025-04-15 17:15:42,772 - forecast - WARNING - No history data for item I0010002
+2025-04-15 17:15:42,773 - forecast - WARNING - No history data for item I0010003
+2025-04-15 17:15:42,774 - forecast - WARNING - No history data for item I0010004
+2025-04-15 17:15:42,775 - forecast - WARNING - No history data for item I0010005
+2025-04-15 17:15:42,775 - forecast - WARNING - No history data for item I0010006
+2025-04-15 17:15:42,776 - forecast - WARNING - No history data for item I0010007
+2025-04-15 17:15:42,777 - forecast - WARNING - No history data for item I0010008
+2025-04-15 17:15:42,781 - forecast - WARNING - No history data for item I0020002
+2025-04-15 17:15:42,782 - forecast - WARNING - No history data for item I0020003
+2025-04-15 17:15:42,782 - forecast - WARNING - No history data for item I0020004
+2025-04-15 17:15:42,785 - forecast - WARNING - No history data for item I0030002
+2025-04-15 17:15:42,785 - forecast - WARNING - No history data for item I0030003
+2025-04-15 17:15:42,786 - forecast - WARNING - No history data for item I0030004
+2025-04-15 17:15:42,794 - forecast - ERROR - Error forecasting item I0030005: 'ForecastService' object has no attribute 'get_current_period'
+2025-04-15 17:15:42,795 - forecast - WARNING - No history data for item I0030006
+2025-04-15 17:15:42,798 - forecast - WARNING - No history data for item I0040002
+2025-04-15 17:15:42,798 - forecast - WARNING - No history data for item I0040003
+2025-04-15 17:15:42,799 - forecast - WARNING - No history data for item I0040004
+2025-04-15 17:15:42,800 - forecast - WARNING - No history data for item I0010001
+2025-04-15 17:15:42,800 - forecast - WARNING - No history data for item I0010002
+2025-04-15 17:15:42,802 - forecast - INFO - Updated forecasts for 4 items
+2025-04-15 17:15:42,803 - forecast - INFO - Forecast generation completed: 4 processed, 1 errors
+2025-04-15 17:17:30,109 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 17:17:30,228 - forecast - INFO - Create forecast service
+2025-04-15 17:17:30,228 - forecast - INFO - Build query for items
+2025-04-15 17:17:30,229 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 17:17:30,229 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 17:17:30,229 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 17:17:30,229 - forecast - INFO - Get items
+2025-04-15 17:17:30,239 - forecast - INFO - Found 24 items to forecast
+2025-04-15 17:17:30,264 - forecast - WARNING - No history data for item I0010002
+2025-04-15 17:17:30,266 - forecast - WARNING - No history data for item I0010003
+2025-04-15 17:17:30,267 - forecast - WARNING - No history data for item I0010004
+2025-04-15 17:17:30,268 - forecast - WARNING - No history data for item I0010005
+2025-04-15 17:17:30,268 - forecast - WARNING - No history data for item I0010006
+2025-04-15 17:17:30,269 - forecast - WARNING - No history data for item I0010007
+2025-04-15 17:17:30,270 - forecast - WARNING - No history data for item I0010008
+2025-04-15 17:17:30,270 - forecast - WARNING - No history data for item I0020002
+2025-04-15 17:17:30,271 - forecast - WARNING - No history data for item I0020003
+2025-04-15 17:17:30,273 - forecast - WARNING - No history data for item I0020004
+2025-04-15 17:17:30,274 - forecast - WARNING - No history data for item I0030002
+2025-04-15 17:17:30,274 - forecast - WARNING - No history data for item I0030003
+2025-04-15 17:17:30,275 - forecast - WARNING - No history data for item I0030004
+2025-04-15 17:17:30,280 - forecast - ERROR - Error forecasting item I0030005: attempted relative import beyond top-level package
+2025-04-15 17:17:30,281 - forecast - WARNING - No history data for item I0030006
+2025-04-15 17:17:30,282 - forecast - WARNING - No history data for item I0040002
+2025-04-15 17:17:30,282 - forecast - WARNING - No history data for item I0040003
+2025-04-15 17:17:30,283 - forecast - WARNING - No history data for item I0040004
+2025-04-15 17:17:30,283 - forecast - WARNING - No history data for item I0010001
+2025-04-15 17:17:30,284 - forecast - WARNING - No history data for item I0010002
+2025-04-15 17:17:30,295 - forecast - INFO - Updated forecasts for 4 items
+2025-04-15 17:17:30,295 - forecast - INFO - Forecast generation completed: 4 processed, 1 errors
+2025-04-15 20:03:23,980 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-15 20:03:24,172 - forecast - INFO - Create forecast service
+2025-04-15 20:03:24,172 - forecast - INFO - Build query for items
+2025-04-15 20:03:24,173 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-15 20:03:24,173 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-15 20:03:24,173 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-15 20:03:24,173 - forecast - INFO - Get items
+2025-04-15 20:03:24,182 - forecast - INFO - Found 24 items to forecast
+2025-04-15 20:03:24,214 - forecast - WARNING - No history data for item I0010002
+2025-04-15 20:03:24,215 - forecast - WARNING - No history data for item I0010003
+2025-04-15 20:03:24,216 - forecast - WARNING - No history data for item I0010004
+2025-04-15 20:03:24,217 - forecast - WARNING - No history data for item I0010005
+2025-04-15 20:03:24,218 - forecast - WARNING - No history data for item I0010006
+2025-04-15 20:03:24,219 - forecast - WARNING - No history data for item I0010007
+2025-04-15 20:03:24,220 - forecast - WARNING - No history data for item I0010008
+2025-04-15 20:03:24,221 - forecast - WARNING - No history data for item I0020002
+2025-04-15 20:03:24,222 - forecast - WARNING - No history data for item I0020003
+2025-04-15 20:03:24,224 - forecast - WARNING - No history data for item I0020004
+2025-04-15 20:03:24,224 - forecast - WARNING - No history data for item I0030002
+2025-04-15 20:03:24,225 - forecast - WARNING - No history data for item I0030003
+2025-04-15 20:03:24,226 - forecast - WARNING - No history data for item I0030004
+2025-04-15 20:03:24,234 - forecast - ERROR - Error forecasting item I0030005: attempted relative import beyond top-level package
+2025-04-15 20:03:24,235 - forecast - WARNING - No history data for item I0030006
+2025-04-15 20:03:24,236 - forecast - WARNING - No history data for item I0040002
+2025-04-15 20:03:24,237 - forecast - WARNING - No history data for item I0040003
+2025-04-15 20:03:24,237 - forecast - WARNING - No history data for item I0040004
+2025-04-15 20:03:24,238 - forecast - WARNING - No history data for item I0010001
+2025-04-15 20:03:24,239 - forecast - WARNING - No history data for item I0010002
+2025-04-15 20:03:24,253 - forecast - INFO - Updated forecasts for 4 items
+2025-04-15 20:03:24,253 - forecast - INFO - Forecast generation completed: 4 processed, 1 errors
+2025-04-16 00:24:54,688 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 00:24:54,900 - forecast - INFO - Create forecast service
+2025-04-16 00:24:54,900 - forecast - INFO - Build query for items
+2025-04-16 00:24:54,900 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 00:24:54,900 - forecast - INFO - BuyerClassCode.REGULAR
+2025-04-16 00:24:54,900 - forecast - INFO - BuyerClassCode.WATCH
+2025-04-16 00:24:54,901 - forecast - INFO - Get items
+2025-04-16 00:24:54,910 - forecast - INFO - Found 24 items to forecast
+2025-04-16 00:24:54,951 - forecast - WARNING - No history data for item I0010002
+2025-04-16 00:24:54,951 - forecast - WARNING - No history data for item I0010003
+2025-04-16 00:24:54,952 - forecast - WARNING - No history data for item I0010004
+2025-04-16 00:24:54,952 - forecast - WARNING - No history data for item I0010005
+2025-04-16 00:24:54,953 - forecast - WARNING - No history data for item I0010006
+2025-04-16 00:24:54,953 - forecast - WARNING - No history data for item I0010007
+2025-04-16 00:24:54,954 - forecast - WARNING - No history data for item I0010008
+2025-04-16 00:24:54,954 - forecast - WARNING - No history data for item I0020001
+2025-04-16 00:24:54,955 - forecast - WARNING - No history data for item I0020002
+2025-04-16 00:24:54,956 - forecast - WARNING - No history data for item I0020003
+2025-04-16 00:24:54,957 - forecast - WARNING - No history data for item I0020004
+2025-04-16 00:24:54,958 - forecast - WARNING - No history data for item I0030001
+2025-04-16 00:24:54,959 - forecast - WARNING - No history data for item I0030002
+2025-04-16 00:24:54,959 - forecast - WARNING - No history data for item I0030003
+2025-04-16 00:24:54,960 - forecast - WARNING - No history data for item I0030004
+2025-04-16 00:24:54,960 - forecast - WARNING - No history data for item I0030005
+2025-04-16 00:24:54,961 - forecast - WARNING - No history data for item I0030006
+2025-04-16 00:24:54,961 - forecast - WARNING - No history data for item I0040001
+2025-04-16 00:24:54,962 - forecast - WARNING - No history data for item I0040002
+2025-04-16 00:24:54,963 - forecast - WARNING - No history data for item I0040003
+2025-04-16 00:24:54,963 - forecast - WARNING - No history data for item I0040004
+2025-04-16 00:24:54,964 - forecast - WARNING - No history data for item I0010001
+2025-04-16 00:24:54,965 - forecast - WARNING - No history data for item I0010002
+2025-04-16 00:24:54,967 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 00:24:54,967 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 11:50:46,043 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 11:50:46,249 - forecast - INFO - Create forecast service
+2025-04-16 11:50:46,250 - forecast - INFO - Build query for items
+2025-04-16 11:50:46,250 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 11:50:46,262 - forecast - INFO - Found 24 items to forecast
+2025-04-16 11:50:46,268 - forecast - WARNING - No history data for item I0010002
+2025-04-16 11:50:46,269 - forecast - WARNING - No history data for item I0010003
+2025-04-16 11:50:46,270 - forecast - WARNING - No history data for item I0010004
+2025-04-16 11:50:46,270 - forecast - WARNING - No history data for item I0010005
+2025-04-16 11:50:46,271 - forecast - WARNING - No history data for item I0010006
+2025-04-16 11:50:46,271 - forecast - WARNING - No history data for item I0010007
+2025-04-16 11:50:46,272 - forecast - WARNING - No history data for item I0010008
+2025-04-16 11:50:46,272 - forecast - WARNING - No history data for item I0020001
+2025-04-16 11:50:46,273 - forecast - WARNING - No history data for item I0020002
+2025-04-16 11:50:46,273 - forecast - WARNING - No history data for item I0020003
+2025-04-16 11:50:46,274 - forecast - WARNING - No history data for item I0020004
+2025-04-16 11:50:46,275 - forecast - WARNING - No history data for item I0030001
+2025-04-16 11:50:46,276 - forecast - WARNING - No history data for item I0030002
+2025-04-16 11:50:46,277 - forecast - WARNING - No history data for item I0030003
+2025-04-16 11:50:46,277 - forecast - WARNING - No history data for item I0030004
+2025-04-16 11:50:46,278 - forecast - WARNING - No history data for item I0030005
+2025-04-16 11:50:46,278 - forecast - WARNING - No history data for item I0030006
+2025-04-16 11:50:46,279 - forecast - WARNING - No history data for item I0040001
+2025-04-16 11:50:46,279 - forecast - WARNING - No history data for item I0040002
+2025-04-16 11:50:46,280 - forecast - WARNING - No history data for item I0040003
+2025-04-16 11:50:46,280 - forecast - WARNING - No history data for item I0040004
+2025-04-16 11:50:46,282 - forecast - WARNING - No history data for item I0010001
+2025-04-16 11:50:46,282 - forecast - WARNING - No history data for item I0010002
+2025-04-16 11:50:46,284 - forecast - ERROR - Error forecasting item I0010001: name 'calculate_forecast' is not defined
+2025-04-16 11:50:46,286 - forecast - INFO - Updated forecasts for 0 items
+2025-04-16 11:50:46,286 - forecast - INFO - Created forecast history records for 0 items
+2025-04-16 11:50:46,286 - forecast - INFO - Forecast generation completed: 0 processed, 1 errors
+2025-04-16 11:55:03,239 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 11:55:03,398 - forecast - INFO - Create forecast service
+2025-04-16 11:55:03,398 - forecast - INFO - Build query for items
+2025-04-16 11:55:03,398 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 11:55:03,407 - forecast - INFO - Found 24 items to forecast
+2025-04-16 11:55:03,412 - forecast - WARNING - No history data for item I0010002
+2025-04-16 11:55:03,412 - forecast - WARNING - No history data for item I0010003
+2025-04-16 11:55:03,413 - forecast - WARNING - No history data for item I0010004
+2025-04-16 11:55:03,414 - forecast - WARNING - No history data for item I0010005
+2025-04-16 11:55:03,415 - forecast - WARNING - No history data for item I0010006
+2025-04-16 11:55:03,415 - forecast - WARNING - No history data for item I0010007
+2025-04-16 11:55:03,416 - forecast - WARNING - No history data for item I0010008
+2025-04-16 11:55:03,417 - forecast - WARNING - No history data for item I0020001
+2025-04-16 11:55:03,418 - forecast - WARNING - No history data for item I0020002
+2025-04-16 11:55:03,418 - forecast - WARNING - No history data for item I0020003
+2025-04-16 11:55:03,419 - forecast - WARNING - No history data for item I0020004
+2025-04-16 11:55:03,419 - forecast - WARNING - No history data for item I0030001
+2025-04-16 11:55:03,420 - forecast - WARNING - No history data for item I0030002
+2025-04-16 11:55:03,420 - forecast - WARNING - No history data for item I0030003
+2025-04-16 11:55:03,421 - forecast - WARNING - No history data for item I0030004
+2025-04-16 11:55:03,422 - forecast - WARNING - No history data for item I0030005
+2025-04-16 11:55:03,423 - forecast - WARNING - No history data for item I0030006
+2025-04-16 11:55:03,423 - forecast - WARNING - No history data for item I0040001
+2025-04-16 11:55:03,424 - forecast - WARNING - No history data for item I0040002
+2025-04-16 11:55:03,425 - forecast - WARNING - No history data for item I0040003
+2025-04-16 11:55:03,426 - forecast - WARNING - No history data for item I0040004
+2025-04-16 11:55:03,427 - forecast - WARNING - No history data for item I0010001
+2025-04-16 11:55:03,427 - forecast - WARNING - No history data for item I0010002
+2025-04-16 11:55:03,441 - forecast - WARNING - Could not save forecast history for item I0010001: (psycopg2.errors.UndefinedColumn) no existe la columna item_forecast.seasonality_applied
+LINE 1: ...forecast_method AS item_forecast_forecast_method, item_forec...
+                                                             ^
+
+[SQL: SELECT item_forecast.id AS item_forecast_id, item_forecast.item_id AS item_forecast_item_id, item_forecast.forecast_date AS item_forecast_forecast_date, item_forecast.period_number AS item_forecast_period_number, item_forecast.period_year AS item_forecast_period_year, item_forecast.forecast_value AS item_forecast_forecast_value, item_forecast.madp AS item_forecast_madp, item_forecast.track AS item_forecast_track, item_forecast.forecast_method AS item_forecast_forecast_method, item_forecast.seasonality_applied AS item_forecast_seasonality_applied, item_forecast.seasonal_profile_id AS item_forecast_seasonal_profile_id, item_forecast.actual_value AS item_forecast_actual_value, item_forecast.error AS item_forecast_error, item_forecast.error_pct AS item_forecast_error_pct, item_forecast.notes AS item_forecast_notes, item_forecast.created_by AS item_forecast_created_by 
+FROM item_forecast 
+WHERE item_forecast.item_id = %(item_id_1)s AND item_forecast.period_number = %(period_number_1)s AND item_forecast.period_year = %(period_year_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'item_id_1': 1, 'period_number_1': 4, 'period_year_1': 2025, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-16 11:55:03,444 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 11:55:03,444 - forecast - INFO - Created forecast history records for 0 items
+2025-04-16 11:55:03,445 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:34:23,092 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:34:23,265 - forecast - INFO - Create forecast service
+2025-04-16 12:34:23,265 - forecast - INFO - Build query for items
+2025-04-16 12:34:23,265 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:34:23,276 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:34:23,280 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:34:23,281 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:34:23,281 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:34:23,282 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:34:23,282 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:34:23,283 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:34:23,283 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:34:23,284 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:34:23,284 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:34:23,285 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:34:23,285 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:34:23,286 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:34:23,288 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:34:23,289 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:34:23,289 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:34:23,290 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:34:23,291 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:34:23,292 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:34:23,292 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:34:23,293 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:34:23,294 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:34:23,295 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:34:23,295 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:34:23,317 - forecast - WARNING - Could not save forecast history for item I0010001: (psycopg2.errors.UndefinedColumn) no existe la columna item_forecast.seasonality_applied
+LINE 1: ...forecast_method AS item_forecast_forecast_method, item_forec...
+                                                             ^
+
+[SQL: SELECT item_forecast.id AS item_forecast_id, item_forecast.item_id AS item_forecast_item_id, item_forecast.forecast_date AS item_forecast_forecast_date, item_forecast.period_number AS item_forecast_period_number, item_forecast.period_year AS item_forecast_period_year, item_forecast.forecast_value AS item_forecast_forecast_value, item_forecast.madp AS item_forecast_madp, item_forecast.track AS item_forecast_track, item_forecast.forecast_method AS item_forecast_forecast_method, item_forecast.seasonality_applied AS item_forecast_seasonality_applied, item_forecast.seasonal_profile_id AS item_forecast_seasonal_profile_id, item_forecast.actual_value AS item_forecast_actual_value, item_forecast.error AS item_forecast_error, item_forecast.error_pct AS item_forecast_error_pct, item_forecast.notes AS item_forecast_notes, item_forecast.created_by AS item_forecast_created_by 
+FROM item_forecast 
+WHERE item_forecast.item_id = %(item_id_1)s AND item_forecast.period_number = %(period_number_1)s AND item_forecast.period_year = %(period_year_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'item_id_1': 1, 'period_number_1': 4, 'period_year_1': 2025, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-16 12:34:23,319 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:34:23,319 - forecast - INFO - Created forecast history records for 0 items
+2025-04-16 12:34:23,320 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:35:26,539 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:35:26,658 - forecast - INFO - Create forecast service
+2025-04-16 12:35:26,658 - forecast - INFO - Build query for items
+2025-04-16 12:35:26,659 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:35:26,667 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:35:26,671 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:35:26,672 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:35:26,673 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:35:26,674 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:35:26,675 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:35:26,676 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:35:26,677 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:35:26,678 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:35:26,678 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:35:26,679 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:35:26,679 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:35:26,680 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:35:26,680 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:35:26,681 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:35:26,681 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:35:26,683 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:35:26,684 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:35:26,685 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:35:26,686 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:35:26,687 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:35:26,688 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:35:26,689 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:35:26,690 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:35:26,699 - forecast - WARNING - Could not save forecast history for item I0010001: (psycopg2.errors.UndefinedColumn) no existe la columna item_forecast.seasonal_profile_id
+LINE 1: ...ity_applied AS item_forecast_seasonality_applied, item_forec...
+                                                             ^
+
+[SQL: SELECT item_forecast.id AS item_forecast_id, item_forecast.item_id AS item_forecast_item_id, item_forecast.forecast_date AS item_forecast_forecast_date, item_forecast.period_number AS item_forecast_period_number, item_forecast.period_year AS item_forecast_period_year, item_forecast.forecast_value AS item_forecast_forecast_value, item_forecast.madp AS item_forecast_madp, item_forecast.track AS item_forecast_track, item_forecast.forecast_method AS item_forecast_forecast_method, item_forecast.seasonality_applied AS item_forecast_seasonality_applied, item_forecast.seasonal_profile_id AS item_forecast_seasonal_profile_id, item_forecast.actual_value AS item_forecast_actual_value, item_forecast.error AS item_forecast_error, item_forecast.error_pct AS item_forecast_error_pct, item_forecast.notes AS item_forecast_notes, item_forecast.created_by AS item_forecast_created_by 
+FROM item_forecast 
+WHERE item_forecast.item_id = %(item_id_1)s AND item_forecast.period_number = %(period_number_1)s AND item_forecast.period_year = %(period_year_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'item_id_1': 1, 'period_number_1': 4, 'period_year_1': 2025, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-16 12:35:26,700 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:35:26,701 - forecast - INFO - Created forecast history records for 0 items
+2025-04-16 12:35:26,701 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:38:37,996 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:38:38,149 - forecast - INFO - Create forecast service
+2025-04-16 12:38:38,149 - forecast - INFO - Build query for items
+2025-04-16 12:38:38,149 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:38:38,156 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:38:38,159 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:38:38,159 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:38:38,160 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:38:38,160 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:38:38,161 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:38:38,161 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:38:38,162 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:38:38,164 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:38:38,165 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:38:38,165 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:38:38,166 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:38:38,166 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:38:38,167 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:38:38,167 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:38:38,168 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:38:38,168 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:38:38,169 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:38:38,170 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:38:38,171 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:38:38,172 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:38:38,172 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:38:38,173 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:38:38,174 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:38:38,181 - forecast - WARNING - Could not save forecast history for item I0010001: (psycopg2.errors.UndefinedColumn) no existe la columna item_forecast.notes
+LINE 1: ...em_forecast.error_pct AS item_forecast_error_pct, item_forec...
+                                                             ^
+
+[SQL: SELECT item_forecast.id AS item_forecast_id, item_forecast.item_id AS item_forecast_item_id, item_forecast.forecast_date AS item_forecast_forecast_date, item_forecast.period_number AS item_forecast_period_number, item_forecast.period_year AS item_forecast_period_year, item_forecast.forecast_value AS item_forecast_forecast_value, item_forecast.madp AS item_forecast_madp, item_forecast.track AS item_forecast_track, item_forecast.forecast_method AS item_forecast_forecast_method, item_forecast.seasonality_applied AS item_forecast_seasonality_applied, item_forecast.seasonal_profile_id AS item_forecast_seasonal_profile_id, item_forecast.actual_value AS item_forecast_actual_value, item_forecast.error AS item_forecast_error, item_forecast.error_pct AS item_forecast_error_pct, item_forecast.notes AS item_forecast_notes, item_forecast.created_by AS item_forecast_created_by 
+FROM item_forecast 
+WHERE item_forecast.item_id = %(item_id_1)s AND item_forecast.period_number = %(period_number_1)s AND item_forecast.period_year = %(period_year_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'item_id_1': 1, 'period_number_1': 4, 'period_year_1': 2025, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-16 12:38:38,183 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:38:38,183 - forecast - INFO - Created forecast history records for 0 items
+2025-04-16 12:38:38,184 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:39:32,579 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=12, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:39:32,698 - forecast - INFO - Create forecast service
+2025-04-16 12:39:32,698 - forecast - INFO - Build query for items
+2025-04-16 12:39:32,698 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:39:32,704 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:39:32,707 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:39:32,708 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:39:32,709 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:39:32,710 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:39:32,711 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:39:32,712 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:39:32,713 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:39:32,713 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:39:32,714 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:39:32,714 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:39:32,715 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:39:32,715 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:39:32,717 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:39:32,717 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:39:32,718 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:39:32,718 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:39:32,719 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:39:32,719 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:39:32,720 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:39:32,721 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:39:32,721 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:39:32,722 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:39:32,723 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:39:32,784 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:39:32,784 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 12:39:32,784 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:44:40,886 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:44:41,039 - forecast - INFO - Create forecast service
+2025-04-16 12:44:41,039 - forecast - INFO - Build query for items
+2025-04-16 12:44:41,039 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:44:41,047 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:44:41,051 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:44:41,052 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:44:41,052 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:44:41,053 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:44:41,053 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:44:41,054 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:44:41,054 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:44:41,054 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:44:41,055 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:44:41,055 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:44:41,056 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:44:41,057 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:44:41,058 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:44:41,059 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:44:41,060 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:44:41,061 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:44:41,061 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:44:41,062 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:44:41,063 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:44:41,064 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:44:41,064 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:44:41,065 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:44:41,066 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:44:41,106 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:44:41,107 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 12:44:41,107 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 12:47:27,809 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 12:47:27,932 - forecast - INFO - Create forecast service
+2025-04-16 12:47:27,932 - forecast - INFO - Build query for items
+2025-04-16 12:47:27,932 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 12:47:27,940 - forecast - INFO - Found 24 items to forecast
+2025-04-16 12:47:27,943 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:47:27,944 - forecast - WARNING - No history data for item I0010003
+2025-04-16 12:47:27,944 - forecast - WARNING - No history data for item I0010004
+2025-04-16 12:47:27,945 - forecast - WARNING - No history data for item I0010005
+2025-04-16 12:47:27,945 - forecast - WARNING - No history data for item I0010006
+2025-04-16 12:47:27,946 - forecast - WARNING - No history data for item I0010007
+2025-04-16 12:47:27,946 - forecast - WARNING - No history data for item I0010008
+2025-04-16 12:47:27,946 - forecast - WARNING - No history data for item I0020001
+2025-04-16 12:47:27,947 - forecast - WARNING - No history data for item I0020002
+2025-04-16 12:47:27,948 - forecast - WARNING - No history data for item I0020003
+2025-04-16 12:47:27,949 - forecast - WARNING - No history data for item I0020004
+2025-04-16 12:47:27,949 - forecast - WARNING - No history data for item I0030001
+2025-04-16 12:47:27,950 - forecast - WARNING - No history data for item I0030002
+2025-04-16 12:47:27,951 - forecast - WARNING - No history data for item I0030003
+2025-04-16 12:47:27,952 - forecast - WARNING - No history data for item I0030004
+2025-04-16 12:47:27,952 - forecast - WARNING - No history data for item I0030005
+2025-04-16 12:47:27,953 - forecast - WARNING - No history data for item I0030006
+2025-04-16 12:47:27,954 - forecast - WARNING - No history data for item I0040001
+2025-04-16 12:47:27,954 - forecast - WARNING - No history data for item I0040002
+2025-04-16 12:47:27,955 - forecast - WARNING - No history data for item I0040003
+2025-04-16 12:47:27,956 - forecast - WARNING - No history data for item I0040004
+2025-04-16 12:47:27,957 - forecast - WARNING - No history data for item I0010001
+2025-04-16 12:47:27,958 - forecast - WARNING - No history data for item I0010002
+2025-04-16 12:47:27,988 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 12:47:27,988 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 12:47:27,988 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 13:59:16,856 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 13:59:17,071 - forecast - INFO - Create forecast service
+2025-04-16 13:59:17,072 - forecast - INFO - Build query for items
+2025-04-16 13:59:17,072 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 13:59:17,086 - forecast - INFO - Found 24 items to forecast
+2025-04-16 13:59:17,094 - forecast - WARNING - No history data for item I0010002
+2025-04-16 13:59:17,095 - forecast - WARNING - No history data for item I0010003
+2025-04-16 13:59:17,097 - forecast - WARNING - No history data for item I0010004
+2025-04-16 13:59:17,098 - forecast - WARNING - No history data for item I0010005
+2025-04-16 13:59:17,098 - forecast - WARNING - No history data for item I0010006
+2025-04-16 13:59:17,099 - forecast - WARNING - No history data for item I0010007
+2025-04-16 13:59:17,100 - forecast - WARNING - No history data for item I0010008
+2025-04-16 13:59:17,100 - forecast - WARNING - No history data for item I0020001
+2025-04-16 13:59:17,101 - forecast - WARNING - No history data for item I0020002
+2025-04-16 13:59:17,102 - forecast - WARNING - No history data for item I0020003
+2025-04-16 13:59:17,103 - forecast - WARNING - No history data for item I0020004
+2025-04-16 13:59:17,104 - forecast - WARNING - No history data for item I0030001
+2025-04-16 13:59:17,105 - forecast - WARNING - No history data for item I0030002
+2025-04-16 13:59:17,105 - forecast - WARNING - No history data for item I0030003
+2025-04-16 13:59:17,105 - forecast - WARNING - No history data for item I0030004
+2025-04-16 13:59:17,106 - forecast - WARNING - No history data for item I0030005
+2025-04-16 13:59:17,106 - forecast - WARNING - No history data for item I0030006
+2025-04-16 13:59:17,107 - forecast - WARNING - No history data for item I0040001
+2025-04-16 13:59:17,108 - forecast - WARNING - No history data for item I0040002
+2025-04-16 13:59:17,109 - forecast - WARNING - No history data for item I0040003
+2025-04-16 13:59:17,109 - forecast - WARNING - No history data for item I0040004
+2025-04-16 13:59:17,110 - forecast - WARNING - No history data for item I0010001
+2025-04-16 13:59:17,111 - forecast - WARNING - No history data for item I0010002
+2025-04-16 13:59:17,136 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 13:59:17,137 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 13:59:17,137 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 14:00:15,141 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 14:00:15,264 - forecast - INFO - Create forecast service
+2025-04-16 14:00:15,265 - forecast - INFO - Build query for items
+2025-04-16 14:00:15,265 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 14:00:15,272 - forecast - INFO - Found 24 items to forecast
+2025-04-16 14:00:15,276 - forecast - WARNING - No history data for item I0010002
+2025-04-16 14:00:15,277 - forecast - WARNING - No history data for item I0010003
+2025-04-16 14:00:15,277 - forecast - WARNING - No history data for item I0010004
+2025-04-16 14:00:15,278 - forecast - WARNING - No history data for item I0010005
+2025-04-16 14:00:15,279 - forecast - WARNING - No history data for item I0010006
+2025-04-16 14:00:15,279 - forecast - WARNING - No history data for item I0010007
+2025-04-16 14:00:15,280 - forecast - WARNING - No history data for item I0010008
+2025-04-16 14:00:15,282 - forecast - WARNING - No history data for item I0020001
+2025-04-16 14:00:15,283 - forecast - WARNING - No history data for item I0020002
+2025-04-16 14:00:15,284 - forecast - WARNING - No history data for item I0020003
+2025-04-16 14:00:15,286 - forecast - WARNING - No history data for item I0020004
+2025-04-16 14:00:15,287 - forecast - WARNING - No history data for item I0030001
+2025-04-16 14:00:15,288 - forecast - WARNING - No history data for item I0030002
+2025-04-16 14:00:15,289 - forecast - WARNING - No history data for item I0030003
+2025-04-16 14:00:15,291 - forecast - WARNING - No history data for item I0030004
+2025-04-16 14:00:15,294 - forecast - WARNING - No history data for item I0030005
+2025-04-16 14:00:15,295 - forecast - WARNING - No history data for item I0030006
+2025-04-16 14:00:15,296 - forecast - WARNING - No history data for item I0040001
+2025-04-16 14:00:15,296 - forecast - WARNING - No history data for item I0040002
+2025-04-16 14:00:15,297 - forecast - WARNING - No history data for item I0040003
+2025-04-16 14:00:15,298 - forecast - WARNING - No history data for item I0040004
+2025-04-16 14:00:15,299 - forecast - WARNING - No history data for item I0010001
+2025-04-16 14:00:15,300 - forecast - WARNING - No history data for item I0010002
+2025-04-16 14:00:15,331 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 14:00:15,331 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 14:00:15,331 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 15:23:29,878 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 15:23:30,093 - forecast - INFO - Create forecast service
+2025-04-16 15:23:30,094 - forecast - INFO - Build query for items
+2025-04-16 15:23:30,094 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 15:23:30,105 - forecast - INFO - Found 24 items to forecast
+2025-04-16 15:23:30,110 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:23:30,111 - forecast - WARNING - No history data for item I0010003
+2025-04-16 15:23:30,112 - forecast - WARNING - No history data for item I0010004
+2025-04-16 15:23:30,113 - forecast - WARNING - No history data for item I0010005
+2025-04-16 15:23:30,115 - forecast - WARNING - No history data for item I0010006
+2025-04-16 15:23:30,115 - forecast - WARNING - No history data for item I0010007
+2025-04-16 15:23:30,116 - forecast - WARNING - No history data for item I0010008
+2025-04-16 15:23:30,117 - forecast - WARNING - No history data for item I0020001
+2025-04-16 15:23:30,118 - forecast - WARNING - No history data for item I0020002
+2025-04-16 15:23:30,119 - forecast - WARNING - No history data for item I0020003
+2025-04-16 15:23:30,120 - forecast - WARNING - No history data for item I0020004
+2025-04-16 15:23:30,122 - forecast - WARNING - No history data for item I0030001
+2025-04-16 15:23:30,122 - forecast - WARNING - No history data for item I0030002
+2025-04-16 15:23:30,123 - forecast - WARNING - No history data for item I0030003
+2025-04-16 15:23:30,123 - forecast - WARNING - No history data for item I0030004
+2025-04-16 15:23:30,124 - forecast - WARNING - No history data for item I0030005
+2025-04-16 15:23:30,124 - forecast - WARNING - No history data for item I0030006
+2025-04-16 15:23:30,125 - forecast - WARNING - No history data for item I0040001
+2025-04-16 15:23:30,125 - forecast - WARNING - No history data for item I0040002
+2025-04-16 15:23:30,126 - forecast - WARNING - No history data for item I0040003
+2025-04-16 15:23:30,127 - forecast - WARNING - No history data for item I0040004
+2025-04-16 15:23:30,128 - forecast - WARNING - No history data for item I0010001
+2025-04-16 15:23:30,129 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:23:30,155 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 15:23:30,155 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 15:23:30,155 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 15:25:45,787 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 15:25:45,909 - forecast - INFO - Create forecast service
+2025-04-16 15:25:45,909 - forecast - INFO - Build query for items
+2025-04-16 15:25:45,910 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 15:25:45,917 - forecast - INFO - Found 24 items to forecast
+2025-04-16 15:25:45,919 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:25:45,920 - forecast - WARNING - No history data for item I0010003
+2025-04-16 15:25:45,921 - forecast - WARNING - No history data for item I0010004
+2025-04-16 15:25:45,923 - forecast - WARNING - No history data for item I0010005
+2025-04-16 15:25:45,923 - forecast - WARNING - No history data for item I0010006
+2025-04-16 15:25:45,924 - forecast - WARNING - No history data for item I0010007
+2025-04-16 15:25:45,925 - forecast - WARNING - No history data for item I0010008
+2025-04-16 15:25:45,926 - forecast - WARNING - No history data for item I0020001
+2025-04-16 15:25:45,927 - forecast - WARNING - No history data for item I0020002
+2025-04-16 15:25:45,928 - forecast - WARNING - No history data for item I0020003
+2025-04-16 15:25:45,929 - forecast - WARNING - No history data for item I0020004
+2025-04-16 15:25:45,930 - forecast - WARNING - No history data for item I0030001
+2025-04-16 15:25:45,931 - forecast - WARNING - No history data for item I0030002
+2025-04-16 15:25:45,931 - forecast - WARNING - No history data for item I0030003
+2025-04-16 15:25:45,932 - forecast - WARNING - No history data for item I0030004
+2025-04-16 15:25:45,933 - forecast - WARNING - No history data for item I0030005
+2025-04-16 15:25:45,933 - forecast - WARNING - No history data for item I0030006
+2025-04-16 15:25:45,934 - forecast - WARNING - No history data for item I0040001
+2025-04-16 15:25:45,935 - forecast - WARNING - No history data for item I0040002
+2025-04-16 15:25:45,935 - forecast - WARNING - No history data for item I0040003
+2025-04-16 15:25:45,936 - forecast - WARNING - No history data for item I0040004
+2025-04-16 15:25:45,937 - forecast - WARNING - No history data for item I0010001
+2025-04-16 15:25:45,938 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:25:45,949 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 15:25:45,949 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 15:25:45,949 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 15:26:29,532 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 15:26:29,647 - forecast - INFO - Create forecast service
+2025-04-16 15:26:29,648 - forecast - INFO - Build query for items
+2025-04-16 15:26:29,648 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 15:26:29,654 - forecast - INFO - Found 24 items to forecast
+2025-04-16 15:26:29,656 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:26:29,657 - forecast - WARNING - No history data for item I0010003
+2025-04-16 15:26:29,657 - forecast - WARNING - No history data for item I0010004
+2025-04-16 15:26:29,658 - forecast - WARNING - No history data for item I0010005
+2025-04-16 15:26:29,658 - forecast - WARNING - No history data for item I0010006
+2025-04-16 15:26:29,659 - forecast - WARNING - No history data for item I0010007
+2025-04-16 15:26:29,659 - forecast - WARNING - No history data for item I0010008
+2025-04-16 15:26:29,659 - forecast - WARNING - No history data for item I0020001
+2025-04-16 15:26:29,660 - forecast - WARNING - No history data for item I0020002
+2025-04-16 15:26:29,660 - forecast - WARNING - No history data for item I0020003
+2025-04-16 15:26:29,661 - forecast - WARNING - No history data for item I0020004
+2025-04-16 15:26:29,661 - forecast - WARNING - No history data for item I0030001
+2025-04-16 15:26:29,661 - forecast - WARNING - No history data for item I0030002
+2025-04-16 15:26:29,662 - forecast - WARNING - No history data for item I0030003
+2025-04-16 15:26:29,662 - forecast - WARNING - No history data for item I0030004
+2025-04-16 15:26:29,662 - forecast - WARNING - No history data for item I0030005
+2025-04-16 15:26:29,664 - forecast - WARNING - No history data for item I0030006
+2025-04-16 15:26:29,665 - forecast - WARNING - No history data for item I0040001
+2025-04-16 15:26:29,666 - forecast - WARNING - No history data for item I0040002
+2025-04-16 15:26:29,667 - forecast - WARNING - No history data for item I0040003
+2025-04-16 15:26:29,667 - forecast - WARNING - No history data for item I0040004
+2025-04-16 15:26:29,668 - forecast - WARNING - No history data for item I0010001
+2025-04-16 15:26:29,669 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:26:29,687 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 15:26:29,688 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 15:26:29,688 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 15:32:18,790 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 15:32:18,918 - forecast - INFO - Create forecast service
+2025-04-16 15:32:18,919 - forecast - INFO - Build query for items
+2025-04-16 15:32:18,919 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 15:32:18,926 - forecast - INFO - Found 24 items to forecast
+2025-04-16 15:32:18,929 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:32:18,930 - forecast - WARNING - No history data for item I0010003
+2025-04-16 15:32:18,930 - forecast - WARNING - No history data for item I0010004
+2025-04-16 15:32:18,931 - forecast - WARNING - No history data for item I0010005
+2025-04-16 15:32:18,931 - forecast - WARNING - No history data for item I0010006
+2025-04-16 15:32:18,932 - forecast - WARNING - No history data for item I0010007
+2025-04-16 15:32:18,932 - forecast - WARNING - No history data for item I0010008
+2025-04-16 15:32:18,933 - forecast - WARNING - No history data for item I0020001
+2025-04-16 15:32:18,934 - forecast - WARNING - No history data for item I0020002
+2025-04-16 15:32:18,934 - forecast - WARNING - No history data for item I0020003
+2025-04-16 15:32:18,935 - forecast - WARNING - No history data for item I0020004
+2025-04-16 15:32:18,935 - forecast - WARNING - No history data for item I0030001
+2025-04-16 15:32:18,936 - forecast - WARNING - No history data for item I0030002
+2025-04-16 15:32:18,937 - forecast - WARNING - No history data for item I0030003
+2025-04-16 15:32:18,937 - forecast - WARNING - No history data for item I0030004
+2025-04-16 15:32:18,938 - forecast - WARNING - No history data for item I0030005
+2025-04-16 15:32:18,938 - forecast - WARNING - No history data for item I0030006
+2025-04-16 15:32:18,939 - forecast - WARNING - No history data for item I0040001
+2025-04-16 15:32:18,940 - forecast - WARNING - No history data for item I0040002
+2025-04-16 15:32:18,941 - forecast - WARNING - No history data for item I0040003
+2025-04-16 15:32:18,941 - forecast - WARNING - No history data for item I0040004
+2025-04-16 15:32:18,943 - forecast - WARNING - No history data for item I0010001
+2025-04-16 15:32:18,943 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:32:18,957 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 15:32:18,958 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 15:32:18,958 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 15:33:40,335 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 15:33:40,454 - forecast - INFO - Create forecast service
+2025-04-16 15:33:40,454 - forecast - INFO - Build query for items
+2025-04-16 15:33:40,455 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 15:33:40,462 - forecast - INFO - Found 24 items to forecast
+2025-04-16 15:33:40,466 - forecast - WARNING - No history data for item I0010003
+2025-04-16 15:33:40,466 - forecast - WARNING - No history data for item I0010004
+2025-04-16 15:33:40,467 - forecast - WARNING - No history data for item I0010005
+2025-04-16 15:33:40,468 - forecast - WARNING - No history data for item I0010006
+2025-04-16 15:33:40,468 - forecast - WARNING - No history data for item I0010007
+2025-04-16 15:33:40,469 - forecast - WARNING - No history data for item I0010008
+2025-04-16 15:33:40,469 - forecast - WARNING - No history data for item I0020001
+2025-04-16 15:33:40,470 - forecast - WARNING - No history data for item I0020002
+2025-04-16 15:33:40,471 - forecast - WARNING - No history data for item I0020003
+2025-04-16 15:33:40,472 - forecast - WARNING - No history data for item I0020004
+2025-04-16 15:33:40,473 - forecast - WARNING - No history data for item I0030001
+2025-04-16 15:33:40,473 - forecast - WARNING - No history data for item I0030002
+2025-04-16 15:33:40,474 - forecast - WARNING - No history data for item I0030003
+2025-04-16 15:33:40,475 - forecast - WARNING - No history data for item I0030004
+2025-04-16 15:33:40,476 - forecast - WARNING - No history data for item I0030005
+2025-04-16 15:33:40,476 - forecast - WARNING - No history data for item I0030006
+2025-04-16 15:33:40,477 - forecast - WARNING - No history data for item I0040001
+2025-04-16 15:33:40,477 - forecast - WARNING - No history data for item I0040002
+2025-04-16 15:33:40,478 - forecast - WARNING - No history data for item I0040003
+2025-04-16 15:33:40,479 - forecast - WARNING - No history data for item I0040004
+2025-04-16 15:33:40,479 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:33:40,480 - forecast - WARNING - No history data for item I0010001
+2025-04-16 15:33:40,480 - forecast - WARNING - No history data for item I0010002
+2025-04-16 15:33:40,494 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 15:33:40,494 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 15:33:40,494 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors

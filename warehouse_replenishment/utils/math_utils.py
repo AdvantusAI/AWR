@@ -2,7 +2,16 @@
 import math
 from typing import List, Union, Optional
 import numpy as np
-from ..exceptions import CalculationError
+import sys
+import os
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from warehouse_replenishment.exceptions import CalculationError
 
 def round_to_multiple(value: float, multiple: float) -> float:
     """Round a value to the nearest multiple.

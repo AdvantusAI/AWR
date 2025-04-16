@@ -567,3 +567,39 @@ def calculate_expected_zero_periods(
     
     # Expected number of periods with zero demand in a year (12 periods)
     return prob_zero * 12
+
+def reforecast(
+    current_forecast: float,
+    latest_demand: float,
+    track: float,
+    madp: float,
+    alpha_factor: float = 10.0
+) -> float:
+    """Recalculate forecast based on latest demand and tracking signal.
+    
+    Args:
+        current_forecast: Current forecast value
+        latest_demand: Latest demand value
+        track: Tracking signal as percentage
+        madp: Mean Absolute Deviation Percentage
+        alpha_factor: Alpha factor for weighting
+        
+    Returns:
+        New forecast value
+    """
+    # Convert track to decimal
+    track_decimal = track / 100.0
+    
+    # Apply alpha factor adjustment
+    alpha = track_decimal
+    
+    if alpha_factor != 0:
+        alpha = alpha * (alpha_factor / 10.0)
+    
+    # Limit alpha between 0 and 1
+    alpha = max(0.0, min(1.0, alpha))
+    
+    # Calculate new forecast
+    new_forecast = (alpha * latest_demand) + ((1.0 - alpha) * current_forecast)
+    
+    return max(0.0, new_forecast)

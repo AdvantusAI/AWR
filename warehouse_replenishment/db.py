@@ -2,9 +2,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from contextlib import contextmanager
+import sys
+from pathlib import Path
 
-# Fix the import path
-from config import config
+# Add parent directory to path for imports
+parent_dir = str(Path(__file__).parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from warehouse_replenishment.config import config
 
 Base = declarative_base()
 

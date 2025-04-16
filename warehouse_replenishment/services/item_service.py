@@ -1,24 +1,35 @@
-# warehouse_replenishment/warehouse_replenishment/services/item_service.py
+# warehouse_replenishment/services/item_service.py
 from datetime import date, datetime, timedelta
 from typing import List, Dict, Tuple, Optional, Union, Any
 import logging
+import sys
+import os
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 from sqlalchemy import and_, func, or_
 from sqlalchemy.orm import Session
 
-from ..models import (
+from warehouse_replenishment.models import (
     Item, DemandHistory, Company, Vendor, SeasonalProfile, 
-    SeasonalProfileIndex, HistoryException
+    SeasonalProfileIndex, HistoryException, Warehouse, Item, 
 )
-from ..core.demand_forecast import (
+from warehouse_replenishment.core.demand_forecast import (
     calculate_lost_sales, adjust_history_value
 )
-from ..core.safety_stock import (
+from warehouse_replenishment.core.safety_stock import (
     calculate_safety_stock, calculate_safety_stock_units
 )
-from ..exceptions import ItemError
+from warehouse_replenishment.exceptions import ItemError
 
+from warehouse_replenishment.logging_setup import logger
 logger = logging.getLogger(__name__)
+
+
 
 class ItemService:
     """Service for handling item operations."""
@@ -493,6 +504,36 @@ class ItemService:
             self.session.rollback()
             raise ItemError(f"Failed to update stock status: {str(e)}")
     
+    def get_current_balance(self, item_id: int) -> float:
+        """Get current available balance for an item.
+        
+        Args:
+            item_id: Item ID
+            
+        Returns:
+            Current available balance
+        """
+        item = self.get_item(item_id)
+        if not item:
+            raise ItemError(f"Item with ID {item_id} not found")
+        
+        # Calculate available balance
+        balance = item.on_hand + item.on_order
+        
+        # Subtract customer back order
+        if item.customer_back_order:
+            balance -= item.customer_back_order
+        
+        # Subtract reserved quantity
+        if item.reserved:
+            balance -= item.reserved
+        
+        # Subtract held quantity if still within hold date
+        if item.quantity_held and item.held_until and item.held_until >= date.today():
+            balance -= item.quantity_held
+        
+        return balance
+    
     def update_item_stock_status(
         self,
         warehouse_id: Optional[int] = None,
@@ -604,7 +645,7 @@ class ItemService:
         
         # Get current period
         periodicity = self.company_settings['history_periodicity_default']
-        current_period, current_year = self._get_current_period(periodicity)
+        current_period, current_year = get_current_period(periodicity)
         
         # Process each item
         for item in items:
@@ -689,48 +730,6 @@ class ItemService:
         
         return results
     
-    def _get_current_period(self, periodicity: int) -> Tuple[int, int]:
-        """Get the current period number and year.
-        
-        Args:
-            periodicity: Periodicity (12=monthly, 13=4-weekly, 52=weekly)
-            
-        Returns:
-            Tuple with period number and year
-        """
-        today = date.today()
-        year = today.year
-        
-        if periodicity == 12:  # Monthly
-            return (today.month, year)
-        
-        elif periodicity == 13:  # 4-weekly
-            # Calculate which 4-week period we're in
-            # Each period is 28 days (4 weeks)
-            day_of_year = today.timetuple().tm_yday
-            period = ((day_of_year - 1) // 28) + 1
-            
-            # Handle period rollover to next year
-            if period > 13:
-                period = 1
-                year += 1
-                
-            return (period, year)
-        
-        elif periodicity == 52:  # Weekly
-            # ISO week number
-            week = today.isocalendar()[1]
-            
-            # Handle year edge cases
-            if week > 52:
-                week = 1
-                year += 1
-            
-            return (week, year)
-        
-        else:
-            raise ValueError(f"Invalid periodicity: {periodicity}")
-    
     def initialize_forecast(
         self,
         item_id: int,
@@ -749,7 +748,7 @@ class ItemService:
         if not item:
             raise ItemError(f"Item with ID {item_id} not found")
         
-        if item.buyer_class != 'U':
+        if item.buyer_class != BuyerClassCode.UNINITIALIZED:
             logger.warning(f"Item {item_id} is not uninitialized (buyer class: {item.buyer_class})")
         
         # Update forecast values
@@ -765,13 +764,13 @@ class ItemService:
         
         # Update system class
         if item.demand_yearly <= self.company_settings['slow_mover_limit']:
-            item.system_class = 'S'  # Slow
+            item.system_class = SystemClassCode.SLOW
         else:
-            item.system_class = 'N'  # New
+            item.system_class = SystemClassCode.NEW
         
         # Update buyer class if it's uninitialized
-        if item.buyer_class == 'U':
-            item.buyer_class = 'R'  # Regular
+        if item.buyer_class == BuyerClassCode.UNINITIALIZED:
+            item.buyer_class = BuyerClassCode.REGULAR
         
         # Set forecast date
         item.forecast_date = datetime.now()
@@ -800,7 +799,7 @@ class ItemService:
         Returns:
             List of uninitialized item objects
         """
-        query = self.session.query(Item).filter(Item.buyer_class == 'U')
+        query = self.session.query(Item).filter(Item.buyer_class == BuyerClassCode.UNINITIALIZED)
         
         if warehouse_id is not None:
             query = query.filter(Item.warehouse_id == warehouse_id)
@@ -826,7 +825,7 @@ class ItemService:
         """
         query = self.session.query(Item).filter(
             Item.on_hand <= 0,
-            Item.buyer_class.in_(['R', 'W'])
+            Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH])
         )
         
         if warehouse_id is not None:
@@ -837,4 +836,305 @@ class ItemService:
             
         return query.all()
     
-    transfer_item_between_vendors
+    def transfer_item_between_vendors(
+        self,
+        item_id: int,
+        new_vendor_id: int,
+        transfer_history: bool = True,
+        transfer_stock_status: bool = True
+    ) -> bool:
+        """Transfer an item from one vendor to another.
+        
+        Args:
+            item_id: Item ID
+            new_vendor_id: New vendor ID
+            transfer_history: Whether to transfer demand history
+            transfer_stock_status: Whether to transfer stock status
+            
+        Returns:
+            True if item was transferred successfully
+        """
+        item = self.get_item(item_id)
+        if not item:
+            raise ItemError(f"Item with ID {item_id} not found")
+        
+        # Get new vendor
+        new_vendor = self.session.query(Vendor).get(new_vendor_id)
+        if not new_vendor:
+            raise ItemError(f"Vendor with ID {new_vendor_id} not found")
+        
+        # Check if item already exists for new vendor
+        existing_item = self.session.query(Item).filter(
+            Item.item_id == item.item_id,
+            Item.vendor_id == new_vendor_id,
+            Item.warehouse_id == item.warehouse_id
+        ).first()
+        
+        if existing_item:
+            raise ItemError(f"Item with ID {item.item_id} already exists for vendor {new_vendor_id} in warehouse {item.warehouse_id}")
+        
+        # Store old vendor ID
+        old_vendor_id = item.vendor_id
+        
+        # Get history data to transfer
+        history_data = []
+        if transfer_history:
+            history_records = self.session.query(DemandHistory).filter(
+                DemandHistory.item_id == item_id
+            ).all()
+            
+            for record in history_records:
+                history_data.append({
+                    'period_number': record.period_number,
+                    'period_year': record.period_year,
+                    'shipped': record.shipped,
+                    'lost_sales': record.lost_sales,
+                    'promotional_demand': record.promotional_demand,
+                    'total_demand': record.total_demand,
+                    'is_ignored': record.is_ignored,
+                    'is_adjusted': record.is_adjusted,
+                    'out_of_stock_days': record.out_of_stock_days
+                })
+        
+        # Store stock status
+        stock_status = None
+        if transfer_stock_status:
+            stock_status = {
+                'on_hand': item.on_hand,
+                'on_order': item.on_order,
+                'customer_back_order': item.customer_back_order,
+                'reserved': item.reserved,
+                'held_until': item.held_until,
+                'quantity_held': item.quantity_held
+            }
+        
+        # Update vendor ID
+        item.vendor_id = new_vendor_id
+        
+        # Apply new vendor settings if needed
+        # For this example, we'll keep the existing item settings
+        
+        try:
+            self.session.commit()
+            
+            # Update vendor active items count for both vendors
+            old_vendor = self.session.query(Vendor).get(old_vendor_id)
+            if old_vendor:
+                old_vendor.active_items_count = self.session.query(func.count(Item.id)).filter(
+                    Item.vendor_id == old_vendor_id,
+                    Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH])
+                ).scalar() or 0
+                
+            new_vendor.active_items_count = self.session.query(func.count(Item.id)).filter(
+                Item.vendor_id == new_vendor_id,
+                Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH])
+            ).scalar() or 0
+            
+            self.session.commit()
+            
+            return True
+        except Exception as e:
+            self.session.rollback()
+            raise ItemError(f"Failed to transfer item between vendors: {str(e)}")
+    
+    def apply_supersession(
+        self,
+        from_item_id: int,
+        to_item_id: int,
+        copy_history: bool = True,
+        copy_demand_profile: bool = True
+    ) -> bool:
+        """Apply supersession from one item to another.
+        
+        Args:
+            from_item_id: Source item ID
+            to_item_id: Target item ID
+            copy_history: Whether to copy demand history
+            copy_demand_profile: Whether to copy demand profile
+            
+        Returns:
+            True if supersession was applied successfully
+        """
+        from_item = self.get_item(from_item_id)
+        if not from_item:
+            raise ItemError(f"Source item with ID {from_item_id} not found")
+        
+        to_item = self.get_item(to_item_id)
+        if not to_item:
+            raise ItemError(f"Target item with ID {to_item_id} not found")
+        
+        # Set supersession relationships
+        from_item.supersede_to_item_id = to_item.item_id
+        to_item.supersede_from_item_id = from_item.item_id
+        
+        # Copy demand profile if needed
+        if copy_demand_profile and from_item.demand_profile and not to_item.demand_profile:
+            to_item.demand_profile = from_item.demand_profile
+        
+        # Copy history if needed
+        if copy_history:
+            # Get history records for source item
+            history_records = self.session.query(DemandHistory).filter(
+                DemandHistory.item_id == from_item_id
+            ).all()
+            
+            # Copy history to target item
+            for record in history_records:
+                # Check if history already exists for target item
+                existing_record = self.session.query(DemandHistory).filter(
+                    DemandHistory.item_id == to_item_id,
+                    DemandHistory.period_number == record.period_number,
+                    DemandHistory.period_year == record.period_year
+                ).first()
+                
+                if existing_record:
+                    # Update existing record
+                    existing_record.shipped += record.shipped
+                    existing_record.lost_sales += record.lost_sales
+                    existing_record.promotional_demand += record.promotional_demand
+                    existing_record.total_demand = (
+                        existing_record.shipped + 
+                        existing_record.lost_sales - 
+                        existing_record.promotional_demand
+                    )
+                    existing_record.is_adjusted = True
+                else:
+                    # Create new record
+                    new_record = DemandHistory(
+                        item_id=to_item_id,
+                        period_number=record.period_number,
+                        period_year=record.period_year,
+                        shipped=record.shipped,
+                        lost_sales=record.lost_sales,
+                        promotional_demand=record.promotional_demand,
+                        total_demand=record.total_demand,
+                        is_ignored=record.is_ignored,
+                        is_adjusted=record.is_adjusted,
+                        out_of_stock_days=record.out_of_stock_days
+                    )
+                    self.session.add(new_record)
+        
+        # Set auxiliary balance on target item
+        to_item.auxiliary_balance = from_item.on_hand
+        
+        # Change source item's buyer class if it's not already discontinued
+        if from_item.buyer_class != BuyerClassCode.DISCONTINUED:
+            from_item.buyer_class = BuyerClassCode.MANUAL
+        
+        try:
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            raise ItemError(f"Failed to apply supersession: {str(e)}")
+    
+    def remove_supersession(
+        self,
+        item_id: int,
+        remove_history: bool = False
+    ) -> bool:
+        """Remove supersession for an item.
+        
+        Args:
+            item_id: Item ID
+            remove_history: Whether to remove copied history
+            
+        Returns:
+            True if supersession was removed successfully
+        """
+        item = self.get_item(item_id)
+        if not item:
+            raise ItemError(f"Item with ID {item_id} not found")
+        
+        # Find supersession relationships
+        super_to = None
+        super_from = None
+        
+        if item.supersede_to_item_id:
+            super_to = self.session.query(Item).filter(
+                Item.item_id == item.supersede_to_item_id,
+                Item.warehouse_id == item.warehouse_id
+            ).first()
+        
+        if item.supersede_from_item_id:
+            super_from = self.session.query(Item).filter(
+                Item.item_id == item.supersede_from_item_id,
+                Item.warehouse_id == item.warehouse_id
+            ).first()
+        
+        # Clear supersession references
+        item.supersede_to_item_id = None
+        item.supersede_from_item_id = None
+        
+        # Update related items
+        if super_to:
+            super_to.supersede_from_item_id = None
+            super_to.auxiliary_balance = 0.0
+        
+        if super_from:
+            super_from.supersede_to_item_id = None
+        
+        # Remove copied history if requested
+        if remove_history and super_from:
+            # This would require identifying which history records were copied
+            # For simplicity, we'll just note that this could be implemented
+            pass
+        
+        try:
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            raise ItemError(f"Failed to remove supersession: {str(e)}")
+    
+    def get_item_demand_history(
+        self,
+        item_id: int,
+        periods: int = None,
+        include_ignored: bool = False
+    ) -> List[Dict]:
+        """Get demand history for an item.
+        
+        Args:
+            item_id: Item ID
+            periods: Number of periods to retrieve (most recent)
+            include_ignored: Whether to include ignored periods
+            
+        Returns:
+            List of demand history dictionaries
+        """
+        query = self.session.query(DemandHistory).filter(
+            DemandHistory.item_id == item_id
+        )
+        
+        if not include_ignored:
+            query = query.filter(DemandHistory.is_ignored == False)
+        
+        # Order by period year and number in descending order
+        query = query.order_by(
+            DemandHistory.period_year.desc(),
+            DemandHistory.period_number.desc()
+        )
+        
+        if periods:
+            query = query.limit(periods)
+        
+        results = query.all()
+        
+        # Convert to dictionaries
+        history = [
+            {
+                'period_number': record.period_number,
+                'period_year': record.period_year,
+                'shipped': record.shipped,
+                'lost_sales': record.lost_sales,
+                'promotional_demand': record.promotional_demand,
+                'total_demand': record.total_demand,
+                'is_ignored': record.is_ignored,
+                'is_adjusted': record.is_adjusted,
+                'out_of_stock_days': record.out_of_stock_days
+            }
+            for record in results
+        ]
+        
+        return history

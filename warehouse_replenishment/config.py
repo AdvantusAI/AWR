@@ -22,7 +22,7 @@ class Config:
             
         self._config_dir = Path('config')
         self._config_path = self._config_dir / 'settings.ini'
-        self._config = configparser.ConfigParser()
+        self._config = configparser.ConfigParser(interpolation=None)
         
         # Create config directory if it doesn't exist
         if not self._config_dir.exists():

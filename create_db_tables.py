@@ -59,12 +59,15 @@ def main():
     args = parser.parse_args()
     
     # Set up logging
+    log_dir = Path(parent_dir) / 'logs'
+    log_dir.mkdir(exist_ok=True)  # Create logs directory if it doesn't exist
+    
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
         level=log_level,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(Path(parent_dir) / 'logs' / 'create_tables.log'),
+            logging.FileHandler(log_dir / 'create_tables.log'),
             logging.StreamHandler()
         ]
     )

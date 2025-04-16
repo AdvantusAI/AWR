@@ -6,7 +6,7 @@ import time
 import traceback
 from datetime import datetime
 
-from config import config
+from warehouse_replenishment.config import config
 
 class Logger:
     """Logging manager for the Warehouse Replenishment System."""

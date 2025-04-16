@@ -2,3 +2,7 @@
 2025-04-15 01:20:01,586 - app - INFO - Using database: None at None:None
 2025-04-15 01:20:01,586 - app - INFO - Database name: None
 2025-04-15 01:20:01,586 - app - INFO - Warehouse Replenishment System ready
+2025-04-15 16:50:36,469 - app - INFO - Warehouse Replenishment System initialized
+2025-04-15 16:50:36,470 - app - INFO - Using database: None at None:None
+2025-04-15 16:50:36,470 - app - INFO - Database name: None
+2025-04-15 16:50:36,470 - app - INFO - Warehouse Replenishment System ready
