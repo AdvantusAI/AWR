@@ -19,7 +19,7 @@ def calculate_safety_stock(
     madp: float,
     lead_time: float,
     lead_time_variance: float,
-    order_cycle: float
+    order_cycle: Optional[float] = None
 ) -> float:
     """Calculate safety stock days based on service level goal and variability.
     
@@ -28,7 +28,7 @@ def calculate_safety_stock(
         madp: Mean Absolute Deviation Percentage
         lead_time: Lead time in days
         lead_time_variance: Lead time variance as percentage
-        order_cycle: Order cycle in days
+        order_cycle: Order cycle in days (optional)
         
     Returns:
         Safety stock in days
@@ -66,12 +66,12 @@ def calculate_safety_stock(
         
         # Impact of order cycle on safety stock (inverse relationship)
         # As order cycle increases, the relative impact of safety stock decreases
-        if order_cycle > 0:
+        if order_cycle is not None and order_cycle > 0:
             cycle_factor = 1.0 - (0.1 * math.log10(order_cycle))
             cycle_factor = max(0.5, min(1.0, cycle_factor))  # Limit factor between 0.5 and 1.0
             safety_stock_days *= cycle_factor
         
-        return max(0.1, safety_stock_days)  # Ensure minimum safety stock
+        return float(max(0.1, safety_stock_days))  # Ensure minimum safety stock and convert to Python float
         
     except Exception as e:
         raise SafetyStockError(f"Error calculating safety stock: {str(e)}")

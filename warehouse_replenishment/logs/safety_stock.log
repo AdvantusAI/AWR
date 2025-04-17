@@ -1369,3 +1369,15 @@ LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
 [SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
 [parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
 (Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:33:08,650 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:33:08,651 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:33:08,798 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:33:08,799 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:33:08,800 - safety_stock - INFO -   Updated items: 1
+2025-04-16 20:33:08,800 - safety_stock - INFO -   Errors: 23
+2025-04-16 20:57:23,650 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:57:23,650 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:57:23,791 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:57:23,791 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:57:23,791 - safety_stock - INFO -   Updated items: 1
+2025-04-16 20:57:23,791 - safety_stock - INFO -   Errors: 23

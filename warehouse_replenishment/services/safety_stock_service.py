@@ -173,7 +173,7 @@ class SafetyStockService:
         
         # Update SSTF if requested
         if update_sstf:
-            item.sstf = ss_result['safety_stock_days']
+            item.sstf = float(ss_result['safety_stock_days'])
         
         # Update order points and levels if requested
         if update_order_points:
@@ -182,18 +182,18 @@ class SafetyStockService:
                 raise ItemError(f"Vendor with ID {item.vendor_id} not found")
             
             # Update item order point days and units
-            item.item_order_point_days = ss_result['safety_stock_days'] + item.lead_time_forecast
-            item.item_order_point_units = item.item_order_point_days * ss_result['daily_demand']
+            item.item_order_point_days = float(ss_result['safety_stock_days'] + item.lead_time_forecast)
+            item.item_order_point_units = float(item.item_order_point_days * ss_result['daily_demand'])
             
             # Update vendor order point days
-            item.vendor_order_point_days = item.item_order_point_days + vendor.order_cycle
+            item.vendor_order_point_days = float(item.item_order_point_days + (vendor.order_cycle or 0))
             
             # Get effective order cycle
             effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
             
             # Update order up to level
-            item.order_up_to_level_days = item.item_order_point_days + effective_order_cycle
-            item.order_up_to_level_units = item.order_up_to_level_days * ss_result['daily_demand']
+            item.order_up_to_level_days = float(item.item_order_point_days + effective_order_cycle)
+            item.order_up_to_level_units = float(item.order_up_to_level_days * ss_result['daily_demand'])
         
         try:
             self.session.commit()
