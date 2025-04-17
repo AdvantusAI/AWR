@@ -144,6 +144,43 @@ def update_lead_time_forecasts(warehouse_id: Optional[int] = None) -> Dict:
         results = lead_time_service.update_lead_time_forecasts(warehouse_id=warehouse_id)
     
     return results
+def update_stock_status(warehouse_id: Optional[int] = None) -> Dict:
+    """Update stock status for all items in the specified warehouse.
+    
+    Args:
+        warehouse_id: Optional warehouse ID (if not provided, updates all warehouses)
+        
+    Returns:
+        Dictionary with update results
+    """
+    logger.info(f"Updating stock status for warehouse_id={warehouse_id}")
+    
+    with session_scope() as session:
+        item_service = ItemService(session)
+        results = item_service.update_item_stock_status(warehouse_id=warehouse_id)
+    
+    return results
+
+def update_safety_stock(warehouse_id: Optional[int] = None) -> Dict:
+    """Update safety stock for all items in the specified warehouse.
+    
+    Args:
+        warehouse_id: Optional warehouse ID (if not provided, updates all warehouses)
+        
+    Returns:
+        Dictionary with update results
+    """
+    logger.info(f"Updating safety stock for warehouse_id={warehouse_id}")
+    
+    with session_scope() as session:
+        from ..services.safety_stock_service import SafetyStockService
+        safety_stock_service = SafetyStockService(session)
+        results = safety_stock_service.update_safety_stock_for_all_items(
+            warehouse_id=warehouse_id,
+            update_order_points=True
+        )
+    
+    return results
 
 def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
     """Run the nightly job.
@@ -174,22 +211,25 @@ def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
         # Step 2: Calculate lost sales
         results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
         
-        # Step 3: Process time-based parameters
+        # Step 3: Update safety stock levels
+        results['processes']['update_safety_stock'] = update_safety_stock(warehouse_id)
+        
+        # Step 4: Process time-based parameters
         results['processes']['time_based_parameters'] = process_time_based_parameters()
         
-        # Step 4: Expire deals
+        # Step 5: Expire deals
         results['processes']['expire_deals'] = expire_deals()
         
-        # Step 5: Update lead time forecasts (weekly)
+        # Step 6: Update lead time forecasts (weekly)
         # Check if today is the lead time update day (typically once a week)
         today = date.today()
         if today.weekday() == 0:  # Monday
             results['processes']['lead_time_forecasts'] = update_lead_time_forecasts(warehouse_id)
         
-        # Step 6: Generate orders
+        # Step 7: Generate orders
         results['processes']['generate_orders'] = generate_orders(warehouse_id)
         
-        # Step 7: Purge accepted orders
+        # Step 8: Purge accepted orders
         results['processes']['purge_accepted_orders'] = purge_accepted_orders()
         
         # Set end time and duration

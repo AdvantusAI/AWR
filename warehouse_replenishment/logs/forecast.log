@@ -1050,3 +1050,34 @@ WHERE item_forecast.item_id = %(item_id_1)s AND item_forecast.period_number = %(
 2025-04-16 15:33:40,494 - forecast - INFO - Updated forecasts for 1 items
 2025-04-16 15:33:40,494 - forecast - INFO - Created forecast history records for 1 items
 2025-04-16 15:33:40,494 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors
+2025-04-16 17:26:36,191 - forecast - INFO - Starting forecast generation with parameters: Namespace(setup_db=False, drop_db=False, command='forecast', item_id=None, vendor_id=None, warehouse_id=None, buyer_id=None, periods=52, update=True, include_inactive=False, ignore_seasonality=False, verbose=False)
+2025-04-16 17:26:36,435 - forecast - INFO - Create forecast service
+2025-04-16 17:26:36,435 - forecast - INFO - Build query for items
+2025-04-16 17:26:36,436 - forecast - INFO - Only include active items (Regular or Watch)
+2025-04-16 17:26:36,449 - forecast - INFO - Found 24 items to forecast
+2025-04-16 17:26:36,455 - forecast - WARNING - No history data for item I0010003
+2025-04-16 17:26:36,457 - forecast - WARNING - No history data for item I0010004
+2025-04-16 17:26:36,458 - forecast - WARNING - No history data for item I0010005
+2025-04-16 17:26:36,459 - forecast - WARNING - No history data for item I0010006
+2025-04-16 17:26:36,460 - forecast - WARNING - No history data for item I0010007
+2025-04-16 17:26:36,461 - forecast - WARNING - No history data for item I0010008
+2025-04-16 17:26:36,462 - forecast - WARNING - No history data for item I0020001
+2025-04-16 17:26:36,462 - forecast - WARNING - No history data for item I0020002
+2025-04-16 17:26:36,463 - forecast - WARNING - No history data for item I0020003
+2025-04-16 17:26:36,464 - forecast - WARNING - No history data for item I0020004
+2025-04-16 17:26:36,466 - forecast - WARNING - No history data for item I0030001
+2025-04-16 17:26:36,467 - forecast - WARNING - No history data for item I0030002
+2025-04-16 17:26:36,468 - forecast - WARNING - No history data for item I0030003
+2025-04-16 17:26:36,469 - forecast - WARNING - No history data for item I0030004
+2025-04-16 17:26:36,470 - forecast - WARNING - No history data for item I0030005
+2025-04-16 17:26:36,470 - forecast - WARNING - No history data for item I0030006
+2025-04-16 17:26:36,471 - forecast - WARNING - No history data for item I0040001
+2025-04-16 17:26:36,472 - forecast - WARNING - No history data for item I0040002
+2025-04-16 17:26:36,473 - forecast - WARNING - No history data for item I0040003
+2025-04-16 17:26:36,474 - forecast - WARNING - No history data for item I0040004
+2025-04-16 17:26:36,475 - forecast - WARNING - No history data for item I0010002
+2025-04-16 17:26:36,477 - forecast - WARNING - No history data for item I0010001
+2025-04-16 17:26:36,478 - forecast - WARNING - No history data for item I0010002
+2025-04-16 17:26:36,530 - forecast - INFO - Updated forecasts for 1 items
+2025-04-16 17:26:36,530 - forecast - INFO - Created forecast history records for 1 items
+2025-04-16 17:26:36,531 - forecast - INFO - Forecast generation completed: 1 processed, 0 errors

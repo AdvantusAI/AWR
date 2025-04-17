@@ -1,0 +1,1371 @@
+2025-04-16 18:46:02,968 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 18:46:02,969 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 18:46:03,114 - safety_stock - ERROR - Error calculating safety stock: (psycopg2.errors.InvalidTextRepresentation) la sintaxis de entrada no es válida para el enum buyerclasscode: «R»
+LINE 3: ...em.warehouse_id = 'WH001' AND item.buyer_class IN ('R', 'W')
+                                                              ^
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.service_level_attained AS item_service_level_attained, item.suggested_service_level AS item_suggested_service_level, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.calculated_in_days AS item_calculated_in_days, item.calculated_variance AS item_calculated_variance, item.lead_time_profile AS item_lead_time_profile, item.fill_in_lead_time AS item_fill_in_lead_time, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit, item.units_per_layer AS item_units_per_layer, item.units_per_pallet AS item_units_per_pallet, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.convenience_pack AS item_convenience_pack, item.conv_pk_breakpoint AS item_conv_pk_breakpoint, item.number_of_conv_packs AS item_number_of_conv_packs, item.shelf_life_days AS item_shelf_life_days, item.out_of_stock_point AS item_out_of_stock_point, item.buyer_class AS item_buyer_class, item.system_class AS item_system_class, item.forecast_method AS item_forecast_method, item.forecasting_periodicity AS item_forecasting_periodicity, item.history_periodicity AS item_history_periodicity, item.item_group_codes AS item_item_group_codes, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.forecast_date AS item_forecast_date, item.madp AS item_madp, item.track AS item_track, item.sstf AS item_sstf, item.freeze_until_date AS item_freeze_until_date, item.demand_profile AS item_demand_profile, item.buyer_max AS item_buyer_max, item.buyer_min AS item_buyer_min, item.type_for_min_max AS item_type_for_min_max, item.manual_ss AS item_manual_ss, item.ss_type AS item_ss_type, item.purchase_price AS item_purchase_price, item.purchase_price_divisor AS item_purchase_price_divisor, item.sales_price AS item_sales_price, item.carrying_cost_adjustments AS item_carrying_cost_adjustments, item.handling_cost_adjustments AS item_handling_cost_adjustments, item.supersede_to_item_id AS item_supersede_to_item_id, item.supersede_from_item_id AS item_supersede_from_item_id, item.item_order_point_units AS item_item_order_point_units, item.item_order_point_days AS item_item_order_point_days, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.order_up_to_level_days AS item_order_up_to_level_days, item.item_cycle_units AS item_item_cycle_units, item.item_cycle_days AS item_item_cycle_days 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s)]
+[parameters: {'warehouse_id_1': 'WH001', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2025-04-16 18:46:03,115 - safety_stock - ERROR - (psycopg2.errors.InvalidTextRepresentation) la sintaxis de entrada no es válida para el enum buyerclasscode: «R»
+LINE 3: ...em.warehouse_id = 'WH001' AND item.buyer_class IN ('R', 'W')
+                                                              ^
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.service_level_attained AS item_service_level_attained, item.suggested_service_level AS item_suggested_service_level, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.calculated_in_days AS item_calculated_in_days, item.calculated_variance AS item_calculated_variance, item.lead_time_profile AS item_lead_time_profile, item.fill_in_lead_time AS item_fill_in_lead_time, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit, item.units_per_layer AS item_units_per_layer, item.units_per_pallet AS item_units_per_pallet, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.convenience_pack AS item_convenience_pack, item.conv_pk_breakpoint AS item_conv_pk_breakpoint, item.number_of_conv_packs AS item_number_of_conv_packs, item.shelf_life_days AS item_shelf_life_days, item.out_of_stock_point AS item_out_of_stock_point, item.buyer_class AS item_buyer_class, item.system_class AS item_system_class, item.forecast_method AS item_forecast_method, item.forecasting_periodicity AS item_forecasting_periodicity, item.history_periodicity AS item_history_periodicity, item.item_group_codes AS item_item_group_codes, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.forecast_date AS item_forecast_date, item.madp AS item_madp, item.track AS item_track, item.sstf AS item_sstf, item.freeze_until_date AS item_freeze_until_date, item.demand_profile AS item_demand_profile, item.buyer_max AS item_buyer_max, item.buyer_min AS item_buyer_min, item.type_for_min_max AS item_type_for_min_max, item.manual_ss AS item_manual_ss, item.ss_type AS item_ss_type, item.purchase_price AS item_purchase_price, item.purchase_price_divisor AS item_purchase_price_divisor, item.sales_price AS item_sales_price, item.carrying_cost_adjustments AS item_carrying_cost_adjustments, item.handling_cost_adjustments AS item_handling_cost_adjustments, item.supersede_to_item_id AS item_supersede_to_item_id, item.supersede_from_item_id AS item_supersede_from_item_id, item.item_order_point_units AS item_item_order_point_units, item.item_order_point_days AS item_item_order_point_days, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.order_up_to_level_days AS item_order_up_to_level_days, item.item_cycle_units AS item_item_cycle_units, item.item_cycle_days AS item_item_cycle_days 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s)]
+[parameters: {'warehouse_id_1': 'WH001', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: la sintaxis de entrada no es válida para el enum buyerclasscode: «R»
+LINE 3: ...em.warehouse_id = 'WH001' AND item.buyer_class IN ('R', 'W')
+                                                              ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\safety_stock.py", line 160, in calculate_safety_stock
+    results = ss_service.update_safety_stock_for_all_items(
+        warehouse_id=warehouse_id,
+        vendor_id=vendor_id,
+        update_order_points=update
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 354, in update_safety_stock_for_all_items
+    items = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) la sintaxis de entrada no es válida para el enum buyerclasscode: «R»
+LINE 3: ...em.warehouse_id = 'WH001' AND item.buyer_class IN ('R', 'W')
+                                                              ^
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.service_level_attained AS item_service_level_attained, item.suggested_service_level AS item_suggested_service_level, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.calculated_in_days AS item_calculated_in_days, item.calculated_variance AS item_calculated_variance, item.lead_time_profile AS item_lead_time_profile, item.fill_in_lead_time AS item_fill_in_lead_time, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit, item.units_per_layer AS item_units_per_layer, item.units_per_pallet AS item_units_per_pallet, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.convenience_pack AS item_convenience_pack, item.conv_pk_breakpoint AS item_conv_pk_breakpoint, item.number_of_conv_packs AS item_number_of_conv_packs, item.shelf_life_days AS item_shelf_life_days, item.out_of_stock_point AS item_out_of_stock_point, item.buyer_class AS item_buyer_class, item.system_class AS item_system_class, item.forecast_method AS item_forecast_method, item.forecasting_periodicity AS item_forecasting_periodicity, item.history_periodicity AS item_history_periodicity, item.item_group_codes AS item_item_group_codes, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.forecast_date AS item_forecast_date, item.madp AS item_madp, item.track AS item_track, item.sstf AS item_sstf, item.freeze_until_date AS item_freeze_until_date, item.demand_profile AS item_demand_profile, item.buyer_max AS item_buyer_max, item.buyer_min AS item_buyer_min, item.type_for_min_max AS item_type_for_min_max, item.manual_ss AS item_manual_ss, item.ss_type AS item_ss_type, item.purchase_price AS item_purchase_price, item.purchase_price_divisor AS item_purchase_price_divisor, item.sales_price AS item_sales_price, item.carrying_cost_adjustments AS item_carrying_cost_adjustments, item.handling_cost_adjustments AS item_handling_cost_adjustments, item.supersede_to_item_id AS item_supersede_to_item_id, item.supersede_from_item_id AS item_supersede_from_item_id, item.item_order_point_units AS item_item_order_point_units, item.item_order_point_days AS item_item_order_point_days, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.order_up_to_level_days AS item_order_up_to_level_days, item.item_cycle_units AS item_item_cycle_units, item.item_cycle_days AS item_item_cycle_days 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s)]
+[parameters: {'warehouse_id_1': 'WH001', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2025-04-16 18:58:14,307 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 18:58:14,308 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 18:58:14,499 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 18:58:14,500 - safety_stock - INFO -   Total items: 24
+2025-04-16 18:58:14,500 - safety_stock - INFO -   Updated items: 0
+2025-04-16 18:58:14,500 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:00:41,771 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:00:41,771 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:00:41,903 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:00:41,904 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:00:41,904 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:00:41,904 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:01:08,791 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:01:08,791 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:01:08,929 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:01:08,929 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:01:08,929 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:01:08,929 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:01:23,525 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:01:23,526 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:01:23,674 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:01:23,674 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:01:23,674 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:01:23,674 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:04:41,859 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:04:41,860 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:04:41,991 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:04:41,992 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:04:41,992 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:04:41,992 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:05:13,931 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:05:13,931 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:05:14,057 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:05:14,057 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:05:14,057 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:05:14,057 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:05:51,022 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:05:51,022 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:05:51,144 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:05:51,144 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:05:51,144 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:05:51,144 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:21:21,318 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:21:21,319 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:21:21,467 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:21:21,467 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:21:21,467 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:21:21,468 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:22:04,517 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:22:04,517 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:22:04,634 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:22:04,635 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:22:04,635 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:22:04,635 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:22:19,717 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:22:19,717 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:22:19,840 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:22:19,841 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:22:19,841 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:22:19,841 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:24:34,128 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:24:34,129 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:24:34,259 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:24:34,259 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:24:34,259 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:24:34,259 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:24:59,219 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:24:59,219 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:24:59,363 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:24:59,364 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:24:59,364 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:24:59,364 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:31:43,127 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:31:43,128 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:31:43,262 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:31:43,262 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:31:43,262 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:31:43,262 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:32:22,131 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:32:22,131 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:32:22,261 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:32:22,261 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:32:22,261 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:32:22,261 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:33:02,983 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:33:02,984 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:33:03,112 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:33:03,113 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:33:03,113 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:33:03,113 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:33:36,931 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:33:36,931 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:33:37,052 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:33:37,052 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:33:37,052 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:33:37,052 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:34:17,968 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:34:17,968 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:34:18,109 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:34:18,109 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:34:18,109 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:34:18,110 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:34:37,507 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:34:37,508 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:34:37,660 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:34:37,660 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:34:37,660 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:34:37,667 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:47:27,412 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:47:27,412 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:47:27,553 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:47:27,554 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:47:27,554 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:47:27,554 - safety_stock - INFO -   Errors: 24
+2025-04-16 19:48:13,788 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 19:48:13,788 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 19:48:13,912 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 19:48:13,912 - safety_stock - INFO -   Total items: 24
+2025-04-16 19:48:13,912 - safety_stock - INFO -   Updated items: 0
+2025-04-16 19:48:13,913 - safety_stock - INFO -   Errors: 24
+2025-04-16 20:00:13,087 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:00:13,087 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:00:13,208 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:00:13,208 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:00:13,209 - safety_stock - INFO -   Updated items: 0
+2025-04-16 20:00:13,209 - safety_stock - INFO -   Errors: 24
+2025-04-16 20:02:35,644 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:02:35,644 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:02:35,786 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:02:35,786 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:02:35,787 - safety_stock - INFO -   Updated items: 0
+2025-04-16 20:02:35,787 - safety_stock - INFO -   Errors: 24
+2025-04-16 20:02:51,133 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:02:51,134 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:02:51,266 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:02:51,266 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:02:51,266 - safety_stock - INFO -   Updated items: 0
+2025-04-16 20:02:51,266 - safety_stock - INFO -   Errors: 24
+2025-04-16 20:03:18,215 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:03:18,215 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:03:18,343 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 20:03:18,344 - safety_stock - INFO -   Total items: 24
+2025-04-16 20:03:18,344 - safety_stock - INFO -   Updated items: 0
+2025-04-16 20:03:18,344 - safety_stock - INFO -   Errors: 24
+2025-04-16 20:17:03,569 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:17:03,570 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:17:03,731 - safety_stock - ERROR - Error calculating safety stock: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:17:03,731 - safety_stock - ERROR - This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidSchemaName: no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 373, in update_safety_stock_for_all_items
+    success = self.update_safety_stock_for_item(
+        item.id, update_sstf=True, update_order_points=update_order_points
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 181, in update_safety_stock_for_item
+    vendor = self.session.query(Vendor).get(item.vendor_id)
+  File "<string>", line 2, in get
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        mapper,
+        ^^^^^^^
+    ...<6 lines>...
+        execution_options=self._execution_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3874, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        update,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+        statement, multiparams, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\safety_stock.py", line 160, in calculate_safety_stock
+    results = ss_service.update_safety_stock_for_all_items(
+        warehouse_id=warehouse_id,
+        vendor_id=vendor_id,
+        update_order_points=update
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 381, in update_safety_stock_for_all_items
+    logger.error(f"Error updating safety stock for item {item.id}: {str(e)}")
+                                                         ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:17:21,946 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:17:21,946 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:17:22,091 - safety_stock - ERROR - Error calculating safety stock: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:17:22,092 - safety_stock - ERROR - This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidSchemaName: no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 373, in update_safety_stock_for_all_items
+    success = self.update_safety_stock_for_item(
+        item.id, update_sstf=True, update_order_points=update_order_points
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 181, in update_safety_stock_for_item
+    vendor = self.session.query(Vendor).get(item.vendor_id)
+  File "<string>", line 2, in get
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        mapper,
+        ^^^^^^^
+    ...<6 lines>...
+        execution_options=self._execution_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3874, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        update,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+        statement, multiparams, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\safety_stock.py", line 160, in calculate_safety_stock
+    results = ss_service.update_safety_stock_for_all_items(
+        warehouse_id=warehouse_id,
+        vendor_id=vendor_id,
+        update_order_points=update
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 381, in update_safety_stock_for_all_items
+    logger.error(f"Error updating safety stock for item {item.id}: {str(e)}")
+                                                         ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:18:19,309 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:18:19,310 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:18:19,434 - safety_stock - ERROR - Error calculating safety stock: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:18:19,435 - safety_stock - ERROR - This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidSchemaName: no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 373, in update_safety_stock_for_all_items
+    success = self.update_safety_stock_for_item(
+        item.id, update_sstf=True, update_order_points=update_order_points
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 181, in update_safety_stock_for_item
+    vendor = self.session.query(Vendor).get(item.vendor_id)
+  File "<string>", line 2, in get
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        mapper,
+        ^^^^^^^
+    ...<6 lines>...
+        execution_options=self._execution_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3874, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        update,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+        statement, multiparams, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\safety_stock.py", line 160, in calculate_safety_stock
+    results = ss_service.update_safety_stock_for_all_items(
+        warehouse_id=warehouse_id,
+        vendor_id=vendor_id,
+        update_order_points=update
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 381, in update_safety_stock_for_all_items
+    logger.error(f"Error updating safety stock for item {item.id}: {str(e)}")
+                                                         ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:31:23,144 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 20:31:23,145 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 20:31:23,300 - safety_stock - ERROR - Error calculating safety stock: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-16 20:31:23,300 - safety_stock - ERROR - This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidSchemaName: no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 372, in update_safety_stock_for_all_items
+    success = self.update_safety_stock_for_item(
+        item.id, update_sstf=True, update_order_points=update_order_points
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 180, in update_safety_stock_for_item
+    vendor = self.session.query(Vendor).get(item.vendor_id)
+  File "<string>", line 2, in get
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1126, in get
+    return self._get_impl(ident, loading.load_on_pk_identity)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 1135, in _get_impl
+    return self.session._get_impl(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        mapper,
+        ^^^^^^^
+    ...<6 lines>...
+        execution_options=self._execution_options,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3874, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 85, in save_obj
+    _emit_update_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        update,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 912, in _emit_update_statements
+    c = connection.execute(
+        statement, multiparams, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\safety_stock.py", line 160, in calculate_safety_stock
+    results = ss_service.update_safety_stock_for_all_items(
+        warehouse_id=warehouse_id,
+        vendor_id=vendor_id,
+        update_order_points=update
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\safety_stock_service.py", line 380, in update_safety_stock_for_all_items
+    logger.error(f"Error updating safety stock for item {item.id}: {str(e)}")
+                                                         ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
+                             ^
+
+[SQL: UPDATE item SET sstf=%(sstf)s WHERE item.id = %(item_id_1)s]
+[parameters: {'sstf': np.float64(2.5328221583833477), 'item_id_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)

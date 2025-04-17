@@ -358,8 +358,14 @@ class ItemService:
         item.service_level_goal = service_level_goal
         item.service_level_maintained = True
         
-        # Recalculate safety stock
-        self._recalculate_safety_stock(item)
+        # Use safety stock service if available
+        try:
+            from .safety_stock_service import SafetyStockService
+            ss_service = SafetyStockService(self.session)
+            ss_service.update_safety_stock_for_item(item_id, update_sstf=True, update_order_points=True)
+        except ImportError:
+            # Fall back to internal method if safety stock service is not available
+            self._recalculate_safety_stock(item)
         
         try:
             self.session.commit()
@@ -400,8 +406,14 @@ class ItemService:
         item.lead_time_variance = lead_time_variance
         item.lead_time_maintained = True
         
-        # Recalculate safety stock
-        self._recalculate_safety_stock(item)
+        # Use safety stock service if available
+        try:
+            from .safety_stock_service import SafetyStockService
+            ss_service = SafetyStockService(self.session)
+            ss_service.update_safety_stock_for_item(item_id, update_sstf=True, update_order_points=True)
+        except ImportError:
+            # Fall back to internal method if safety stock service is not available
+            self._recalculate_safety_stock(item)
         
         try:
             self.session.commit()
