@@ -97,7 +97,7 @@ class ItemService:
     
     def get_items(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         buyer_id: Optional[str] = None,
         item_group: Optional[str] = None,
@@ -548,7 +548,7 @@ class ItemService:
     
     def update_item_stock_status(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         item_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -606,7 +606,7 @@ class ItemService:
     
     def calculate_lost_sales(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         item_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -799,7 +799,7 @@ class ItemService:
     
     def get_uninitialized_items(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[instrt] = None,
         vendor_id: Optional[int] = None
     ) -> List[Item]:
         """Get all uninitialized items.
@@ -823,7 +823,7 @@ class ItemService:
     
     def get_out_of_stock_items(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None
     ) -> List[Item]:
         """Get all out of stock items.

@@ -80,7 +80,7 @@ class OrderService:
     
     def get_orders(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         status: Optional[str] = None,
         is_due: Optional[bool] = None,
@@ -1097,7 +1097,7 @@ class OrderService:
     
     def generate_orders(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         include_watch: bool = True,
         include_manual: bool = True

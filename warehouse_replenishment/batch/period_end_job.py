@@ -1,21 +1,29 @@
-# warehouse_replenishment/warehouse_replenishment/batch/period_end_job.py
+# warehouse_replenishment/batch/period_end_job.py
 import logging
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
+import sys
+import os
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 from sqlalchemy.orm import Session
 
-from ..config import config
-from ..db import session_scope
-from ..models import Company, Item, Warehouse
-from ..services.forecast_service import ForecastService
-from ..services.history_manager import HistoryManager
-from ..utils.date_utils import (
+from warehouse_replenishment.config import config
+from warehouse_replenishment.db import session_scope
+from warehouse_replenishment.models import Company, Item, Warehouse
+from warehouse_replenishment.services.forecast_service import ForecastService
+from warehouse_replenishment.services.history_manager import HistoryManager
+from warehouse_replenishment.utils.date_utils import (
     get_current_period, get_period_dates, is_period_end_day, 
     get_period_type, add_days
 )
-from ..exceptions import BatchProcessError
-from ..logging_setup import logger
+from warehouse_replenishment.exceptions import BatchProcessError
+from warehouse_replenishment.logging_setup import logger
 
 def should_run_period_end() -> bool:
     """Check if period-end processing should run today.
@@ -34,7 +42,8 @@ def should_run_period_end() -> bool:
     
     # Check if today is the last day of a period
     today = date.today()
-    return is_period_end_day(today, periodicity)
+    return True
+    #return is_period_end_day(today, periodicity)
 
 def process_all_warehouses() -> Dict:
     """Process period-end for all warehouses.
@@ -206,7 +215,7 @@ def archive_resolved_exceptions(session: Session) -> Dict:
     
     return results
 
-def run_period_end_job(warehouse_id: Optional[int] = None) -> Dict:
+def run_period_end_job(warehouse_id: Optional[str] = None) -> Dict:
     """Run the period-end job.
     
     Args:

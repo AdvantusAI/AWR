@@ -370,3 +370,21 @@ def get_next_month_day(from_date: date, day: int) -> date:
         next_year = from_date.year
         
     return get_day_of_month(next_year, next_month, day)
+
+def get_period_type(periodicity: int) -> str:
+    """Get the period type based on periodicity.
+    
+    Args:
+        periodicity: Periodicity (12=monthly, 13=4-weekly, 52=weekly)
+        
+    Returns:
+        Period type string ('monthly', '4-weekly', 'weekly', or 'unknown')
+    """
+    if periodicity == 12:
+        return 'monthly'
+    elif periodicity == 13:
+        return '4-weekly'
+    elif periodicity == 52:
+        return 'weekly'
+    else:
+        return 'unknown'

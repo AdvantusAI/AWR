@@ -1,0 +1,78 @@
+2025-04-16 22:57:13,915 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 22:57:13,915 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 22:57:13,965 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 22:57:13,965 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 22:57:14,114 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 22:57:14,115 - period_end_runner - INFO - Use --force to run even if not a period-end day
+2025-04-16 22:57:51,092 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 22:57:51,092 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 22:57:51,127 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 22:57:51,128 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 22:57:51,222 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:10:40,659 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:10:40,660 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:10:40,712 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:10:40,713 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:10:40,841 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:12:52,476 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:12:52,476 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:12:52,507 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:12:52,507 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:12:52,598 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:12:58,143 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:12:58,158 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:12:58,188 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:12:58,188 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:12:58,282 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:12:58,282 - period_end_runner - INFO - Use --force to run even if not a period-end day
+2025-04-16 23:13:34,823 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:13:34,823 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:13:34,858 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:13:34,859 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:13:34,947 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:15:25,866 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:15:25,866 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:15:25,900 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:15:25,900 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:15:26,024 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:28:00,745 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:28:00,745 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:28:00,824 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:28:00,824 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:28:00,945 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:28:00,945 - period_end_runner - INFO - Use --force to run even if not a period-end day
+2025-04-16 23:28:10,545 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:28:10,545 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:28:10,580 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:28:10,580 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:28:10,674 - period_end_runner - WARNING - Period-end job not executed: Not a period-end day
+2025-04-16 23:29:35,884 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:29:35,884 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:29:35,923 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:29:35,923 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:29:36,082 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:33:33,037 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:33:33,038 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:33:33,072 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:33:33,072 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:33:33,180 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:36:39,678 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:36:39,679 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:36:39,711 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:36:39,712 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:36:39,825 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:37:13,961 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:37:13,961 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:37:13,993 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:37:13,994 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:37:14,107 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:37:59,264 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:37:59,265 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:37:59,299 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:37:59,299 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:37:59,417 - period_end_runner - WARNING - Period-end job not executed: Unknown error
+2025-04-16 23:38:12,609 - period_end_runner - INFO - Starting period-end job runner
+2025-04-16 23:38:12,610 - period_end_runner - INFO - Initializing database connection...
+2025-04-16 23:38:12,659 - period_end_runner - INFO - Database connection initialized successfully
+2025-04-16 23:38:12,660 - period_end_runner - INFO - Running period-end job for all warehouses
+2025-04-16 23:38:12,771 - period_end_runner - WARNING - Period-end job not executed: Unknown error

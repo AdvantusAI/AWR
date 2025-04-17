@@ -708,7 +708,7 @@ class ForecastService:
     
     def process_period_end_reforecasting(
         self,
-        warehouse_id: int = None,
+        warehouse_id: str = None,
         vendor_id: int = None,
         item_ids: List[int] = None
     ) -> Dict:
@@ -727,7 +727,7 @@ class ForecastService:
         
         # Apply filters
         if warehouse_id:
-            query = query.filter(Item.warehouse_id == warehouse_id)
+            query = query.filter(Item.warehouse_id == str(warehouse_id))
         
         if vendor_id:
             query = query.filter(Item.vendor_id == vendor_id)
@@ -794,6 +794,8 @@ class ForecastService:
         # Apply filters
         if warehouse_id:
             query = query.filter(Item.warehouse_id == warehouse_id)
+        
+        logger.info(f"warehouse_id: {warehouse_id}")
         
         if vendor_id:
             query = query.filter(Item.vendor_id == vendor_id)

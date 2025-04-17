@@ -59,7 +59,7 @@ class ReportingService:
     
     def inventory_status_report(
         self, 
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         buyer_class: Optional[List[str]] = None,
         system_class: Optional[List[str]] = None,
@@ -216,7 +216,7 @@ class ReportingService:
     
     def vendor_performance_report(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         from_date: Optional[date] = None,
         to_date: Optional[date] = None
@@ -357,7 +357,7 @@ class ReportingService:
     
     def forecast_accuracy_report(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         item_id: Optional[int] = None,
         periods: int = 6  # Number of periods to analyze
@@ -523,7 +523,7 @@ class ReportingService:
     
     def service_level_report(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         from_date: Optional[date] = None,
         to_date: Optional[date] = None
@@ -654,7 +654,7 @@ class ReportingService:
     
     def exception_summary_report(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         from_date: Optional[datetime] = None,
         to_date: Optional[datetime] = None,
         exception_types: Optional[List[str]] = None
@@ -806,7 +806,7 @@ class ReportingService:
     
     def order_analysis_report(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         from_date: Optional[date] = None,
         to_date: Optional[date] = None

@@ -93,7 +93,9 @@ class SafetyStockService:
             service_level = self.company_settings['service_level_goal']
         
         # Get effective order cycle
-        effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+        vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+        item_cycle = item.item_cycle_days if item.item_cycle_days is not None else 0
+        effective_order_cycle = max(vendor_cycle, item_cycle)
         
         # Calculate safety stock in days
         safety_stock_days = calculate_safety_stock(
@@ -189,7 +191,9 @@ class SafetyStockService:
             item.vendor_order_point_days = float(item.item_order_point_days + (vendor.order_cycle or 0))
             
             # Get effective order cycle
-            effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+            vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+            item_cycle = item.item_cycle_days if item.item_cycle_days is not None else 0
+            effective_order_cycle = max(vendor_cycle, item_cycle)
             
             # Update order up to level
             item.order_up_to_level_days = float(item.item_order_point_days + effective_order_cycle)
@@ -316,7 +320,9 @@ class SafetyStockService:
             item.vendor_order_point_days = item.item_order_point_days + vendor.order_cycle
             
             # Get effective order cycle
-            effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+            vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+            item_cycle = item.item_cycle_days if item.item_cycle_days is not None else 0
+            effective_order_cycle = max(vendor_cycle, item_cycle)
             
             # Update order up to level
             item.order_up_to_level_days = item.item_order_point_days + effective_order_cycle
@@ -331,7 +337,7 @@ class SafetyStockService:
     
     def update_safety_stock_for_all_items(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         update_order_points: bool = True
     ) -> Dict:

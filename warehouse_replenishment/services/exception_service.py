@@ -76,7 +76,7 @@ class ExceptionService:
     def get_history_exceptions(
         self,
         item_id: Optional[int] = None,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         exception_type: Optional[str] = None,
         is_resolved: Optional[bool] = None,
@@ -355,7 +355,7 @@ class ExceptionService:
     
     def get_management_exceptions(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         exception_type: Optional[str] = None,
         is_enabled: Optional[bool] = None
     ) -> List[ManagementException]:
@@ -539,7 +539,7 @@ class ExceptionService:
     
     def detect_inventory_exceptions(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         item_id: Optional[int] = None
     ) -> Dict:
@@ -685,7 +685,7 @@ class ExceptionService:
     
     def detect_demand_pattern_exceptions(
         self,
-        warehouse_id: Optional[int] = None,
+        warehouse_id: Optional[str] = None,
         vendor_id: Optional[int] = None,
         item_id: Optional[int] = None
     ) -> Dict:

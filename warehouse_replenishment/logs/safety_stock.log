@@ -1381,3 +1381,9 @@ LINE 1: UPDATE item SET sstf=np.float64(2.5328221583833477) WHERE it...
 2025-04-16 20:57:23,791 - safety_stock - INFO -   Total items: 24
 2025-04-16 20:57:23,791 - safety_stock - INFO -   Updated items: 1
 2025-04-16 20:57:23,791 - safety_stock - INFO -   Errors: 23
+2025-04-16 21:14:20,628 - safety_stock - INFO - Starting safety stock calculation...
+2025-04-16 21:14:20,629 - safety_stock - INFO - Parameters: warehouse_id=WH001, vendor_id=None, item_id=None, service_level=None, update=True
+2025-04-16 21:14:20,779 - safety_stock - INFO - Safety stock calculation completed:
+2025-04-16 21:14:20,780 - safety_stock - INFO -   Total items: 24
+2025-04-16 21:14:20,780 - safety_stock - INFO -   Updated items: 1
+2025-04-16 21:14:20,781 - safety_stock - INFO -   Errors: 23
