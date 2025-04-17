@@ -4,18 +4,22 @@ from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
 
 from sqlalchemy.orm import Session
-
-from ..config import config
-from ..db import session_scope
-from ..models import Company, Item, Warehouse
-from ..services.forecast_service import ForecastService
-from ..services.history_manager import HistoryManager
-from ..utils.date_utils import (
+from warehouse_replenishment.logging_setup import get_logger
+from warehouse_replenishment.config import config
+from warehouse_replenishment.db import session_scope
+from warehouse_replenishment.models import Company, Item, Warehouse
+from warehouse_replenishment.services.forecast_service import ForecastService
+from warehouse_replenishment.services.history_manager import HistoryManager
+from warehouse_replenishment.utils.date_utils import (
     get_current_period, get_period_dates, is_period_end_day, 
     get_period_type, add_days
 )
-from ..exceptions import BatchProcessError
-from ..logging_setup import logger
+from warehouse_replenishment.exceptions import BatchProcessError
+from warehouse_replenishment.logging_setup import logger
+
+logger = get_logger('Warehouses')
+
+    
 
 def should_run_period_end() -> bool:
     """Check if period-end processing should run today.
@@ -34,7 +38,8 @@ def should_run_period_end() -> bool:
     
     # Check if today is the last day of a period
     today = date.today()
-    return is_period_end_day(today, periodicity)
+    return True
+    #return is_period_end_day(today, periodicity)
 
 def process_all_warehouses() -> Dict:
     """Process period-end for all warehouses.
@@ -59,11 +64,12 @@ def process_all_warehouses() -> Dict:
         with session_scope() as session:
             # Get all warehouses
             warehouses = session.query(Warehouse).all()
+           
             results['total_warehouses'] = len(warehouses)
             
             # Process each warehouse
             for warehouse in warehouses:
-                warehouse_results = process_warehouse(warehouse.id, session)
+                warehouse_results = process_warehouse(warehouse.warehouse_id, session)
                 
                 if warehouse_results.get('success', False):
                     results['processed_warehouses'] += 1
