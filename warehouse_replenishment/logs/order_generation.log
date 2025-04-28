@@ -1,0 +1,154 @@
+2025-04-20 18:28:13,742 - order_generation - INFO - Starting order generation
+2025-04-20 18:28:13,746 - order_generation - INFO - Initializing database connection...
+2025-04-20 18:28:13,964 - order_generation - INFO - Database connection initialized successfully
+2025-04-20 18:28:13,965 - order_generation - INFO - Generating orders for all vendors
+2025-04-20 18:28:13,965 - order_generation - INFO - Filtering by warehouse ID: 1
+2025-04-20 18:28:14,114 - order_generation - ERROR - Error generating orders: (psycopg2.errors.UndefinedFunction) el operador no existe: character varying = integer
+LINE 3: WHERE vendor.warehouse_id = 1 AND vendor.vendor_type = 'REGU...
+                                  ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[SQL: SELECT vendor.id AS vendor_id_1, vendor.vendor_id AS vendor_vendor_id, vendor.name AS vendor_name, vendor.warehouse_id AS vendor_warehouse_id, vendor.service_level_goal AS vendor_service_level_goal, vendor.order_cycle AS vendor_order_cycle, vendor.sub_vendor_approval AS vendor_sub_vendor_approval, vendor.super_vendor_id AS vendor_super_vendor_id, vendor.super_vendor_warehouse AS vendor_super_vendor_warehouse, vendor.regional_whs_id AS vendor_regional_whs_id, vendor.buyer_id AS vendor_buyer_id, vendor.vendor_type AS vendor_vendor_type, vendor.lead_time_quoted AS vendor_lead_time_quoted, vendor.lead_time_forecast AS vendor_lead_time_forecast, vendor.lead_time_variance AS vendor_lead_time_variance, vendor.active_items_count AS vendor_active_items_count, vendor.purchased_dollars_ytd AS vendor_purchased_dollars_ytd, vendor.enable_history_adjust AS vendor_enable_history_adjust, vendor.current_bracket AS vendor_current_bracket, vendor.automatic_rebuild AS vendor_automatic_rebuild, vendor.auto_approval_bracket AS vendor_auto_approval_bracket, vendor.supv_build_option AS vendor_supv_build_option, vendor.vendor_group_codes AS vendor_vendor_group_codes, vendor.deactivate_until AS vendor_deactivate_until, vendor.order_days_in_week AS vendor_order_days_in_week, vendor.week AS vendor_week, vendor.order_day_in_month AS vendor_order_day_in_month, vendor.next_order_date AS vendor_next_order_date, vendor.history_periodicity AS vendor_history_periodicity, vendor.forecasting_periodicity AS vendor_forecasting_periodicity, vendor.alternate_source_minimum AS vendor_alternate_source_minimum, vendor.alternate_source_contract AS vendor_alternate_source_contract, vendor.vendor_plan_control AS vendor_vendor_plan_control, vendor.order_cycle_as_plan_window AS vendor_order_cycle_as_plan_window, vendor.plan_warning_window AS vendor_plan_warning_window, vendor.exclude_from_auto_transfer AS vendor_exclude_from_auto_transfer, vendor.amount_as_net_cost AS vendor_amount_as_net_cost, vendor.pricing_discount_sequence AS vendor_pricing_discount_sequence, vendor.discount_sequence_option AS vendor_discount_sequence_option, vendor.no_jmp_break_after_deal AS vendor_no_jmp_break_after_deal, vendor.empirical_ss_buffering AS vendor_empirical_ss_buffering, vendor.order_when_minimum_met AS vendor_order_when_minimum_met, vendor.item_cycle_maximum AS vendor_item_cycle_maximum, vendor.forecasting_demand_limit AS vendor_forecasting_demand_limit, vendor.header_cost AS vendor_header_cost, vendor.line_cost AS vendor_line_cost, vendor.last_opa_date AS vendor_last_opa_date, vendor.last_opa_profit AS vendor_last_opa_profit, vendor.last_opa_cycle AS vendor_last_opa_cycle 
+FROM vendor 
+WHERE vendor.warehouse_id = %(warehouse_id_1)s AND vendor.vendor_type = %(vendor_type_1)s AND vendor.active_items_count > %(active_items_count_1)s AND (vendor.deactivate_until IS NULL OR vendor.deactivate_until < %(deactivate_until_1)s)]
+[parameters: {'warehouse_id_1': 1, 'vendor_type_1': 'REGULAR', 'active_items_count_1': 0, 'deactivate_until_1': datetime.date(2025, 4, 20)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: el operador no existe: character varying = integer
+LINE 3: WHERE vendor.warehouse_id = 1 AND vendor.vendor_type = 'REGU...
+                                  ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\generate_orders.py", line 82, in main
+    result = order_service.generate_orders(
+        warehouse_id=args.warehouse_id,
+        include_watch=args.include_watch,
+        include_manual=args.include_manual
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\order_service.py", line 1138, in generate_orders
+    vendors = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedFunction) el operador no existe: character varying = integer
+LINE 3: WHERE vendor.warehouse_id = 1 AND vendor.vendor_type = 'REGU...
+                                  ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[SQL: SELECT vendor.id AS vendor_id_1, vendor.vendor_id AS vendor_vendor_id, vendor.name AS vendor_name, vendor.warehouse_id AS vendor_warehouse_id, vendor.service_level_goal AS vendor_service_level_goal, vendor.order_cycle AS vendor_order_cycle, vendor.sub_vendor_approval AS vendor_sub_vendor_approval, vendor.super_vendor_id AS vendor_super_vendor_id, vendor.super_vendor_warehouse AS vendor_super_vendor_warehouse, vendor.regional_whs_id AS vendor_regional_whs_id, vendor.buyer_id AS vendor_buyer_id, vendor.vendor_type AS vendor_vendor_type, vendor.lead_time_quoted AS vendor_lead_time_quoted, vendor.lead_time_forecast AS vendor_lead_time_forecast, vendor.lead_time_variance AS vendor_lead_time_variance, vendor.active_items_count AS vendor_active_items_count, vendor.purchased_dollars_ytd AS vendor_purchased_dollars_ytd, vendor.enable_history_adjust AS vendor_enable_history_adjust, vendor.current_bracket AS vendor_current_bracket, vendor.automatic_rebuild AS vendor_automatic_rebuild, vendor.auto_approval_bracket AS vendor_auto_approval_bracket, vendor.supv_build_option AS vendor_supv_build_option, vendor.vendor_group_codes AS vendor_vendor_group_codes, vendor.deactivate_until AS vendor_deactivate_until, vendor.order_days_in_week AS vendor_order_days_in_week, vendor.week AS vendor_week, vendor.order_day_in_month AS vendor_order_day_in_month, vendor.next_order_date AS vendor_next_order_date, vendor.history_periodicity AS vendor_history_periodicity, vendor.forecasting_periodicity AS vendor_forecasting_periodicity, vendor.alternate_source_minimum AS vendor_alternate_source_minimum, vendor.alternate_source_contract AS vendor_alternate_source_contract, vendor.vendor_plan_control AS vendor_vendor_plan_control, vendor.order_cycle_as_plan_window AS vendor_order_cycle_as_plan_window, vendor.plan_warning_window AS vendor_plan_warning_window, vendor.exclude_from_auto_transfer AS vendor_exclude_from_auto_transfer, vendor.amount_as_net_cost AS vendor_amount_as_net_cost, vendor.pricing_discount_sequence AS vendor_pricing_discount_sequence, vendor.discount_sequence_option AS vendor_discount_sequence_option, vendor.no_jmp_break_after_deal AS vendor_no_jmp_break_after_deal, vendor.empirical_ss_buffering AS vendor_empirical_ss_buffering, vendor.order_when_minimum_met AS vendor_order_when_minimum_met, vendor.item_cycle_maximum AS vendor_item_cycle_maximum, vendor.forecasting_demand_limit AS vendor_forecasting_demand_limit, vendor.header_cost AS vendor_header_cost, vendor.line_cost AS vendor_line_cost, vendor.last_opa_date AS vendor_last_opa_date, vendor.last_opa_profit AS vendor_last_opa_profit, vendor.last_opa_cycle AS vendor_last_opa_cycle 
+FROM vendor 
+WHERE vendor.warehouse_id = %(warehouse_id_1)s AND vendor.vendor_type = %(vendor_type_1)s AND vendor.active_items_count > %(active_items_count_1)s AND (vendor.deactivate_until IS NULL OR vendor.deactivate_until < %(deactivate_until_1)s)]
+[parameters: {'warehouse_id_1': 1, 'vendor_type_1': 'REGULAR', 'active_items_count_1': 0, 'deactivate_until_1': datetime.date(2025, 4, 20)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-20 19:00:47,538 - order_generation - INFO - Starting order generation
+2025-04-20 19:00:47,538 - order_generation - INFO - Initializing database connection...
+2025-04-20 19:00:47,619 - order_generation - INFO - Database connection initialized successfully
+2025-04-20 19:00:47,620 - order_generation - INFO - Generating orders for all vendors
+2025-04-20 19:00:47,745 - order_generation - INFO - Generated 0 orders
+2025-04-20 19:00:47,745 - order_generation - INFO - Total items: 0
+2025-04-20 19:03:24,472 - order_generation - INFO - Starting order generation
+2025-04-20 19:03:24,472 - order_generation - INFO - Initializing database connection...
+2025-04-20 19:03:24,505 - order_generation - INFO - Database connection initialized successfully
+2025-04-20 19:03:24,506 - order_generation - INFO - Generating orders for all vendors
+2025-04-20 19:03:24,599 - order_generation - INFO - Generated 0 orders
+2025-04-20 19:03:24,599 - order_generation - INFO - Total items: 0
+2025-04-20 19:09:57,769 - order_generation - INFO - Starting order generation
+2025-04-20 19:09:57,770 - order_generation - INFO - Initializing database connection...
+2025-04-20 19:09:57,807 - order_generation - INFO - Database connection initialized successfully
+2025-04-20 19:09:57,808 - order_generation - INFO - Generating orders for all vendors
+2025-04-20 19:09:57,997 - order_generation - INFO - Generated 4 orders
+2025-04-20 19:09:57,997 - order_generation - INFO - Total items: 12

@@ -1,0 +1,21 @@
+2025-04-21 01:08:58,752 - order_adjustments - INFO - Starting order adjustments with command: rebuild
+2025-04-21 01:08:58,908 - order_adjustments - ERROR - Error updating SOQ for item 6 in order 1: '<' not supported between instances of 'float' and 'NoneType'
+2025-04-21 01:08:58,911 - order_adjustments - ERROR - Error updating SOQ for item 7 in order 1: '<' not supported between instances of 'float' and 'NoneType'
+2025-04-21 01:08:58,913 - order_adjustments - ERROR - Error updating SOQ for item 8 in order 1: '<' not supported between instances of 'float' and 'NoneType'
+2025-04-21 01:09:58,177 - order_adjustments - INFO - Starting order adjustments with command: rebuild
+2025-04-21 01:09:58,321 - order_adjustments - ERROR - Error during order adjustments: Order with ID 123 not found
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\order_adjustments.py", line 1217, in main
+    result = adj_service.rebuild_order(
+        order_id=args.order_id,
+    ...<5 lines>...
+        update_database=not args.dry_run
+    )
+  File "D:\Personal\Code\AWR\warehouse_replenishment\order_adjustments.py", line 96, in rebuild_order
+    raise OrderError(f"Order with ID {order_id} not found")
+warehouse_replenishment.exceptions.OrderError: Order with ID 123 not found
+2025-04-21 01:10:27,577 - order_adjustments - INFO - Starting order adjustments with command: rebuild
+2025-04-21 01:10:27,716 - order_adjustments - ERROR - Error updating SOQ for item 18 in order 4: '<' not supported between instances of 'float' and 'NoneType'
+2025-04-21 14:06:12,653 - order_adjustments - INFO - Starting order adjustments with command: forward-buy
+2025-04-21 14:06:29,503 - order_adjustments - INFO - Starting order adjustments with command: forward-buy
+2025-04-21 17:32:55,082 - order_adjustments - INFO - Starting order adjustments with command: forward-buy

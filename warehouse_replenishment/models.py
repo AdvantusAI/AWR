@@ -23,12 +23,53 @@ class SystemClassCode(enum.Enum):
     ALTERNATE = 'A'
 
 class VendorType(enum.Enum):
-    REGULAR = 'R'
-    ALTERNATE = 'A'
-    EDA = 'J'
-    KITTING = 'K'
-    TRANSFER = 'T'
-    REGIONAL_WHS = 'W'
+    REGULAR = 'REGULAR'      # Standard vendor for normal inventory replenishment
+                            # Business Impact: 
+                            # - Primary source for regular inventory items
+                            # - Subject to standard order cycles and lead times
+                            # - Included in automatic order generation
+                            # - Uses standard pricing and discount structures
+                            # - Key for maintaining normal inventory levels
+
+    ALTERNATE = 'ALTERNATE'  # Secondary/backup vendor for specific items
+                            # Business Impact:
+                            # - Used when primary vendor is unavailable
+                            # - Helps maintain supply chain resilience
+                            # - Often has different pricing structures
+                            # - May have different lead times and order cycles
+                            # - Critical for risk management and continuity
+
+    EDA = 'EDA'             # Emergency/Disaster Alternative vendor
+                            # Business Impact:
+                            # - Specialized for emergency situations
+                            # - May have expedited shipping options
+                            # - Often has premium pricing
+                            # - Critical for business continuity
+                            # - Used when regular supply chains are disrupted
+
+    KITTING = 'KITTING'      # Vendor for assembly/kit operations
+                            # Business Impact:
+                            # - Handles product assembly and packaging
+                            # - May have special order requirements
+                            # - Often involves multiple components
+                            # - Critical for value-added services
+                            # - May have different lead time calculations
+
+    TRANSFER = 'TRANSFER'    # Internal transfer between warehouses
+                            # Business Impact:
+                            # - Manages internal inventory movement
+                            # - No external purchasing involved
+                            # - Used for warehouse balancing
+                            # - Helps optimize inventory distribution
+                            # - Critical for multi-warehouse operations
+
+    REGIONAL_WHS = 'REGIONAL_WHS'  # Regional warehouse vendor
+                                   # Business Impact:
+                                   # - Manages regional inventory distribution
+                                   # - May have different service level goals
+                                   # - Often involves cross-docking operations
+                                   # - Critical for regional market coverage
+                                   # - Helps optimize regional inventory levels
 
 class ForecastMethod(enum.Enum):
     E3_REGULAR_AVS = 'E3_REGULAR_AVS'
@@ -141,6 +182,7 @@ class Vendor(Base):
     
     # Order Control Factors
     deactivate_until = Column(Date)
+    deactivation_reason = Column(String(255))  # Reason for vendor deactivation
     order_days_in_week = Column(String(7))  # e.g. "135" for Mon, Wed, Fri
     week = Column(Integer, default=0)  # 0=every, 1=odd, 2=even
     order_day_in_month = Column(Integer)

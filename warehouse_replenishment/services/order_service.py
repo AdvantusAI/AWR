@@ -365,11 +365,11 @@ class OrderService:
             raise OrderError(f"Item with ID {item_id} not found")
             
         # Round to buying multiple if needed
-        if item.buying_multiple > 1:
+        if item.buying_multiple and item.buying_multiple > 1:
             soq_units = round_to_multiple(soq_units, item.buying_multiple)
             
         # Check if SOQ is less than minimum
-        if soq_units < item.minimum_quantity:
+        if item.minimum_quantity is not None and soq_units < item.minimum_quantity:
             soq_units = item.minimum_quantity
             
         # Update SOQ
@@ -943,21 +943,21 @@ class OrderService:
             raise OrderError(f"Vendor with ID {item.vendor_id} not found")
             
         # Calculate current balance
-        balance = item.on_hand + item.on_order
+        balance = (item.on_hand or 0.0) + (item.on_order or 0.0)
         
         # Calculate Item Order Point (IOP) and Order Up To Level (OUTL)
-        iop = item.item_order_point_units
-        outl = item.order_up_to_level_units
+        iop = item.item_order_point_units or 0.0
+        outl = item.order_up_to_level_units or 0.0
         
         # Initial SOQ calculation
         soq = max(0, outl - balance)
         
         # Round to buying multiple
-        if item.buying_multiple > 1 and soq > 0:
+        if item.buying_multiple and item.buying_multiple > 1 and soq > 0:
             soq = round_to_multiple(soq, item.buying_multiple)
             
         # Check if SOQ is below minimum
-        if soq > 0 and soq < item.minimum_quantity:
+        if item.minimum_quantity is not None and soq < item.minimum_quantity:
             soq = item.minimum_quantity
             
         results = {
@@ -968,12 +968,12 @@ class OrderService:
             'soq_units': soq,
             'is_order_point': balance < iop,
             'is_orderable': force_recalculation or balance < iop,
-            'buying_multiple': item.buying_multiple,
-            'minimum_quantity': item.minimum_quantity
+            'buying_multiple': item.buying_multiple or 1.0,
+            'minimum_quantity': item.minimum_quantity or 0.0
         }
         
         # Calculate SOQ in days if we have demand
-        daily_demand = item.demand_4weekly / 28
+        daily_demand = item.demand_4weekly / 28 if item.demand_4weekly else 0.0
         if daily_demand > 0:
             results['soq_days'] = round(soq / daily_demand, 1)
         else:

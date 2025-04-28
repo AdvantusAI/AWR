@@ -47,6 +47,7 @@ class Config:
             'password': 'postgres',
             'echo': 'False'
         }
+        #M8Platform2@25
         
         self._config['LOGGING'] = {
             'level': 'INFO',
