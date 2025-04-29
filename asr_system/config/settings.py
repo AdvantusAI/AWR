@@ -14,7 +14,7 @@ DB_CONFIG = {
     'database': os.environ.get('DB_NAME', 'warehouse_replenishment'),
 }
      
-        
+         
 # Connection string for SQLAlchemy
 DB_URL = URL.create(**DB_CONFIG)
 
@@ -41,6 +41,12 @@ ASR_CONFIG = {
     # Order building settings
     'max_order_cycle': 90,          # Maximum order cycle in days
     'max_forward_buy_days': 180,    # Maximum forward buy in days
+    
+    # Due order settings
+    'at_risk_threshold': 20.0,      # Percentage of SKUs at risk to trigger due order
+    'service_impact_threshold': 0.05, # Service impact threshold to trigger due order
+    'high_service_threshold': 1,    # Number of high service SKUs at risk to trigger due order
+    'min_due_service_level': 98.0,  # Minimum service level to always order when at risk
 }
 
 # Exception thresholds

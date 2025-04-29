@@ -15,6 +15,7 @@ from services.demand_forecast import run_period_end_forecasting
 from services.lead_time import run_lead_time_forecasting
 from services.replenishment import run_nightly_replenishment, get_order_category_counts
 from services.exceptions import process_history_exceptions
+from services.due_order import identify_due_orders, get_order_delay
 
 # Set up logging
 logging.basicConfig(
@@ -45,11 +46,39 @@ def run_nightly_job(store_id=None):
         # Run nightly replenishment
         stats = run_nightly_replenishment(session, store_id)
         
+        # Update due orders
+        due_orders = identify_due_orders(session, store_id=store_id)
+        due_count = len(due_orders)
+        
+        # Update non-due orders with delay information
+        from sqlalchemy import and_
+        from models.order import Order, OrderStatus
+        
+        non_due_orders = session.query(Order).filter(
+            and_(
+                Order.status != OrderStatus.DUE,
+                Order.status != OrderStatus.ACCEPTED,
+                Order.status != OrderStatus.PURGED,
+                Order.status != OrderStatus.DEACTIVATED,
+                Order.store_id == store_id if store_id else True
+            )
+        ).all()
+        
+        for order in non_due_orders:
+            order.order_delay = get_order_delay(session, order.source_id, order.store_id)
+        
+        session.commit()
+        
+        # Add due order stats
+        stats['due_orders'] = due_count
+        stats['updated_with_delay'] = len(non_due_orders)
+        
         logger.info(f"Nightly replenishment completed: {stats}")
         return stats
     
     except Exception as e:
         logger.error(f"Error running nightly job: {e}")
+        session.rollback()
         return {'error': str(e)}
     
     finally:
@@ -86,6 +115,7 @@ def run_period_end_job():
     
     except Exception as e:
         logger.error(f"Error running period-end job: {e}")
+        session.rollback()
         return {'error': str(e)}
     
     finally:
@@ -129,6 +159,57 @@ def get_to_do_counts():
     finally:
         session.close()
 
+def run_due_order_check(store_id=None, update=False):
+    """
+    Run a check to identify due orders based on service level requirements.
+    
+    Args:
+        store_id (str): Store ID to process (None for all)
+        update (bool): Whether to update order status
+    
+    Returns:
+        dict: Statistics about the check
+    """
+    session = get_session()
+    try:
+        logger.info("Running due order check")
+        
+        # Identify due orders
+        due_orders = identify_due_orders(session, store_id=store_id)
+        
+        # Update order status if requested
+        updated_count = 0
+        if update and due_orders:
+            from models.order import Order, OrderStatus, OrderCategory
+            
+            for due_order in due_orders:
+                order_id = due_order['order_id']
+                order = session.query(Order).filter(Order.id == order_id).first()
+                
+                if order:
+                    order.status = OrderStatus.DUE
+                    order.category = OrderCategory.DUE
+                    updated_count += 1
+            
+            session.commit()
+        
+        stats = {
+            'due_orders': len(due_orders),
+            'updated': updated_count
+        }
+        
+        logger.info(f"Due order check completed: {stats}")
+        return stats
+    
+    except Exception as e:
+        logger.error(f"Error running due order check: {e}")
+        if update:
+            session.rollback()
+        return {'error': str(e)}
+    
+    finally:
+        session.close()
+
 def parse_arguments():
     """
     Parse command-line arguments.
@@ -142,6 +223,8 @@ def parse_arguments():
     parser.add_argument('--period-end', action='store_true', help='Run period-end processing job')
     parser.add_argument('--todo', action='store_true', help='Get To Do counts')
     parser.add_argument('--store-id', help='Store ID to process')
+    parser.add_argument('--due-orders', action='store_true', help='Run due order check')
+    parser.add_argument('--update', action='store_true', help='Update order status when running due order check')
     
     return parser.parse_args()
 
@@ -161,7 +244,10 @@ def main():
     if args.todo:
         get_to_do_counts()
     
-    if not any([args.init, args.nightly, args.period_end, args.todo]):
+    if args.due_orders:
+        run_due_order_check(args.store_id, args.update)
+    
+    if not any([args.init, args.nightly, args.period_end, args.todo, args.due_orders]):
         print("No action specified. Use --help for available options.")
 
 if __name__ == '__main__':

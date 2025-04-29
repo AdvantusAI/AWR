@@ -170,6 +170,7 @@ def calculate_suggested_order_quantity(session, sku_id, store_id):
         'units': soq_units
     }
 
+
 def is_order_due(session, source_id, store_id):
     """
     Determine if an order is due based on service level requirements or fixed ordering criteria.
@@ -214,7 +215,14 @@ def is_order_due(session, source_id, store_id):
         today = datetime.datetime.now().date()
         return today >= source.next_order_date.date()
     
-    # Check if order meets current bracket minimum
+    # Use the enhanced due order service to check if order is due based on service level requirements
+    from services.due_order import is_service_due_order
+    is_due, _ = is_service_due_order(session, source.id, store_id)
+    
+    if is_due:
+        return True
+    
+    # Check if order meets current bracket minimum and order_when_minimum_met is enabled
     if source.order_when_minimum_met and source.current_bracket > 0:
         # Get active SKUs
         skus = session.query(SKU).filter(
@@ -238,53 +246,9 @@ def is_order_due(session, source_id, store_id):
         if bracket and total_amount >= bracket.minimum:
             return True
     
-    # Check if enough SKUs are at or below their order points
-    # Get active SKUs
-    skus = session.query(SKU).filter(
-        and_(
-            SKU.source_id == source.id,
-            SKU.store_id == store_id,
-            SKU.buyer_class.in_(['R', 'W'])
-        )
-    ).all()
-    
-    # Count SKUs at or below order point
-    skus_at_risk = 0
-    total_skus = len(skus)
-    
-    for sku in skus:
-        # Get stock status
-        stock_status = sku.stock_status
-        if not stock_status:
-            continue
-        
-        # Calculate available balance
-        available_balance = calculate_available_balance(
-            stock_status.on_hand,
-            stock_status.on_order,
-            stock_status.customer_back_order,
-            stock_status.reserved,
-            stock_status.quantity_held
-        )
-        
-        # Calculate VOP
-        vop = calculate_vendor_order_point(session, sku.sku_id, store_id)
-        
-        # Check if balance is at or below VOP
-        if available_balance <= vop['units']:
-            skus_at_risk += 1
-    
-    # Calculate percentage of SKUs at risk
-    if total_skus == 0:
-        return False
-    
-    percent_at_risk = (skus_at_risk / total_skus) * 100.0
-    
-    # If percentage exceeds threshold, order is due
-    # Threshold could be based on average service level goal or fixed value
-    threshold = 20.0  # Example: 20% of SKUs at risk
-    
-    return percent_at_risk >= threshold
+    # If we get here, the order is not due
+    return False
+
 
 def build_order(session, source_id, store_id):
     """
