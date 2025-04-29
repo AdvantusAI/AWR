@@ -1,285 +1,95 @@
 """
-Order Policy Analysis (OPA) services for the ASR system.
+Demand forecasting services for the ASR system.
 
-This module implements the algorithms and functions needed to determine
-the most profitable order cycle for a source based on acquisition and 
-carrying costs.
+This module implements the algorithms and functions for demand forecasting, 
+including E3 Regular AVS, E3 Enhanced AVS, and seasonal adjustments.
 """
 import logging
 import math
-from sqlalchemy import and_
+import numpy as np
+from datetime import datetime
+from sqlalchemy import and_, func
 
-from models.sku import SKU, ForecastData
-from models.source import Source, SourceBracket
+from models.sku import SKU, ForecastData, DemandHistory, SeasonalProfile
+from utils.helpers import get_current_period, calculate_madp, calculate_tracking_signal, get_seasonal_index
 from utils.db import get_session
 from config.settings import ASR_CONFIG
 
 logger = logging.getLogger(__name__)
 
-def calculate_annual_acquisition_cost(header_cost, line_cost, num_lines, order_cycle):
+def get_demand_history(session, sku_id, store_id, years=3):
     """
-    Calculate annual acquisition cost based on order cycle.
-    
-    Args:
-        header_cost (float): Cost per order header
-        line_cost (float): Cost per order line
-        num_lines (int): Number of lines per order
-        order_cycle (int): Days between orders
-    
-    Returns:
-        float: Annual acquisition cost
-    """
-    # Calculate number of orders per year
-    orders_per_year = 365 / order_cycle
-    
-    # Calculate total acquisition cost per order
-    acquisition_cost_per_order = header_cost + (line_cost * num_lines)
-    
-    # Calculate annual acquisition cost
-    annual_acquisition_cost = acquisition_cost_per_order * orders_per_year
-    
-    return annual_acquisition_cost
-
-def calculate_annual_carrying_cost(average_inventory, carrying_cost_rate, bracket_discount=0.0):
-    """
-    Calculate annual carrying cost based on average inventory.
-    
-    Args:
-        average_inventory (float): Average inventory value in dollars
-        carrying_cost_rate (float): Annual carrying cost rate as a decimal
-        bracket_discount (float): Discount percentage for bracket
-    
-    Returns:
-        float: Annual carrying cost
-    """
-    # Apply bracket discount to inventory value
-    discounted_inventory = average_inventory * (1.0 - (bracket_discount / 100.0))
-    
-    # Calculate annual carrying cost
-    annual_carrying_cost = discounted_inventory * carrying_cost_rate
-    
-    return annual_carrying_cost
-
-def calculate_average_inventory(total_annual_inventory, order_cycle, safety_stock_value):
-    """
-    Calculate average inventory based on order cycle.
-    
-    Args:
-        total_annual_inventory (float): Total annual inventory in dollars
-        order_cycle (int): Days between orders
-        safety_stock_value (float): Safety stock value in dollars
-    
-    Returns:
-        float: Average inventory value
-    """
-    # Calculate average cycle stock (half of order quantity)
-    average_cycle_stock = (total_annual_inventory * (order_cycle / 365.0)) / 2.0
-    
-    # Add safety stock
-    average_inventory = average_cycle_stock + safety_stock_value
-    
-    return average_inventory
-
-def calculate_order_value(skus, order_cycle, daily_demand_values=None):
-    """
-    Calculate the total order value based on order cycle.
-    
-    Args:
-        skus (list): List of SKUs
-        order_cycle (int): Days between orders
-        daily_demand_values (dict): Pre-calculated daily demand values by SKU ID
-    
-    Returns:
-        dict: Dictionary with order totals by unit of measure
-    """
-    # Initialize totals
-    totals = {
-        'amount': 0.0,
-        'eaches': 0.0,
-        'weight': 0.0,
-        'volume': 0.0,
-        'dozens': 0.0,
-        'cases': 0.0,
-        'layers': 0.0,
-        'pallets': 0.0
-    }
-    
-    # Calculate demand for each SKU
-    for sku in skus:
-        # Get daily demand value
-        if daily_demand_values and sku.id in daily_demand_values:
-            daily_demand = daily_demand_values[sku.id]
-        else:
-            # Get forecast data
-            forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
-            if not forecast_data:
-                continue
-            
-            # Calculate daily demand
-            daily_demand = forecast_data.weekly_forecast / 7.0
-        
-        # Calculate order quantity
-        order_quantity = daily_demand * order_cycle
-        
-        # Round to buying multiple if needed
-        if sku.buying_multiple > 1:
-            order_quantity = math.ceil(order_quantity / sku.buying_multiple) * sku.buying_multiple
-        
-        # Add to totals
-        totals['amount'] += order_quantity * sku.purchase_price
-        totals['eaches'] += order_quantity
-        
-        # Add other units based on conversion factors
-        if hasattr(sku, 'weight') and sku.weight:
-            totals['weight'] += order_quantity * sku.weight
-        
-        if hasattr(sku, 'cube') and sku.cube:
-            totals['volume'] += order_quantity * sku.cube
-        
-        if hasattr(sku, 'units_per_case') and sku.units_per_case:
-            totals['cases'] += order_quantity / sku.units_per_case
-        
-        # Add more units as needed
-    
-    return totals
-
-def determine_bracket_for_order(brackets, order_value, unit_code):
-    """
-    Determine which bracket an order value fits into.
-    
-    Args:
-        brackets (list): List of bracket objects
-        order_value (float): Order value
-        unit_code (int): Unit code (1=Amount, 2=Eaches, etc.)
-    
-    Returns:
-        tuple: (bracket_number, discount_percentage)
-    """
-    # Filter brackets by unit code
-    matching_brackets = [b for b in brackets if b.unit == unit_code]
-    
-    # Sort brackets by minimum (ascending)
-    sorted_brackets = sorted(matching_brackets, key=lambda b: b.minimum)
-    
-    # Find the highest bracket the order fits into
-    applicable_bracket = None
-    
-    for bracket in sorted_brackets:
-        if order_value >= bracket.minimum and (bracket.maximum == 0 or order_value <= bracket.maximum):
-            applicable_bracket = bracket
-    
-    # Return bracket information
-    if applicable_bracket:
-        return (applicable_bracket.bracket_number, applicable_bracket.discount_percentage)
-    else:
-        return (0, 0.0)  # No bracket applies
-
-def run_order_policy_analysis(session, source_id, store_id):
-    """
-    Run Order Policy Analysis for a source.
+    Get demand history for a SKU.
     
     Args:
         session: SQLAlchemy session
-        source_id (str): Source ID
+        sku_id (str): SKU ID
         store_id (str): Store ID
+        years (int): Number of years of history to retrieve
     
     Returns:
-        dict: OPA results
+        dict: Dictionary with period data as keys and demand as values
     """
     try:
-        # Get the source
-        source = session.query(Source).filter(Source.source_id == source_id).first()
+        # Get SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
         
-        if not source:
-            logger.error(f"Source {source_id} not found")
-            return None
+        if not sku:
+            logger.error(f"SKU {sku_id} not found in store {store_id}")
+            return {}
         
-        # Get the bracket
-        bracket_obj = next((b for b in source.brackets if b.bracket_number == bracket), None)
+        # Get current period
+        forecast_data = session.query(ForecastData).filter(
+            and_(ForecastData.sku_id == sku_id, ForecastData.store_id == store_id)
+        ).first()
         
-        if not bracket_obj:
-            logger.error(f"Bracket {bracket} not found for source {source_id}")
-            return None
+        # Determine periodicity
+        periodicity = getattr(sku, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
         
-        # Get active SKUs for this source
-        skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source.id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
-        ).all()
+        # Get current period
+        current_year, current_period = get_current_period(periodicity)
         
-        if not skus:
-            logger.error(f"No active SKUs found for source {source_id}")
-            return 0
-        
-        # Get base order cycle
-        base_order_cycle = source.order_cycle
-        
-        # Calculate base order value
-        base_order_values = calculate_order_value(skus, base_order_cycle)
-        
-        # Check if order already meets the bracket minimum
-        if base_order_values['amount'] >= bracket_obj.minimum:
-            return 0  # No additional days needed
-        
-        # Calculate daily demand value
-        daily_demand_values = {}
-        total_daily_demand_value = 0.0
-        
-        for sku in skus:
-            # Get forecast data
-            forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
-            if not forecast_data:
-                continue
+        # Build array of periods to retrieve
+        periods = []
+        for year_offset in range(years):
+            year = current_year - year_offset
             
-            # Calculate daily demand in units
-            daily_demand_units = forecast_data.weekly_forecast / 7.0
+            if year_offset == 0:
+                # Current year - include only periods up to current period
+                for period in range(1, current_period + 1):
+                    periods.append((year, period))
+            else:
+                # Previous years - include all periods
+                for period in range(1, periodicity + 1):
+                    periods.append((year, period))
+        
+        # Get history for periods
+        history_data = {}
+        
+        for year, period in periods:
+            history = session.query(DemandHistory).filter(
+                and_(
+                    DemandHistory.sku_id == sku_id,
+                    DemandHistory.store_id == store_id,
+                    DemandHistory.period_year == year,
+                    DemandHistory.period_number == period
+                )
+            ).first()
             
-            # Calculate daily demand in dollars
-            daily_demand_value = daily_demand_units * sku.purchase_price
-            
-            # Add to total daily demand
-            total_daily_demand_value += daily_demand_value
+            if history and not history.ignore_history:
+                history_data[(year, period)] = history.total_demand
         
-        # Calculate additional days needed
-        additional_amount_needed = bracket_obj.minimum - base_order_values['amount']
-        
-        if total_daily_demand_value <= 0:
-            return 0  # Avoid division by zero
-        
-        # Calculate days needed to reach minimum
-        days_needed = math.ceil(additional_amount_needed / total_daily_demand_value)
-        
-        return days_needed
+        return history_data
     
     except Exception as e:
-        logger.error(f"Error calculating days to meet bracket: {e}")
-        return 0
+        logger.error(f"Error getting demand history: {e}")
+        return {}
 
-def get_effective_order_cycle(sku):
+def calculate_e3_regular_avs_forecast(session, sku_id, store_id):
     """
-    Get the effective order cycle for a SKU (greater of source cycle or SKU cycle).
-    
-    Args:
-        sku: SKU object
-    
-    Returns:
-        int: Effective order cycle in days
-    """
-    # Get source order cycle
-    source_cycle = sku.source.order_cycle if sku.source else 0
-    
-    # Get SKU cycle (if available)
-    sku_cycle = getattr(sku, 'sku_cycle', 0)
-    
-    # Return the greater of the two
-    return max(source_cycle, sku_cycle)
-
-def calculate_sku_order_cycle(session, sku_id, store_id):
-    """
-    Calculate the most economic order cycle for a specific SKU.
+    Calculate a new forecast using the E3 Regular AVS method.
     
     Args:
         session: SQLAlchemy session
@@ -287,318 +97,711 @@ def calculate_sku_order_cycle(session, sku_id, store_id):
         store_id (str): Store ID
     
     Returns:
-        int: SKU order cycle in days
+        dict: Dictionary with forecast results
     """
     try:
-        # Get the SKU
+        # Get demand history
+        history_data = get_demand_history(session, sku_id, store_id)
+        
+        if not history_data:
+            logger.warning(f"No demand history found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Get current forecast data
+        forecast_data = session.query(ForecastData).filter(
+            and_(ForecastData.sku_id == sku_id, ForecastData.store_id == store_id)
+        ).first()
+        
+        if not forecast_data:
+            logger.warning(f"No forecast data found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Get current period
+        periodicity = getattr(forecast_data, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
+        current_year, current_period = get_current_period(periodicity)
+        
+        # Get previous period
+        prev_period = current_period - 1
+        prev_year = current_year
+        if prev_period < 1:
+            prev_period = periodicity
+            prev_year = current_year - 1
+        
+        # Get previous period's demand
+        prev_demand = history_data.get((prev_year, prev_period), 0.0)
+        
+        # Get seasonal profile
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        seasonal_profile = None
+        if sku and sku.demand_profile_id:
+            seasonal_profile = session.query(SeasonalProfile).filter(
+                SeasonalProfile.profile_id == sku.demand_profile_id
+            ).first()
+        
+        # Get seasonal index for previous period
+        if seasonal_profile:
+            seasonal_index = get_seasonal_index(seasonal_profile, prev_period)
+            # Adjust demand for seasonality
+            if seasonal_index > 0:
+                prev_demand = prev_demand / seasonal_index
+        
+        # Get track (trend percentage)
+        track = forecast_data.track or 0.0
+        
+        # Calculate new forecast using E3 Regular AVS formula
+        old_forecast = forecast_data.period_forecast or 0.0
+        
+        # Formula: New Forecast = (Track * Newest Demand) + ((1 - Track) * Old Forecast)
+        new_forecast = (track * prev_demand) + ((1 - track) * old_forecast)
+        
+        # Update weekly and other period forecasts
+        if periodicity == 13:  # 4-weekly
+            weekly_forecast = new_forecast / 4.0
+            quarterly_forecast = new_forecast * 3.0
+            yearly_forecast = new_forecast * 13.0
+        else:  # Weekly
+            weekly_forecast = new_forecast
+            quarterly_forecast = new_forecast * 13.0
+            yearly_forecast = new_forecast * 52.0
+        
+        # Calculate MADP and Track
+        history_values = list(history_data.values())
+        forecast_values = [forecast_data.period_forecast] * len(history_values)
+        
+        # Update forecast values with new forecast for future comparison
+        forecast_values[0] = new_forecast
+        
+        madp = calculate_madp(history_values, forecast_values)
+        track = calculate_tracking_signal(history_values, forecast_values)
+        
+        # Return results
+        return {
+            'period_forecast': new_forecast,
+            'weekly_forecast': weekly_forecast,
+            'quarterly_forecast': quarterly_forecast,
+            'yearly_forecast': yearly_forecast,
+            'madp': madp,
+            'track': track
+        }
+    
+    except Exception as e:
+        logger.error(f"Error calculating E3 Regular AVS forecast: {e}")
+        return None
+
+def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
+    """
+    Calculate a new forecast using the E3 Enhanced AVS method for slow-moving items.
+    
+    Args:
+        session: SQLAlchemy session
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+    
+    Returns:
+        dict: Dictionary with forecast results
+    """
+    try:
+        # Get demand history
+        history_data = get_demand_history(session, sku_id, store_id)
+        
+        if not history_data:
+            logger.warning(f"No demand history found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Get current forecast data
+        forecast_data = session.query(ForecastData).filter(
+            and_(ForecastData.sku_id == sku_id, ForecastData.store_id == store_id)
+        ).first()
+        
+        if not forecast_data:
+            logger.warning(f"No forecast data found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Get current period
+        periodicity = getattr(forecast_data, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
+        current_year, current_period = get_current_period(periodicity)
+        
+        # Get previous period
+        prev_period = current_period - 1
+        prev_year = current_year
+        if prev_period < 1:
+            prev_period = periodicity
+            prev_year = current_year - 1
+        
+        # Get previous period's demand
+        prev_demand = history_data.get((prev_year, prev_period), 0.0)
+        
+        # Get demand limit from SKU or source or company settings
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        # Get the demand limit from configuration
+        forecasting_demand_limit = ASR_CONFIG.get('forecasting_demand_limit', 0.0)
+        
+        # Check if demand exceeds the limit
+        if prev_demand <= forecasting_demand_limit:
+            # Do not update the forecast if demand is below limit
+            # Return current forecast values
+            return {
+                'period_forecast': forecast_data.period_forecast,
+                'weekly_forecast': forecast_data.weekly_forecast,
+                'quarterly_forecast': forecast_data.quarterly_forecast,
+                'yearly_forecast': forecast_data.yearly_forecast,
+                'madp': forecast_data.madp,
+                'track': forecast_data.track
+            }
+        
+        # Get seasonal profile
+        seasonal_profile = None
+        if sku and sku.demand_profile_id:
+            seasonal_profile = session.query(SeasonalProfile).filter(
+                SeasonalProfile.profile_id == sku.demand_profile_id
+            ).first()
+        
+        # Get seasonal index for previous period
+        if seasonal_profile:
+            seasonal_index = get_seasonal_index(seasonal_profile, prev_period)
+            # Adjust demand for seasonality
+            if seasonal_index > 0:
+                prev_demand = prev_demand / seasonal_index
+        
+        # Find time since last demand occurrence
+        periods_since_last_demand = 1  # Default to 1 period
+        
+        # Sort history by recent to older
+        sorted_periods = sorted(history_data.keys(), reverse=True)
+        
+        # Find the most recent period with demand > limit
+        for i, (year, period) in enumerate(sorted_periods):
+            if i == 0:  # Skip current period
+                continue
+                
+            if history_data.get((year, period), 0.0) > forecasting_demand_limit:
+                # Calculate periods since last demand
+                if year == prev_year:
+                    periods_since_last_demand = prev_period - period
+                else:
+                    periods_since_last_demand = prev_period + (periodicity * (prev_year - year)) - period
+                break
+        
+        # Get track (trend percentage)
+        track = forecast_data.track or 0.0
+        
+        # Adjust track based on time since last demand
+        adjusted_track = track / periods_since_last_demand
+        
+        # Calculate new forecast using E3 Enhanced AVS formula
+        old_forecast = forecast_data.period_forecast or 0.0
+        
+        # Formula with adjustment for time between demands
+        new_forecast = (adjusted_track * prev_demand) + ((1 - adjusted_track) * old_forecast)
+        
+        # Update weekly and other period forecasts
+        if periodicity == 13:  # 4-weekly
+            weekly_forecast = new_forecast / 4.0
+            quarterly_forecast = new_forecast * 3.0
+            yearly_forecast = new_forecast * 13.0
+        else:  # Weekly
+            weekly_forecast = new_forecast
+            quarterly_forecast = new_forecast * 13.0
+            yearly_forecast = new_forecast * 52.0
+        
+        # Calculate MADP and Track
+        history_values = list(history_data.values())
+        forecast_values = [forecast_data.period_forecast] * len(history_values)
+        
+        # Update forecast values with new forecast for future comparison
+        forecast_values[0] = new_forecast
+        
+        madp = calculate_madp(history_values, forecast_values)
+        track = calculate_tracking_signal(history_values, forecast_values)
+        
+        # Return results
+        return {
+            'period_forecast': new_forecast,
+            'weekly_forecast': weekly_forecast,
+            'quarterly_forecast': quarterly_forecast,
+            'yearly_forecast': yearly_forecast,
+            'madp': madp,
+            'track': track
+        }
+    
+    except Exception as e:
+        logger.error(f"Error calculating E3 Enhanced AVS forecast: {e}")
+        return None
+
+def calculate_initial_forecast(session, sku_id, store_id, starting_forecast=None):
+    """
+    Calculate an initial forecast for a new SKU.
+    
+    Args:
+        session: SQLAlchemy session
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+        starting_forecast (float): Optional starting forecast value
+    
+    Returns:
+        dict: Dictionary with forecast results
+    """
+    try:
+        # Get SKU
         sku = session.query(SKU).filter(
             and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
         ).first()
         
         if not sku:
             logger.error(f"SKU {sku_id} not found in store {store_id}")
-            return 0
-        
-        # Get forecast data
-        forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
-        if not forecast_data:
-            logger.error(f"Forecast data not found for SKU {sku_id}")
-            return 0
-        
-        # Get acquisition costs
-        header_cost = getattr(sku.source, 'header_cost', ASR_CONFIG.get('default_header_cost', 25.0))
-        line_cost = getattr(sku.source, 'line_cost', ASR_CONFIG.get('default_line_cost', 1.0))
-        
-        # Get carrying cost rate
-        carrying_cost_rate = ASR_CONFIG.get('carrying_cost_rate', 0.40)  # 40%
-        
-        # Calculate daily demand in units
-        daily_demand_units = forecast_data.weekly_forecast / 7.0
-        
-        # Calculate daily demand in dollars
-        daily_demand_value = daily_demand_units * sku.purchase_price
-        
-        # Calculate annual demand value
-        annual_demand_value = daily_demand_value * 365.0
-        
-        # If item has very low value, return a longer cycle
-        if annual_demand_value < header_cost:
-            return 90  # Default to 90 days for very low value items
-        
-        # Calculate Economic Order Quantity (EOQ)
-        # EOQ = sqrt((2 * Annual Demand * Order Cost) / (Carrying Cost Rate * Unit Cost))
-        order_cost = line_cost  # Just the line cost for a single SKU
-        carrying_cost = carrying_cost_rate * sku.purchase_price
-        
-        if carrying_cost <= 0:
-            return 30  # Default to 30 days if carrying cost is zero
-        
-        eoq = math.sqrt((2 * annual_demand_value * order_cost) / carrying_cost)
-        
-        # Convert EOQ to days of supply
-        if daily_demand_units <= 0:
-            return 30  # Default to 30 days if demand is zero
-        
-        days_of_supply = eoq / daily_demand_units
-        
-        # Round to nearest multiple of 7 (one week)
-        days_of_supply = round(days_of_supply / 7) * 7
-        
-        # Ensure minimum and maximum values
-        days_of_supply = max(7, min(90, days_of_supply))
-        
-        return int(days_of_supply)
-    
-    except Exception as e:
-        logger.error(f"Error calculating SKU order cycle: {e}")
-        return 0return None
-        
-        # Get active SKUs for this source
-        skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source.id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
-        ).all()
-        
-        if not skus:
-            logger.error(f"No active SKUs found for source {source_id}")
             return None
         
-        # Get source brackets
-        brackets = source.brackets
+        # Get forecast periodicity
+        periodicity = getattr(sku, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
         
-        # Get acquisition costs
-        header_cost = getattr(source, 'header_cost', ASR_CONFIG.get('default_header_cost', 25.0))
-        line_cost = getattr(source, 'line_cost', ASR_CONFIG.get('default_line_cost', 1.0))
+        # If starting forecast is provided, use it
+        if starting_forecast is not None:
+            period_forecast = starting_forecast
+        else:
+            # No starting forecast provided, try to estimate from similar SKUs
+            similar_skus = session.query(SKU).filter(
+                and_(
+                    SKU.source_id == sku.source_id,
+                    SKU.store_id == store_id,
+                    SKU.id != sku.id,
+                    SKU.system_class != 'U',  # Not uninitialized
+                    SKU.buyer_class.in_(['R', 'W'])  # Regular or Watch
+                )
+            ).all()
+            
+            if similar_skus:
+                # Get forecast data for similar SKUs
+                sku_ids = [s.id for s in similar_skus]
+                forecast_data = session.query(ForecastData).filter(
+                    ForecastData.sku_id.in_(sku_ids)
+                ).all()
+                
+                if forecast_data:
+                    # Calculate average forecast
+                    avg_forecast = sum(f.period_forecast for f in forecast_data) / len(forecast_data)
+                    period_forecast = avg_forecast
+                else:
+                    # No forecast data for similar SKUs, use default
+                    period_forecast = 1.0
+            else:
+                # No similar SKUs, use default
+                period_forecast = 1.0
         
-        # Get carrying cost rate
-        carrying_cost_rate = ASR_CONFIG.get('carrying_cost_rate', 0.40)  # 40%
+        # Calculate weekly and other period forecasts
+        if periodicity == 13:  # 4-weekly
+            weekly_forecast = period_forecast / 4.0
+            quarterly_forecast = period_forecast * 3.0
+            yearly_forecast = period_forecast * 13.0
+        else:  # Weekly
+            weekly_forecast = period_forecast
+            quarterly_forecast = period_forecast * 13.0
+            yearly_forecast = period_forecast * 52.0
         
-        # Calculate daily demand values for all SKUs
-        daily_demand_values = {}
-        total_annual_demand_value = 0.0
-        safety_stock_value = 0.0
+        # For new SKUs, set default MADP and track
+        madp = 30.0  # Default MADP
+        track = 0.2   # Default track
         
-        for sku in skus:
-            # Get forecast data
-            forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
-            if not forecast_data:
-                continue
-            
-            # Calculate daily demand in units
-            daily_demand_units = forecast_data.weekly_forecast / 7.0
-            
-            # Calculate daily demand in dollars
-            daily_demand_value = daily_demand_units * sku.purchase_price
-            
-            # Store for later use
-            daily_demand_values[sku.id] = daily_demand_value
-            
-            # Add to total annual demand value
-            total_annual_demand_value += daily_demand_value * 365.0
-            
-            # Add safety stock value (this is a simplification)
-            # In a real implementation, you would calculate safety stock properly
-            safety_stock_days = 3.0  # Example value
-            safety_stock_value += safety_stock_days * daily_demand_value
-        
-        # Test different order cycles
-        # Start with a range of order cycles (e.g., 1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84 days)
-        test_cycles = [1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84]
-        
-        results = []
-        
-        for cycle in test_cycles:
-            # Calculate order value
-            order_values = calculate_order_value(skus, cycle, daily_demand_values)
-            
-            # Determine applicable bracket
-            bracket_number, discount_percentage = determine_bracket_for_order(
-                brackets, order_values['amount'], 1  # Assuming Amount (1) is the unit code
-            )
-            
-            # Calculate average inventory
-            average_inventory = calculate_average_inventory(
-                total_annual_demand_value, cycle, safety_stock_value
-            )
-            
-            # Calculate annual acquisition cost
-            annual_acquisition_cost = calculate_annual_acquisition_cost(
-                header_cost, line_cost, len(skus), cycle
-            )
-            
-            # Calculate annual carrying cost
-            annual_carrying_cost = calculate_annual_carrying_cost(
-                average_inventory, carrying_cost_rate, discount_percentage
-            )
-            
-            # Calculate total annual cost
-            total_annual_cost = annual_acquisition_cost + annual_carrying_cost
-            
-            # Calculate savings from discount
-            annual_discount_savings = (total_annual_demand_value * discount_percentage) / 100.0
-            
-            # Calculate profit impact
-            profit_impact = annual_discount_savings - total_annual_cost
-            
-            # Store results
-            results.append({
-                'order_cycle': cycle,
-                'bracket': bracket_number,
-                'discount_percentage': discount_percentage,
-                'order_amount': order_values['amount'],
-                'order_eaches': order_values['eaches'],
-                'order_weight': order_values['weight'],
-                'order_volume': order_values['volume'],
-                'annual_acquisition_cost': annual_acquisition_cost,
-                'annual_carrying_cost': annual_carrying_cost,
-                'total_annual_cost': total_annual_cost,
-                'annual_discount_savings': annual_discount_savings,
-                'profit_impact': profit_impact
-            })
-        
-        # Find the most profitable order cycle
-        most_profitable = max(results, key=lambda r: r['profit_impact'])
-        
-        # Return results sorted by profit impact
+        # Return results
         return {
-            'results': sorted(results, key=lambda r: r['profit_impact'], reverse=True),
-            'most_profitable': most_profitable
+            'period_forecast': period_forecast,
+            'weekly_forecast': weekly_forecast,
+            'quarterly_forecast': quarterly_forecast,
+            'yearly_forecast': yearly_forecast,
+            'madp': madp,
+            'track': track
         }
     
     except Exception as e:
-        logger.error(f"Error running Order Policy Analysis: {e}")
+        logger.error(f"Error calculating initial forecast: {e}")
         return None
 
-def accept_opa_result(session, source_id, order_cycle, bracket):
+def update_forecast_data(session, sku_id, store_id, forecast_results, manual=False):
     """
-    Accept an OPA result by updating the source's order cycle and current bracket.
+    Update forecast data for a SKU.
     
     Args:
         session: SQLAlchemy session
-        source_id (str): Source ID
-        order_cycle (int): Order cycle in days
-        bracket (int): Bracket number
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+        forecast_results (dict): Dictionary with forecast results
+        manual (bool): True if manual forecast update
     
     Returns:
         bool: True if successful, False otherwise
     """
     try:
-        # Get the source
-        source = session.query(Source).filter(Source.source_id == source_id).first()
+        # Get forecast data
+        forecast_data = session.query(ForecastData).filter(
+            and_(ForecastData.sku_id == sku_id, ForecastData.store_id == store_id)
+        ).first()
         
-        if not source:
-            logger.error(f"Source {source_id} not found")
-            return False
+        if not forecast_data:
+            # Create new forecast data
+            forecast_data = ForecastData(
+                sku_id=sku_id,
+                store_id=store_id
+            )
+            session.add(forecast_data)
         
-        # Update source
-        source.order_cycle = order_cycle
-        source.current_bracket = bracket
+        # Update forecast data
+        forecast_data.period_forecast = forecast_results['period_forecast']
+        forecast_data.weekly_forecast = forecast_results['weekly_forecast']
+        forecast_data.quarterly_forecast = forecast_results['quarterly_forecast']
+        forecast_data.yearly_forecast = forecast_results['yearly_forecast']
+        forecast_data.madp = forecast_results['madp']
+        forecast_data.track = forecast_results['track']
+        forecast_data.last_forecast_date = datetime.now()
+        
+        if manual:
+            forecast_data.last_manual_forecast_date = datetime.now()
+        
+        # Update system class for SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if sku:
+            # Update system class based on forecast values
+            if sku.system_class == 'U':  # Uninitialized
+                sku.system_class = 'N'  # New
+            elif sku.system_class == 'N':  # Keep as New until 6 months old
+                # Only change if SKU is more than 6 months old
+                if sku.created_at and (datetime.now() - sku.created_at).days > 180:
+                    # Check MADP for Lumpy
+                    madp_high_threshold = ASR_CONFIG.get('madp_high_threshold', 50)
+                    if forecast_results['madp'] > madp_high_threshold:
+                        sku.system_class = 'L'  # Lumpy
+                    else:
+                        # Check for slow mover
+                        slow_mover_limit = ASR_CONFIG.get('slow_mover_limit', 5)
+                        if forecast_results['yearly_forecast'] < slow_mover_limit:
+                            sku.system_class = 'S'  # Slow
+                        else:
+                            sku.system_class = 'R'  # Regular
+            elif sku.system_class != 'A':  # Don't change Alternate
+                # Check MADP for Lumpy
+                madp_high_threshold = ASR_CONFIG.get('madp_high_threshold', 50)
+                if forecast_results['madp'] > madp_high_threshold:
+                    sku.system_class = 'L'  # Lumpy
+                else:
+                    # Check for slow mover
+                    slow_mover_limit = ASR_CONFIG.get('slow_mover_limit', 5)
+                    if forecast_results['yearly_forecast'] < slow_mover_limit:
+                        sku.system_class = 'S'  # Slow
+                    else:
+                        sku.system_class = 'R'  # Regular
         
         # Commit changes
         session.commit()
         return True
     
     except Exception as e:
-        logger.error(f"Error accepting OPA result: {e}")
+        logger.error(f"Error updating forecast data: {e}")
         session.rollback()
         return False
 
-def simulate_bracket_build(session, source_id, store_id, bracket, add_days=0):
+def run_period_end_forecasting(session):
     """
-    Simulate building an order to meet a specific bracket.
+    Run period-end forecasting for all SKUs.
     
     Args:
         session: SQLAlchemy session
-        source_id (str): Source ID
-        store_id (str): Store ID
-        bracket (int): Bracket number
-        add_days (int): Additional days to add to order
     
     Returns:
-        dict: Simulated order totals
+        dict: Statistics about the forecasting run
     """
     try:
-        # Get the source
-        source = session.query(Source).filter(Source.source_id == source_id).first()
-        
-        if not source:
-            logger.error(f"Source {source_id} not found")
-            return None
-        
-        # Get the bracket
-        bracket_obj = next((b for b in source.brackets if b.bracket_number == bracket), None)
-        
-        if not bracket_obj:
-            logger.error(f"Bracket {bracket} not found for source {source_id}")
-            return None
-        
-        # Get active SKUs for this source
+        # Get active SKUs
         skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source.id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
+            SKU.buyer_class.in_(['R', 'W'])
         ).all()
         
-        if not skus:
-            logger.error(f"No active SKUs found for source {source_id}")
-            return None
-        
-        # Get base order cycle
-        base_order_cycle = source.order_cycle
-        
-        # Add extra days
-        effective_order_cycle = base_order_cycle + add_days
-        
-        # Calculate order value
-        order_values = calculate_order_value(skus, effective_order_cycle)
-        
-        # Check if order meets the bracket minimum
-        meets_minimum = order_values['amount'] >= bracket_obj.minimum
-        
-        # Check if order exceeds the bracket maximum
-        exceeds_maximum = bracket_obj.maximum > 0 and order_values['amount'] > bracket_obj.maximum
-        
-        # Return results
-        return {
-            'order_cycle': base_order_cycle,
-            'add_days': add_days,
-            'effective_order_cycle': effective_order_cycle,
-            'order_amount': order_values['amount'],
-            'order_eaches': order_values['eaches'],
-            'order_weight': order_values['weight'],
-            'order_volume': order_values['volume'],
-            'bracket_minimum': bracket_obj.minimum,
-            'bracket_maximum': bracket_obj.maximum,
-            'meets_minimum': meets_minimum,
-            'exceeds_maximum': exceeds_maximum,
-            'discount_percentage': bracket_obj.discount_percentage
+        # Statistics
+        stats = {
+            'total_skus': len(skus),
+            'e3_regular_avs': 0,
+            'e3_enhanced_avs': 0,
+            'demand_import': 0,
+            'e3_alternate': 0,
+            'frozen_forecast': 0,
+            'no_update': 0,
+            'errors': 0
         }
+        
+        # Process each SKU
+        for sku in skus:
+            try:
+                # Check for frozen forecast
+                if hasattr(sku, 'freeze_forecast_until') and sku.freeze_forecast_until:
+                    if sku.freeze_forecast_until > datetime.now():
+                        # Skip this SKU if forecast is frozen
+                        stats['frozen_forecast'] += 1
+                        continue
+                
+                # Determine forecast method
+                forecast_method = getattr(sku, 'forecast_method', 'E3 Regular AVS')
+                
+                if forecast_method == 'E3 Regular AVS':
+                    # Calculate forecast using E3 Regular AVS
+                    forecast_results = calculate_e3_regular_avs_forecast(session, sku.sku_id, sku.store_id)
+                    if forecast_results:
+                        update_forecast_data(session, sku.sku_id, sku.store_id, forecast_results)
+                        stats['e3_regular_avs'] += 1
+                    else:
+                        stats['no_update'] += 1
+                
+                elif forecast_method == 'E3 Enhanced AVS':
+                    # Calculate forecast using E3 Enhanced AVS
+                    forecast_results = calculate_e3_enhanced_avs_forecast(session, sku.sku_id, sku.store_id)
+                    if forecast_results:
+                        update_forecast_data(session, sku.sku_id, sku.store_id, forecast_results)
+                        stats['e3_enhanced_avs'] += 1
+                    else:
+                        stats['no_update'] += 1
+                
+                elif forecast_method == 'Demand Import':
+                    # Skip SKUs with imported demand
+                    stats['demand_import'] += 1
+                
+                elif forecast_method == 'E3 Alternate':
+                    # Skip SKUs with alternate forecast method
+                    stats['e3_alternate'] += 1
+                
+                else:
+                    # Unknown forecast method
+                    stats['no_update'] += 1
+            
+            except Exception as e:
+                logger.error(f"Error forecasting SKU {sku.sku_id}: {e}")
+                stats['errors'] += 1
+        
+        return stats
     
     except Exception as e:
-        logger.error(f"Error simulating bracket build: {e}")
-        return None
+        logger.error(f"Error running period-end forecasting: {e}")
+        return {'error': str(e)}
 
-def calculate_days_to_meet_bracket(session, source_id, store_id, bracket):
+def simulate_seasonal_profile(session, sku_id, store_id, ignore_years=None):
     """
-    Calculate the number of days to add to meet a specific bracket.
+    Simulate a seasonal profile for a SKU.
     
     Args:
         session: SQLAlchemy session
-        source_id (str): Source ID
+        sku_id (str): SKU ID
         store_id (str): Store ID
-        bracket (int): Bracket number
+        ignore_years (list): List of years to ignore in calculation
     
     Returns:
-        int: Number of days to add
+        dict: Dictionary with seasonal indices
     """
     try:
-        # Get the source
-        source = session.query(Source).filter(Source.source_id == source_id).first()
+        # Get demand history
+        history_data = get_demand_history(session, sku_id, store_id)
         
-        if not source:
-            logger.error(f"Source {source_id} not found")
+        if not history_data:
+            logger.warning(f"No demand history found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Determine periodicity
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        periodicity = getattr(sku, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
+        
+        # Filter out ignored years
+        if ignore_years:
+            history_data = {k: v for k, v in history_data.items() if k[0] not in ignore_years}
+        
+        # Group by period
+        period_data = {}
+        for (year, period), demand in history_data.items():
+            if period not in period_data:
+                period_data[period] = []
+            period_data[period].append(demand)
+        
+        # Calculate average demand per period
+        period_averages = {}
+        for period, demands in period_data.items():
+            if demands:
+                period_averages[period] = sum(demands) / len(demands)
+        
+        if not period_averages:
+            logger.warning(f"No valid period averages found for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Calculate average demand across all periods
+        all_demands = [d for demands in period_data.values() for d in demands]
+        overall_average = sum(all_demands) / len(all_demands) if all_demands else 0.0
+        
+        if overall_average == 0.0:
+            logger.warning(f"Overall average demand is zero for SKU {sku_id} in store {store_id}")
+            return None
+        
+        # Calculate seasonal indices
+        seasonal_indices = {}
+        for period in range(1, periodicity + 1):
+            if period in period_averages and period_averages[period] > 0:
+                seasonal_indices[period] = period_averages[period] / overall_average
+            else:
+                seasonal_indices[period] = 1.0  # Default to 1.0 if no data
+        
+        return seasonal_indices
+    
+    except Exception as e:
+        logger.error(f"Error simulating seasonal profile: {e}")
+        return None
+
+def create_seasonal_profile(session, profile_id, seasonal_indices, description=None):
+    """
+    Create a seasonal profile.
+    
+    Args:
+        session: SQLAlchemy session
+        profile_id (str): Profile ID
+        seasonal_indices (dict): Dictionary with seasonal indices
+        description (str): Optional profile description
+    
+    Returns:
+        SeasonalProfile: Created profile object
+    """
+    try:
+        # Check if profile already exists
+        profile = session.query(SeasonalProfile).filter(
+            SeasonalProfile.profile_id == profile_id
+        ).first()
+        
+        if not profile:
+            # Create new profile
+            profile = SeasonalProfile(
+                profile_id=profile_id,
+                description=description or f"Profile {profile_id}"
+            )
+            session.add(profile)
+        
+        # Update profile indices
+        for period, index in seasonal_indices.items():
+            # Set field based on period number
+            setattr(profile, f"p{period}_index", index)
+        
+        # Commit changes
+        session.commit()
+        return profile
+    
+    except Exception as e:
+        logger.error(f"Error creating seasonal profile: {e}")
+        session.rollback()
+        return None
+
+def apply_seasonal_profile(session, sku_id, store_id, profile_id):
+    """
+    Apply a seasonal profile to a SKU.
+    
+    Args:
+        session: SQLAlchemy session
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+        profile_id (str): Profile ID
+    
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        # Get SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if not sku:
+            logger.error(f"SKU {sku_id} not found in store {store_id}")
+            return False
+        
+        # Check if profile exists
+        profile = session.query(SeasonalProfile).filter(
+            SeasonalProfile.profile_id == profile_id
+        ).first()
+        
+        if not profile:
+            logger.error(f"Profile {profile_id} not found")
+            return False
+        
+        # Apply profile to SKU
+        sku.demand_profile_id = profile_id
+        
+        # Reforecast with seasonal profile
+        # Get forecast data
+        forecast_data = session.query(ForecastData).filter(
+            and_(ForecastData.sku_id == sku_id, ForecastData.store_id == store_id)
+        ).first()
+        
+        if forecast_data:
+            # Get current period
+            periodicity = getattr(sku, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
+            current_year, current_period = get_current_period(periodicity)
+            
+            # Get seasonal index for current period
+            seasonal_index = get_seasonal_index(profile, current_period)
+            
+            # Adjust forecast for seasonality
+            if seasonal_index != 0:
+                new_period_forecast = forecast_data.period_forecast / seasonal_index
+                
+                # Update forecast data
+                forecast_data.period_forecast = new_period_forecast
+                
+                # Update other forecast periods
+                if periodicity == 13:  # 4-weekly
+                    forecast_data.weekly_forecast = new_period_forecast / 4.0
+                    forecast_data.quarterly_forecast = new_period_forecast * 3.0
+                    forecast_data.yearly_forecast = new_period_forecast * 13.0
+                else:  # Weekly
+                    forecast_data.weekly_forecast = new_period_forecast
+                    forecast_data.quarterly_forecast = new_period_forecast * 13.0
+                    forecast_data.yearly_forecast = new_period_forecast * 52.0
+        
+        # Commit changes
+        session.commit()
+        return True
+    
+    except Exception as e:
+        logger.error(f"Error applying seasonal profile: {e}")
+        session.rollback()
+        return False
+
+def get_seasonal_index_for_period(profile_id, period_number):
+    """
+    Get seasonal index for a specific period.
+    
+    Args:
+        profile_id (str): Profile ID
+        period_number (int): Period number
+    
+    Returns:
+        float: Seasonal index
+    """
+    session = get_session()
+    try:
+        # Get profile
+        profile = session.query(SeasonalProfile).filter(
+            SeasonalProfile.profile_id == profile_id
+        ).first()
+        
+        if not profile:
+            logger.error(f"Profile {profile_id} not found")
+            return 1.0  # Default to 1.0 if profile not found
+        
+        # Get index for period
+        return get_seasonal_index(profile, period_number)
+    
+    except Exception as e:
+        logger.error(f"Error getting seasonal index: {e}")
+        return 1.0  # Default to 1.0 on error
+    
+    finally:
+        session.close()
