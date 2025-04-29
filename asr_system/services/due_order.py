@@ -1,17 +1,17 @@
 """
-Due Order service for the ASR system.
+Due Order services for the ASR system.
 
-This module implements the logic for identifying orders that must be placed today
-to maintain service levels, considering item depletion rates, order points,
-and service level goals.
+This module implements the algorithms and functions for due order determination, 
+prioritization, and highlighting critical orders that need immediate attention.
 """
 import logging
 import datetime
-from sqlalchemy import and_, func, desc
-from typing import Dict, List, Tuple, Optional, Any
+from typing import List, Dict, Any, Tuple, Optional
+from sqlalchemy import and_, or_, func, desc
+from sqlalchemy.orm import Session
 
 from models.sku import SKU, StockStatus, ForecastData
-from models.source import Source, SourceBracket
+from models.source import Source
 from models.order import Order, OrderLine, OrderStatus, OrderCategory
 from utils.helpers import calculate_available_balance
 from utils.db import get_session
@@ -19,572 +19,673 @@ from config.settings import ASR_CONFIG
 
 logger = logging.getLogger(__name__)
 
-def calculate_items_at_risk_percentage(session, source_id: int, store_id: str) -> float:
+def calculate_urgency_score(session: Session, order_id: int) -> float:
     """
-    Calculate the percentage of SKUs in a source that are at or below their order points.
+    Calculate an urgency score for a due order based on multiple factors.
+    Higher scores indicate higher urgency.
+    
+    Factors considered:
+    - Number of SKUs at or below order point
+    - Number of high-service level SKUs at risk
+    - Average service level attainment vs goal
+    - Risk of stockout
+    - Order value
     
     Args:
         session: SQLAlchemy session
-        source_id (int): Source ID
-        store_id (str): Store ID
+        order_id: Order ID
     
     Returns:
-        float: Percentage of SKUs at risk (0-100)
+        float: Urgency score (higher is more urgent)
     """
     try:
-        # Get active SKUs for this source
-        active_skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source_id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
-        ).all()
+        # Get the order
+        order = session.query(Order).filter(Order.id == order_id).first()
         
-        if not active_skus:
-            logger.warning(f"No active SKUs found for source {source_id} in store {store_id}")
+        if not order:
+            logger.error(f"Order {order_id} not found")
             return 0.0
         
-        # Count SKUs at or below order point
-        skus_at_risk = 0
+        # Initialize urgency components
+        urgency_components = {
+            'order_point_ratio': 0.0,  # % of items at/below order point
+            'high_service_risk': 0.0,   # % of high service items at risk
+            'service_gap': 0.0,         # gap between attained and goal service
+            'stockout_risk': 0.0,       # average days until stockout
+            'order_value': 0.0          # normalized order value
+        }
         
-        for sku in active_skus:
-            # Get stock status
-            if not sku.stock_status:
-                continue
-            
-            # Calculate available balance
-            available_balance = calculate_available_balance(
-                sku.stock_status.on_hand,
-                sku.stock_status.on_order,
-                sku.stock_status.customer_back_order,
-                sku.stock_status.reserved,
-                sku.stock_status.quantity_held
-            )
-            
-            # Calculate VOP (Vendor Order Point)
-            from services.safety_stock import calculate_vendor_order_point
-            vop = calculate_vendor_order_point(session, sku.sku_id, store_id)
-            
-            # Check if balance is at or below VOP
-            if available_balance <= vop['units']:
-                skus_at_risk += 1
+        # Get order lines and associated SKUs
+        order_lines = session.query(OrderLine).filter(OrderLine.order_id == order_id).all()
         
-        # Calculate percentage
-        total_skus = len(active_skus)
-        percent_at_risk = (skus_at_risk / total_skus) * 100.0 if total_skus > 0 else 0.0
+        if not order_lines:
+            return 0.0
         
-        return percent_at_risk
-    
-    except Exception as e:
-        logger.error(f"Error calculating items at risk percentage: {e}")
-        return 0.0
-
-def calculate_projected_service_impact(session, source_id: int, store_id: str, delay_days: int = 1) -> Dict[str, Any]:
-    """
-    Calculate the projected impact on service levels if an order is delayed by a given number of days.
-    
-    Args:
-        session: SQLAlchemy session
-        source_id (int): Source ID
-        store_id (str): Store ID
-        delay_days (int): Number of days to delay the order
-    
-    Returns:
-        dict: Service impact assessment
-    """
-    try:
-        # Get active SKUs for this source
-        active_skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source_id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
-        ).all()
-        
-        if not active_skus:
-            logger.warning(f"No active SKUs found for source {source_id} in store {store_id}")
-            return {
-                'service_impact': 0.0,
-                'skus_affected': 0,
-                'high_service_skus_affected': 0,
-                'total_skus': 0
-            }
-        
-        # Initialize counters
-        skus_affected = 0
-        high_service_skus_affected = 0
-        service_impact_sum = 0.0
-        
-        # Get prime limit for identifying high-service SKUs
+        # Get the OP Prime Limit % from company settings
         op_prime_limit = ASR_CONFIG.get('order_point_prime_limit', 95)
         
-        for sku in active_skus:
+        # Count items
+        total_items = len(order_lines)
+        order_point_items = 0
+        high_service_items = 0
+        high_service_at_risk = 0
+        service_gap_sum = 0.0
+        days_to_stockout_sum = 0.0
+        
+        for line in order_lines:
+            # Get the SKU
+            sku = session.query(SKU).filter(SKU.id == line.sku_id).first()
+            if not sku:
+                continue
+                
+            # Get stock status
+            stock_status = sku.stock_status
+            if not stock_status:
+                continue
+                
+            # Calculate available balance
+            available_balance = calculate_available_balance(
+                stock_status.on_hand,
+                stock_status.on_order,
+                stock_status.customer_back_order,
+                stock_status.reserved,
+                stock_status.quantity_held
+            )
+            
             # Get forecast data
             forecast_data = session.query(ForecastData).filter(
                 and_(ForecastData.sku_id == sku.sku_id, ForecastData.store_id == sku.store_id)
             ).first()
             
-            if not forecast_data or not sku.stock_status:
+            if not forecast_data or forecast_data.weekly_forecast <= 0:
                 continue
+                
+            # Calculate Item Order Point (IOP = Safety Stock + Lead Time)
+            safety_stock_days = line.item_delay if line.item_delay is not None else 0
+            lead_time_days = sku.lead_time_forecast if sku.lead_time_forecast else 0
+            item_order_point = safety_stock_days + lead_time_days
             
-            # Calculate daily forecast
-            daily_forecast = forecast_data.weekly_forecast / 7.0 if forecast_data.weekly_forecast else 0
-            
-            if daily_forecast <= 0:
-                continue
-            
-            # Calculate available balance
-            available_balance = calculate_available_balance(
-                sku.stock_status.on_hand,
-                sku.stock_status.on_order,
-                sku.stock_status.customer_back_order,
-                sku.stock_status.reserved,
-                sku.stock_status.quantity_held
-            )
-            
-            # Calculate days of supply
+            # Calculate days of supply remaining
+            daily_forecast = forecast_data.weekly_forecast / 7
             days_of_supply = available_balance / daily_forecast if daily_forecast > 0 else float('inf')
             
-            # Calculate Safety Stock and Item Order Point
-            from services.safety_stock import calculate_item_order_point
-            iop = calculate_item_order_point(session, sku.sku_id, store_id)
-            safety_stock_days = iop.get('safety_stock_days', 0)
+            # Check if at or below order point
+            if available_balance <= item_order_point:
+                order_point_items += 1
             
-            # Calculate lead time
-            lead_time_days = iop.get('lead_time_days', 0)
-            
-            # Check if delaying the order would put the SKU at risk
-            # The SKU is at risk if the delay would cause the balance to fall below safety stock
-            if days_of_supply <= (lead_time_days + delay_days):
-                skus_affected += 1
+            # Check if high service SKU
+            is_high_service = sku.service_level_goal and sku.service_level_goal >= op_prime_limit
+            if is_high_service:
+                high_service_items += 1
                 
-                # Calculate projected service impact
-                if days_of_supply <= safety_stock_days:
-                    # If delay causes depletion into safety stock, calculate impact
-                    service_level_goal = sku.service_level_goal or 95
-                    days_into_safety = max(0, safety_stock_days - days_of_supply + delay_days)
-                    
-                    # Impact is proportional to days into safety stock
-                    # Higher service level goals are affected more severely
-                    impact_factor = days_into_safety / safety_stock_days if safety_stock_days > 0 else 1.0
-                    service_impact = service_level_goal * impact_factor * 0.01
-                    service_impact_sum += service_impact
-                    
-                    # Check if this is a high-service SKU
-                    if service_level_goal >= op_prime_limit:
-                        high_service_skus_affected += 1
+                # Check if high service item at risk
+                if available_balance <= item_order_point:
+                    high_service_at_risk += 1
+            
+            # Calculate service gap
+            if sku.service_level_goal and sku.attained_service_level:
+                service_gap = max(0, sku.service_level_goal - sku.attained_service_level)
+                service_gap_sum += service_gap
+            
+            # Calculate days to stockout
+            days_to_stockout_sum += min(days_of_supply, 30)  # Cap at 30 days
         
-        total_skus = len(active_skus)
+        # Calculate component values
+        if total_items > 0:
+            urgency_components['order_point_ratio'] = order_point_items / total_items
+            urgency_components['service_gap'] = service_gap_sum / total_items
+            urgency_components['stockout_risk'] = 1.0 - (days_to_stockout_sum / (total_items * 30))
         
-        # Average impact across all SKUs
-        avg_service_impact = service_impact_sum / total_skus if total_skus > 0 else 0.0
+        if high_service_items > 0:
+            urgency_components['high_service_risk'] = high_service_at_risk / high_service_items
         
-        return {
-            'service_impact': avg_service_impact,
-            'skus_affected': skus_affected,
-            'high_service_skus_affected': high_service_skus_affected,
-            'total_skus': total_skus,
-            'percent_affected': (skus_affected / total_skus) * 100.0 if total_skus > 0 else 0.0
+        # Normalize order value (assuming a maximum order value of $100,000)
+        max_order_value = 100000.0
+        order_value = order.final_adjust_amount if order.final_adjust_amount else 0.0
+        urgency_components['order_value'] = min(order_value / max_order_value, 1.0)
+        
+        # Calculate weighted score
+        # Weights can be adjusted based on business priorities
+        weights = {
+            'order_point_ratio': 0.25,
+            'high_service_risk': 0.3,
+            'service_gap': 0.15,
+            'stockout_risk': 0.2,
+            'order_value': 0.1
         }
+        
+        urgency_score = sum(urgency_components[key] * weights[key] for key in urgency_components)
+        
+        # Scale to 0-100 range for easier interpretation
+        return urgency_score * 100
     
     except Exception as e:
-        logger.error(f"Error calculating projected service impact: {e}")
-        return {
-            'service_impact': 0.0,
-            'skus_affected': 0,
-            'high_service_skus_affected': 0,
-            'total_skus': 0,
-            'error': str(e)
-        }
+        logger.error(f"Error calculating urgency score: {e}")
+        return 0.0
 
-def is_service_due_order(session, source_id: int, store_id: str) -> Tuple[bool, Dict[str, Any]]:
+def get_prioritized_due_orders(session: Session, buyer_id: Optional[str] = None, 
+                              store_id: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
     """
-    Determine if an order is due based on service level requirements.
-    
-    This function analyzes the SKUs in a source to determine if an order
-    must be placed today to maintain service level goals.
+    Get due orders sorted by urgency score.
     
     Args:
         session: SQLAlchemy session
-        source_id (int): Source ID
-        store_id (str): Store ID
+        buyer_id: Filter by buyer ID (optional)
+        store_id: Filter by store ID (optional)
+        limit: Maximum number of orders to return
     
     Returns:
-        tuple: (is_due, details) where is_due is a boolean and details is a dict
+        list: List of due orders with urgency scores and metrics
     """
     try:
-        # Get source
-        source = session.query(Source).filter(Source.id == source_id).first()
-        
-        if not source:
-            logger.error(f"Source ID {source_id} not found")
-            return False, {'reason': 'source_not_found'}
-        
-        # Check if order is fixed frequency
-        if is_fixed_frequency_due(source):
-            return True, {'reason': 'fixed_frequency'}
-        
-        # Check if order is due based on next_order_date
-        if source.next_order_date:
-            today = datetime.datetime.now().date()
-            if today >= source.next_order_date.date():
-                return True, {'reason': 'scheduled_date'}
-        
-        # Check percentage of SKUs at risk
-        percent_at_risk = calculate_items_at_risk_percentage(session, source_id, store_id)
-        
-        # Get threshold from config
-        at_risk_threshold = ASR_CONFIG.get('at_risk_threshold', 20.0)
-        
-        if percent_at_risk >= at_risk_threshold:
-            return True, {
-                'reason': 'at_risk_percentage',
-                'percent_at_risk': percent_at_risk,
-                'threshold': at_risk_threshold
-            }
-        
-        # Check projected service impact if order is delayed by 1 day
-        service_impact = calculate_projected_service_impact(session, source_id, store_id, 1)
-        
-        # Get service impact threshold from config
-        impact_threshold = ASR_CONFIG.get('service_impact_threshold', 0.05)
-        
-        if service_impact['service_impact'] > impact_threshold:
-            return True, {
-                'reason': 'service_impact',
-                'service_impact': service_impact,
-                'threshold': impact_threshold
-            }
-        
-        # Check high service SKUs specifically
-        if service_impact['high_service_skus_affected'] > 0:
-            high_service_threshold = ASR_CONFIG.get('high_service_threshold', 1)
-            
-            if service_impact['high_service_skus_affected'] >= high_service_threshold:
-                return True, {
-                    'reason': 'high_service_skus',
-                    'high_service_skus_affected': service_impact['high_service_skus_affected'],
-                    'threshold': high_service_threshold
-                }
-        
-        # Check if order meets current bracket minimum and should be ordered
-        if source.order_when_minimum_met and source.current_bracket > 0:
-            # Calculate total SOQ value
-            total_value = calculate_order_value(session, source_id, store_id)
-            
-            # Get current bracket minimum
-            bracket = next((b for b in source.brackets if b.bracket_number == source.current_bracket), None)
-            
-            if bracket and total_value >= bracket.minimum:
-                return True, {
-                    'reason': 'bracket_minimum_met',
-                    'order_value': total_value,
-                    'bracket_minimum': bracket.minimum
-                }
-        
-        # If we get here, the order is not due
-        return False, {
-            'reason': 'not_due',
-            'percent_at_risk': percent_at_risk,
-            'service_impact': service_impact['service_impact']
-        }
-    
-    except Exception as e:
-        logger.error(f"Error determining if order is service due: {e}")
-        return False, {'reason': 'error', 'error': str(e)}
-
-def is_fixed_frequency_due(source: Source) -> bool:
-    """
-    Determine if an order is due because of fixed frequency ordering.
-    
-    Args:
-        source: Source object
-    
-    Returns:
-        bool: True if order is due based on fixed frequency, False otherwise
-    """
-    # Check if order is on a fixed schedule
-    if source.order_days_in_week:
-        # Fixed days of week
-        today = datetime.datetime.now().weekday() + 1  # 1=Monday, 7=Sunday
-        if str(today) in source.order_days_in_week:
-            # Check week requirement if any
-            if source.order_week == 0:  # Every week
-                return True
-            elif source.order_week == 1:  # Odd weeks
-                week_number = datetime.datetime.now().isocalendar()[1]
-                return week_number % 2 == 1
-            elif source.order_week == 2:  # Even weeks
-                week_number = datetime.datetime.now().isocalendar()[1]
-                return week_number % 2 == 0
-    
-    # Check for specific day of month
-    if source.order_day_in_month:
-        today = datetime.datetime.now().day
-        return today == source.order_day_in_month
-    
-    return False
-
-def calculate_order_value(session, source_id: int, store_id: str) -> float:
-    """
-    Calculate the total value of a potential order based on SOQs.
-    
-    Args:
-        session: SQLAlchemy session
-        source_id (int): Source ID
-        store_id (str): Store ID
-    
-    Returns:
-        float: Total order value
-    """
-    total_value = 0.0
-    
-    # Get active SKUs
-    skus = session.query(SKU).filter(
-        and_(
-            SKU.source_id == source_id,
-            SKU.store_id == store_id,
-            SKU.buyer_class.in_(['R', 'W'])
+        # Get due orders
+        query = session.query(Order).filter(
+            and_(
+                Order.status == OrderStatus.DUE,
+                Order.category == OrderCategory.DUE
+            )
         )
-    ).all()
-    
-    for sku in skus:
-        # Calculate SOQ for this SKU
-        from services.replenishment import calculate_suggested_order_quantity
-        soq = calculate_suggested_order_quantity(session, sku.sku_id, store_id)
-        
-        # Add to total
-        total_value += soq['units'] * sku.purchase_price
-    
-    return total_value
-
-def identify_due_orders(session, buyer_id: Optional[str] = None, store_id: Optional[str] = None) -> List[Dict[str, Any]]:
-    """
-    Identify all orders that are due today based on service requirements.
-    
-    Args:
-        session: SQLAlchemy session
-        buyer_id (str): Filter by buyer ID (optional)
-        store_id (str): Filter by store ID (optional)
-    
-    Returns:
-        list: List of due orders with details
-    """
-    try:
-        # Build query for sources
-        query = session.query(Source)
         
         # Apply filters
         if buyer_id:
-            query = query.filter(Source.buyer_id == buyer_id)
+            query = query.join(Order.source).filter(Source.buyer_id == buyer_id)
         
-        # Get all sources
-        sources = query.all()
+        if store_id:
+            query = query.filter(Order.store_id == store_id)
         
-        # Determine which stores to process
-        stores = [store_id] if store_id else ['STORE1']  # Example - in a real system, query all stores
+        # Get orders
+        orders = query.all()
         
-        # Results
-        due_orders = []
+        # Calculate urgency scores and metrics
+        results = []
         
-        # Process each source for each store
-        for source in sources:
-            try:
-                for store in stores:
-                    # Check if order is due
-                    is_due, details = is_service_due_order(session, source.id, store)
-                    
-                    if is_due:
-                        # Get existing order or create new one
-                        order = session.query(Order).filter(
-                            and_(
-                                Order.source_id == source.id,
-                                Order.store_id == store,
-                                Order.status.in_([OrderStatus.PLANNED, OrderStatus.DUE])
-                            )
-                        ).first()
-                        
-                        if not order:
-                            # Create new order
-                            order = Order(
-                                source_id=source.id,
-                                store_id=store,
-                                status=OrderStatus.DUE,
-                                category=OrderCategory.DUE,
-                                order_date=datetime.datetime.now()
-                            )
-                            session.add(order)
-                            session.flush()  # Get ID without committing
-                        else:
-                            # Update existing order
-                            order.status = OrderStatus.DUE
-                            order.category = OrderCategory.DUE
-                        
-                        # Add to results
-                        due_orders.append({
-                            'order_id': order.id,
-                            'source_id': source.source_id,
-                            'source_name': source.name,
-                            'store_id': store,
-                            'reason': details['reason'],
-                            'details': details
-                        })
+        for order in orders:
+            # Calculate urgency score
+            urgency_score = calculate_urgency_score(session, order.id)
             
-            except Exception as e:
-                logger.error(f"Error processing source {source.source_id}: {e}")
-                continue
+            # Get order metrics
+            metrics = get_order_risk_metrics(session, order.id)
+            
+            # Check if critical
+            is_critical = (
+                urgency_score >= 75.0 or               # High urgency score
+                metrics['days_to_stockout'] <= 1.0 or  # Imminent stockout
+                metrics['high_service_at_risk'] >= 3   # Multiple high service SKUs at risk
+            )
+            
+            results.append({
+                'order_id': order.id,
+                'source_id': order.source_id,
+                'source_name': order.source.name if order.source else None,
+                'store_id': order.store_id,
+                'order_date': order.order_date,
+                'expected_delivery_date': order.expected_delivery_date,
+                'urgency_score': urgency_score,
+                'is_critical': is_critical,
+                'order_point_count': metrics['order_point_count'],
+                'high_service_at_risk': metrics['high_service_at_risk'],
+                'avg_days_to_stockout': metrics['days_to_stockout'],
+                'service_level_gap': metrics['service_gap'],
+                'order_value': order.final_adjust_amount
+            })
         
-        # No need to commit changes - that will be handled by the calling function
+        # Sort by urgency score (highest first)
+        results.sort(key=lambda x: x['urgency_score'], reverse=True)
         
-        return due_orders
+        # Apply limit
+        if limit:
+            results = results[:limit]
+        
+        return results
     
     except Exception as e:
-        logger.error(f"Error identifying due orders: {e}")
+        logger.error(f"Error getting prioritized due orders: {e}")
         return []
 
-def get_order_delay(session, source_id: int, store_id: str) -> int:
+def get_order_risk_metrics(session: Session, order_id: int) -> Dict[str, Any]:
     """
-    Calculate the approximate number of days until an order becomes due.
+    Calculate risk metrics for a due order.
     
     Args:
         session: SQLAlchemy session
-        source_id (int): Source ID
-        store_id (str): Store ID
+        order_id: Order ID
     
     Returns:
-        int: Approximate days until order is due
+        dict: Dictionary with risk metrics
     """
     try:
-        # Get source
-        source = session.query(Source).filter(Source.id == source_id).first()
+        # Initialize metrics
+        metrics = {
+            'order_point_count': 0,       # Number of SKUs at or below order point
+            'high_service_at_risk': 0,    # Number of high service SKUs at risk
+            'service_gap': 0.0,           # Average service level gap
+            'days_to_stockout': float('inf')  # Average days to stockout (limited to 30)
+        }
         
-        if not source:
-            logger.error(f"Source ID {source_id} not found")
-            return 0
+        # Get the order
+        order = session.query(Order).filter(Order.id == order_id).first()
         
-        # Check if order is already due
-        is_due, _ = is_service_due_order(session, source_id, store_id)
-        if is_due:
-            return 0
+        if not order:
+            return metrics
         
-        # Check if order is on a fixed schedule
-        if source.order_days_in_week or source.order_day_in_month:
-            return calculate_days_to_fixed_order(source)
+        # Get order lines
+        order_lines = session.query(OrderLine).filter(OrderLine.order_id == order_id).all()
         
-        # Check next order date
-        if source.next_order_date:
-            today = datetime.datetime.now().date()
-            days_to_next = (source.next_order_date.date() - today).days
-            if days_to_next > 0:
-                return days_to_next
+        if not order_lines:
+            return metrics
         
-        # Calculate based on depletion rates
-        # Get percent at risk and project forward
-        current_percent = calculate_items_at_risk_percentage(session, source_id, store_id)
-        threshold = ASR_CONFIG.get('at_risk_threshold', 20.0)
+        # Get the OP Prime Limit % from company settings
+        op_prime_limit = ASR_CONFIG.get('order_point_prime_limit', 95)
         
-        if current_percent >= threshold:
-            return 0
+        # Process each line
+        total_items = len(order_lines)
+        service_gap_sum = 0.0
+        days_to_stockout_sum = 0.0
+        min_days_to_stockout = float('inf')
         
-        # Calculate depletion rate
-        # This is a simplification - in reality, you would examine each SKU individually
-        active_skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source_id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
+        for line in order_lines:
+            # Get the SKU
+            sku = session.query(SKU).filter(SKU.id == line.sku_id).first()
+            if not sku:
+                continue
+                
+            # Get stock status
+            stock_status = sku.stock_status
+            if not stock_status:
+                continue
+                
+            # Calculate available balance
+            available_balance = calculate_available_balance(
+                stock_status.on_hand,
+                stock_status.on_order,
+                stock_status.customer_back_order,
+                stock_status.reserved,
+                stock_status.quantity_held
             )
-        ).all()
-        
-        if not active_skus:
-            return source.order_cycle or 30  # Default if no data
-        
-        # Calculate average daily depletion rate for percent at risk
-        # Simple model: assume linear depletion toward threshold
-        avg_depletion_rate = 0.0
-        for sku in active_skus:
+            
+            # Get forecast data
             forecast_data = session.query(ForecastData).filter(
                 and_(ForecastData.sku_id == sku.sku_id, ForecastData.store_id == sku.store_id)
             ).first()
             
-            if not forecast_data or not sku.stock_status:
+            if not forecast_data:
                 continue
                 
-            # Calculate daily forecast and depletion
-            daily_forecast = forecast_data.weekly_forecast / 7.0 if forecast_data.weekly_forecast else 0
+            # Calculate Item Order Point (IOP = Safety Stock + Lead Time)
+            safety_stock_days = line.item_delay if line.item_delay is not None else 0
+            lead_time_days = sku.lead_time_forecast if sku.lead_time_forecast else 0
+            item_order_point = safety_stock_days + lead_time_days
             
-            if daily_forecast > 0:
-                avg_depletion_rate += 1.0 / len(active_skus)
+            # Calculate days of supply remaining
+            daily_forecast = forecast_data.weekly_forecast / 7
+            days_of_supply = available_balance / daily_forecast if daily_forecast > 0 and daily_forecast is not None else float('inf')
+            
+            # Check if at or below order point
+            if available_balance <= item_order_point:
+                metrics['order_point_count'] += 1
+            
+            # Check if high service SKU at risk
+            is_high_service = sku.service_level_goal and sku.service_level_goal >= op_prime_limit
+            if is_high_service and available_balance <= item_order_point:
+                metrics['high_service_at_risk'] += 1
+            
+            # Calculate service gap
+            if sku.service_level_goal and sku.attained_service_level:
+                service_gap = max(0, sku.service_level_goal - sku.attained_service_level)
+                service_gap_sum += service_gap
+            
+            # Calculate days to stockout
+            capped_days = min(days_of_supply, 30.0)  # Cap at 30 days
+            days_to_stockout_sum += capped_days
+            min_days_to_stockout = min(min_days_to_stockout, capped_days)
         
-        # If we can't calculate a rate, return the order cycle
-        if avg_depletion_rate <= 0:
-            return source.order_cycle or 30
+        # Calculate average metrics
+        if total_items > 0:
+            metrics['service_gap'] = service_gap_sum / total_items
+            metrics['days_to_stockout'] = days_to_stockout_sum / total_items
         
-        # Estimate days until threshold is reached
-        days_to_threshold = (threshold - current_percent) / avg_depletion_rate
+        # Also include the minimum days to stockout (most critical)
+        metrics['min_days_to_stockout'] = min_days_to_stockout if min_days_to_stockout != float('inf') else 30.0
         
-        # Round and ensure minimum 1 day if not already due
-        return max(1, round(days_to_threshold))
+        return metrics
     
     except Exception as e:
-        logger.error(f"Error calculating order delay: {e}")
-        return 30  # Default fallback
+        logger.error(f"Error calculating order risk metrics: {e}")
+        return {
+            'order_point_count': 0,
+            'high_service_at_risk': 0,
+            'service_gap': 0.0,
+            'days_to_stockout': 30.0
+        }
 
-def calculate_days_to_fixed_order(source: Source) -> int:
+def identify_critical_due_orders(session: Session, buyer_id: Optional[str] = None, 
+                               store_id: Optional[str] = None) -> List[Dict[str, Any]]:
     """
-    Calculate days until the next fixed-frequency order is due.
+    Identify critical due orders that need immediate attention.
     
     Args:
-        source: Source object
+        session: SQLAlchemy session
+        buyer_id: Filter by buyer ID (optional)
+        store_id: Filter by store ID (optional)
     
     Returns:
-        int: Days until next fixed order
+        list: List of critical due orders
     """
-    today = datetime.datetime.now()
-    current_day = today.weekday() + 1  # 1=Monday, 7=Sunday
-    current_date = today.day
-    
-    # Check for day of week ordering
-    if source.order_days_in_week:
-        order_days = [int(day) for day in source.order_days_in_week if day.isdigit()]
+    try:
+        # Get all prioritized due orders
+        all_orders = get_prioritized_due_orders(session, buyer_id, store_id, limit=None)
         
-        if order_days:
-            # Check week requirement
-            week_matches = True
-            if source.order_week > 0:
-                current_week = today.isocalendar()[1]
-                week_matches = (current_week % 2 == 1 and source.order_week == 1) or \
-                              (current_week % 2 == 0 and source.order_week == 2)
-            
-            if week_matches:
-                # Find next ordering day
-                days_ahead = [(day - current_day) % 7 for day in order_days]
-                days_ahead = [days for days in days_ahead if days > 0]
+        # Filter for critical orders
+        critical_orders = [order for order in all_orders if order['is_critical']]
+        
+        return critical_orders
+    
+    except Exception as e:
+        logger.error(f"Error identifying critical due orders: {e}")
+        return []
+
+def get_due_order_summary_metrics(session: Session, buyer_id: Optional[str] = None, 
+                                store_id: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Calculate summary metrics for all due orders.
+    
+    Args:
+        session: SQLAlchemy session
+        buyer_id: Filter by buyer ID (optional)
+        store_id: Filter by store ID (optional)
+    
+    Returns:
+        dict: Dictionary with summary metrics
+    """
+    try:
+        # Get all prioritized due orders
+        all_orders = get_prioritized_due_orders(session, buyer_id, store_id, limit=None)
+        
+        # Calculate summary metrics
+        total_orders = len(all_orders)
+        critical_orders = sum(1 for order in all_orders if order['is_critical'])
+        total_value = sum(order['order_value'] for order in all_orders if order['order_value'])
+        high_service_at_risk = sum(order['high_service_at_risk'] for order in all_orders)
+        
+        # Calculate orders by urgency level
+        high_urgency = sum(1 for order in all_orders if order['urgency_score'] >= 75)
+        medium_urgency = sum(1 for order in all_orders if 50 <= order['urgency_score'] < 75)
+        low_urgency = sum(1 for order in all_orders if order['urgency_score'] < 50)
+        
+        # Calculate orders by days to stockout
+        immediate_risk = sum(1 for order in all_orders if order['avg_days_to_stockout'] <= 1)
+        short_term_risk = sum(1 for order in all_orders if 1 < order['avg_days_to_stockout'] <= 3)
+        medium_term_risk = sum(1 for order in all_orders if 3 < order['avg_days_to_stockout'] <= 7)
+        
+        return {
+            'total_due_orders': total_orders,
+            'critical_orders': critical_orders,
+            'total_order_value': total_value,
+            'high_service_skus_at_risk': high_service_at_risk,
+            'urgency_breakdown': {
+                'high': high_urgency,
+                'medium': medium_urgency,
+                'low': low_urgency
+            },
+            'stockout_risk_breakdown': {
+                'immediate': immediate_risk,
+                'short_term': short_term_risk,
+                'medium_term': medium_term_risk
+            }
+        }
+    
+    except Exception as e:
+        logger.error(f"Error calculating due order summary metrics: {e}")
+        return {
+            'total_due_orders': 0,
+            'critical_orders': 0,
+            'total_order_value': 0,
+            'high_service_skus_at_risk': 0,
+            'urgency_breakdown': {'high': 0, 'medium': 0, 'low': 0},
+            'stockout_risk_breakdown': {'immediate': 0, 'short_term': 0, 'medium_term': 0}
+        }
+
+def update_due_order_status(session: Session) -> Dict[str, Any]:
+    """
+    Update the status of orders to mark them as due based on various criteria.
+    This function is typically called during nightly processing.
+    
+    Criteria for an order becoming due:
+    1. Fixed order day has arrived
+    2. Enough SKUs have depleted to their order points to place the source's 
+       average service level at risk
+    3. When minimum order value has been met (if configured)
+    
+    Args:
+        session: SQLAlchemy session
+    
+    Returns:
+        dict: Statistics about the update
+    """
+    try:
+        # Statistics
+        stats = {
+            'orders_processed': 0,
+            'orders_marked_due': 0,
+            'orders_due_to_fixed_schedule': 0,
+            'orders_due_to_service_risk': 0,
+            'orders_due_to_minimum_met': 0,
+            'errors': 0
+        }
+        
+        # Get orders that are not due or accepted
+        orders = session.query(Order).filter(
+            and_(
+                Order.status != OrderStatus.DUE,
+                Order.status != OrderStatus.ACCEPTED,
+                Order.status != OrderStatus.PURGED
+            )
+        ).all()
+        
+        stats['orders_processed'] = len(orders)
+        
+        # Process each order
+        for order in orders:
+            try:
+                # Check fixed order schedule
+                is_due_to_schedule = check_fixed_order_schedule(session, order)
                 
-                if days_ahead:
-                    return min(days_ahead)
-                elif source.order_week == 0:  # Every week
-                    return 7  # Next week, same day
-                else:
-                    return 7  # Next appropriate week
-            else:
-                # Need to wait for next appropriate week
-                return 7
+                # Check service level risk
+                is_due_to_service = check_service_level_risk(session, order)
+                
+                # Check minimum met
+                is_due_to_minimum = check_minimum_met(session, order)
+                
+                # Mark as due if any criteria is met
+                if is_due_to_schedule or is_due_to_service or is_due_to_minimum:
+                    order.status = OrderStatus.DUE
+                    order.category = OrderCategory.DUE
+                    stats['orders_marked_due'] += 1
+                    
+                    # Update specific reason counts
+                    if is_due_to_schedule:
+                        stats['orders_due_to_fixed_schedule'] += 1
+                    
+                    if is_due_to_service:
+                        stats['orders_due_to_service_risk'] += 1
+                    
+                    if is_due_to_minimum:
+                        stats['orders_due_to_minimum_met'] += 1
+            
+            except Exception as e:
+                logger.error(f"Error processing order {order.id}: {e}")
+                stats['errors'] += 1
+        
+        # Commit changes
+        session.commit()
+        
+        return stats
     
-    # Check for day of month ordering
-    if source.order_day_in_month:
-        if current_date < source.order_day_in_month:
-            # Later this month
-            return source.order_day_in_month - current_date
-        else:
-            # Next month
-            # Calculate days remaining in this month plus days until order day next month
-            import calendar
-            days_in_month = calendar.monthrange(today.year, today.month)[1]
-            return (days_in_month - current_date) + source.order_day_in_month
+    except Exception as e:
+        logger.error(f"Error updating due order status: {e}")
+        session.rollback()
+        return {'error': str(e)}
+
+def check_fixed_order_schedule(session: Session, order: Order) -> bool:
+    """
+    Check if an order is due based on fixed order schedule.
     
-    # Fallback to order cycle
-    return source.order_cycle or 30
-"""
+    Args:
+        session: SQLAlchemy session
+        order: Order object
+    
+    Returns:
+        bool: True if order is due based on schedule
+    """
+    try:
+        # Get the source
+        source = order.source
+        
+        if not source:
+            return False
+        
+        today = datetime.datetime.now()
+        
+        # Check order days in week
+        if source.order_days_in_week:
+            # Convert to list of integers
+            order_days = [int(day) for day in source.order_days_in_week if day.isdigit()]
+            
+            # Check if today is an order day
+            today_day = today.weekday() + 1  # 1=Monday, 7=Sunday
+            
+            if today_day in order_days:
+                # Check week requirement if any
+                if source.order_week == 0:  # Every week
+                    return True
+                elif source.order_week == 1:  # Odd weeks
+                    week_number = today.isocalendar()[1]
+                    return week_number % 2 == 1
+                elif source.order_week == 2:  # Even weeks
+                    week_number = today.isocalendar()[1]
+                    return week_number % 2 == 0
+        
+        # Check order day in month
+        if source.order_day_in_month:
+            today_day = today.day
+            return today_day == source.order_day_in_month
+        
+        # Check next order date
+        if source.next_order_date:
+            return today.date() >= source.next_order_date.date()
+        
+        return False
+    
+    except Exception as e:
+        logger.error(f"Error checking fixed order schedule: {e}")
+        return False
+
+def check_service_level_risk(session: Session, order: Order) -> bool:
+    """
+    Check if an order is due based on service level risk.
+    
+    Args:
+        session: SQLAlchemy session
+        order: Order object
+    
+    Returns:
+        bool: True if order is due based on service level risk
+    """
+    try:
+        # Get the source
+        source = order.source
+        
+        if not source:
+            return False
+        
+        # Get active SKUs
+        skus = session.query(SKU).filter(
+            and_(
+                SKU.source_id == source.id,
+                SKU.store_id == order.store_id,
+                SKU.buyer_class.in_(['R', 'W'])
+            )
+        ).all()
+        
+        if not skus:
+            return False
+        
+        # Count SKUs at risk
+        skus_at_risk = 0
+        total_skus = len(skus)
+        
+        for sku in skus:
+            # Get stock status
+            stock_status = sku.stock_status
+            if not stock_status:
+                continue
+                
+            # Calculate available balance
+            available_balance = calculate_available_balance(
+                stock_status.on_hand,
+                stock_status.on_order,
+                stock_status.customer_back_order,
+                stock_status.reserved,
+                stock_status.quantity_held
+            )
+            
+            # Calculate Vendor Order Point (VOP)
+            from services.safety_stock import calculate_vendor_order_point
+            vop = calculate_vendor_order_point(session, sku.sku_id, sku.store_id)
+            
+            # Check if balance is at or below VOP
+            if available_balance <= vop['units']:
+                skus_at_risk += 1
+        
+        # Calculate percentage of SKUs at risk
+        if total_skus == 0:
+            return False
+        
+        percent_at_risk = (skus_at_risk / total_skus) * 100.0
+        
+        # Get threshold from company settings or use default
+        threshold = ASR_CONFIG.get('due_order_risk_threshold', 20.0)  # Default: 20% of SKUs at risk
+        
+        return percent_at_risk >= threshold
+    
+    except Exception as e:
+        logger.error(f"Error checking service level risk: {e}")
+        return False
+
+def check_minimum_met(session: Session, order: Order) -> bool:
+    """
+    Check if an order is due based on minimum order value being met.
+    
+    Args:
+        session: SQLAlchemy session
+        order: Order object
+    
+    Returns:
+        bool: True if order is due based on minimum being met
+    """
+    try:
+        # Get the source
+        source = order.source
+        
+        if not source:
+            return False
+        
+        # Check if order when minimum met is enabled
+        if not source.order_when_minimum_met or source.current_bracket <= 0:
+            return False
+        
+        # Get current bracket
+        bracket = next((b for b in source.brackets if b.bracket_number == source.current_bracket), None)
+        
+        if not bracket or not bracket.minimum:
+            return False
+        
+        # Check if order meets minimum
+        if order.auto_adjust_amount >= bracket.minimum:
+            return True
+        
+        return False
+    
+    except Exception as e:
+        logger.error(f"Error checking minimum met: {e}")
+        return False
