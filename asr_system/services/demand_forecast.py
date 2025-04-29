@@ -191,17 +191,23 @@ def calculate_e3_regular_avs_forecast(session, sku_id, store_id):
         logger.error(f"Error calculating E3 Regular AVS forecast: {e}")
         return None
 
-def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
+def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id, forecast_demand_limit=None):
     """
-    Calculate a new forecast using the E3 Enhanced AVS method for slow-moving items.
+    Calculate a new forecast using the E3 Enhanced AVS method for slow-moving or intermittent items.
+    
+    The Enhanced AVS method is specifically designed for items with intermittent demand
+    patterns where many periods might have zero or very low demand interspersed with
+    periods of activity. The algorithm accounts for the time since last demand occurrence
+    to produce more accurate forecasts.
     
     Args:
         session: SQLAlchemy session
         sku_id (str): SKU ID
         store_id (str): Store ID
+        forecast_demand_limit (float): Optional override for the forecasting demand limit
     
     Returns:
-        dict: Dictionary with forecast results
+        dict: Dictionary with forecast results or None if insufficient data
     """
     try:
         # Get demand history
@@ -220,6 +226,25 @@ def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
             logger.warning(f"No forecast data found for SKU {sku_id} in store {store_id}")
             return None
         
+        # Get the SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if not sku:
+            logger.warning(f"SKU {sku_id} not found in store {store_id}")
+            return None
+        
+        # Get the forecasting demand limit - either from parameter, SKU, source, or company default
+        if forecast_demand_limit is None:
+            forecast_demand_limit = getattr(sku, 'forecasting_demand_limit', None)
+            
+            if forecast_demand_limit is None and sku.source:
+                forecast_demand_limit = getattr(sku.source, 'forecasting_demand_limit', None)
+            
+            if forecast_demand_limit is None:
+                forecast_demand_limit = ASR_CONFIG.get('forecasting_demand_limit', 0.0)
+        
         # Get current period
         periodicity = getattr(forecast_data, 'forecasting_periodicity', 13)  # Default to 13 (4-weekly)
         current_year, current_period = get_current_period(periodicity)
@@ -234,53 +259,88 @@ def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
         # Get previous period's demand
         prev_demand = history_data.get((prev_year, prev_period), 0.0)
         
-        # Get demand limit from SKU or source or company settings
-        sku = session.query(SKU).filter(
-            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
-        ).first()
-        
-        # Get the demand limit from configuration
-        forecasting_demand_limit = ASR_CONFIG.get('forecasting_demand_limit', 0.0)
-        
         # Check if demand exceeds the limit
-        if prev_demand <= forecasting_demand_limit:
-            # Do not update the forecast if demand is below limit
-            # Return current forecast values
+        if prev_demand <= forecast_demand_limit:
+            # For E3 Enhanced, unlike regular E3, we need to check when the last
+            # significant demand occurred to correctly adjust the track value
+            
+            # Initialize tracking variables
+            last_significant_demand = None
+            last_significant_period = None
+            last_significant_year = None
+            
+            # Find the most recent period with demand > limit by sorting history
+            sorted_periods = sorted(history_data.keys(), reverse=True)
+            
+            for year, period in sorted_periods:
+                demand = history_data.get((year, period), 0.0)
+                if demand > forecast_demand_limit:
+                    last_significant_demand = demand
+                    last_significant_period = period
+                    last_significant_year = year
+                    break
+            
+            # If no significant demand found in history, don't update the forecast
+            if last_significant_demand is None:
+                return {
+                    'period_forecast': forecast_data.period_forecast,
+                    'weekly_forecast': forecast_data.weekly_forecast,
+                    'quarterly_forecast': forecast_data.quarterly_forecast,
+                    'yearly_forecast': forecast_data.yearly_forecast,
+                    'madp': forecast_data.madp,
+                    'track': forecast_data.track
+                }
+            
+            # Calculate periods since last significant demand
+            if last_significant_year == prev_year:
+                periods_since_last_demand = prev_period - last_significant_period
+            else:
+                periods_since_last_demand = prev_period + (periodicity * (prev_year - last_significant_year)) - last_significant_period
+            
+            # Don't allow zero or negative periods
+            periods_since_last_demand = max(1, periods_since_last_demand)
+            
+            # Get the update frequency impact control from Company Control Factors
+            update_frequency_impact = ASR_CONFIG.get('update_frequency_impact', 0.95)
+            
+            # Adjust track for slow-moving items:
+            # As periods without demand increase, the impact of the last demand decreases
+            adjusted_track = forecast_data.track * (update_frequency_impact ** periods_since_last_demand)
+            
+            # Create forecast response with unchanged values as we didn't update
             return {
                 'period_forecast': forecast_data.period_forecast,
                 'weekly_forecast': forecast_data.weekly_forecast,
                 'quarterly_forecast': forecast_data.quarterly_forecast,
                 'yearly_forecast': forecast_data.yearly_forecast,
                 'madp': forecast_data.madp,
-                'track': forecast_data.track
+                'track': adjusted_track  # Only track is adjusted
             }
+        
+        # Process demand that exceeds the limit - normal reforecast occurs
         
         # Get seasonal profile
         seasonal_profile = None
-        if sku and sku.demand_profile_id:
+        if sku.demand_profile_id:
             seasonal_profile = session.query(SeasonalProfile).filter(
                 SeasonalProfile.profile_id == sku.demand_profile_id
             ).first()
         
         # Get seasonal index for previous period
         if seasonal_profile:
+            from utils.helpers import get_seasonal_index
             seasonal_index = get_seasonal_index(seasonal_profile, prev_period)
             # Adjust demand for seasonality
             if seasonal_index > 0:
                 prev_demand = prev_demand / seasonal_index
         
-        # Find time since last demand occurrence
+        # Calculate periods since last significant demand
         periods_since_last_demand = 1  # Default to 1 period
         
-        # Sort history by recent to older
-        sorted_periods = sorted(history_data.keys(), reverse=True)
-        
         # Find the most recent period with demand > limit
-        for i, (year, period) in enumerate(sorted_periods):
-            if i == 0:  # Skip current period
-                continue
-                
-            if history_data.get((year, period), 0.0) > forecasting_demand_limit:
+        for i, (year, period) in enumerate(sorted_periods[1:], 1):  # Skip current period (index 0)
+            demand = history_data.get((year, period), 0.0)
+            if demand > forecast_demand_limit:
                 # Calculate periods since last demand
                 if year == prev_year:
                     periods_since_last_demand = prev_period - period
@@ -289,10 +349,17 @@ def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
                 break
         
         # Get track (trend percentage)
-        track = forecast_data.track or 0.0
+        track = forecast_data.track or 0.2  # Default track if none exists
         
         # Adjust track based on time since last demand
-        adjusted_track = track / periods_since_last_demand
+        # This is a key differentiator of Enhanced E3 AVS - track decreases 
+        # exponentially with time since last significant demand
+        update_frequency_impact = ASR_CONFIG.get('update_frequency_impact', 0.95)
+        adjusted_track = track * (update_frequency_impact ** (periods_since_last_demand - 1))
+        
+        # Cap the adjusted track to prevent it from getting too small
+        min_track = 0.01  # Minimum track value
+        adjusted_track = max(min_track, adjusted_track)
         
         # Calculate new forecast using E3 Enhanced AVS formula
         old_forecast = forecast_data.period_forecast or 0.0
@@ -317,6 +384,8 @@ def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
         # Update forecast values with new forecast for future comparison
         forecast_values[0] = new_forecast
         
+        # Calculate updated MADP and track
+        from utils.helpers import calculate_madp, calculate_tracking_signal
         madp = calculate_madp(history_values, forecast_values)
         track = calculate_tracking_signal(history_values, forecast_values)
         
@@ -327,7 +396,8 @@ def calculate_e3_enhanced_avs_forecast(session, sku_id, store_id):
             'quarterly_forecast': quarterly_forecast,
             'yearly_forecast': yearly_forecast,
             'madp': madp,
-            'track': track
+            'track': track,
+            'periods_since_demand': periods_since_last_demand
         }
     
     except Exception as e:
@@ -805,3 +875,278 @@ def get_seasonal_index_for_period(profile_id, period_number):
     
     finally:
         session.close()
+        
+def analyze_intermittent_demand_pattern(session, sku_id, store_id, years=3):
+    """
+    Analyze a SKU's demand pattern to determine if it's intermittent.
+    
+    Args:
+        session: SQLAlchemy session
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+        years (int): Number of years of history to analyze
+    
+    Returns:
+        dict: Analysis results including intermittence metrics
+    """
+    try:
+        # Get demand history
+        history_data = get_demand_history(session, sku_id, store_id, years)
+        
+        if not history_data:
+            return {
+                'is_intermittent': False,
+                'reason': 'insufficient_history',
+                'zero_demand_periods': 0,
+                'total_periods': 0,
+                'zero_demand_percentage': 0.0,
+                'coefficient_of_variation': 0.0,
+                'average_demand_interval': 0.0
+            }
+        
+        # Count periods with zero demand
+        zero_demand_periods = sum(1 for demand in history_data.values() if demand == 0)
+        total_periods = len(history_data)
+        
+        # Calculate zero demand percentage
+        zero_demand_percentage = (zero_demand_periods / total_periods) * 100 if total_periods > 0 else 0
+        
+        # Calculate demand values
+        demand_values = list(history_data.values())
+        
+        # Calculate coefficient of variation (CV)
+        mean_demand = sum(demand_values) / len(demand_values) if demand_values else 0
+        
+        if mean_demand > 0:
+            variance = sum((d - mean_demand) ** 2 for d in demand_values) / len(demand_values)
+            std_dev = math.sqrt(variance)
+            coefficient_of_variation = std_dev / mean_demand
+        else:
+            coefficient_of_variation = 0.0
+        
+        # Calculate average demand interval
+        if zero_demand_periods < total_periods:  # Avoid division by zero
+            average_demand_interval = total_periods / (total_periods - zero_demand_periods)
+        else:
+            average_demand_interval = float('inf')  # All periods have zero demand
+        
+        # Determine if the pattern is intermittent
+        # Standard classification criteria:
+        # - High zero_demand_percentage (>30%)
+        # - High coefficient_of_variation (>1.0)
+        # - High average_demand_interval (>1.3)
+        
+        is_intermittent = (
+            zero_demand_percentage >= 30.0 or 
+            coefficient_of_variation >= 1.0 or 
+            average_demand_interval >= 1.3
+        )
+        
+        return {
+            'is_intermittent': is_intermittent,
+            'zero_demand_periods': zero_demand_periods,
+            'total_periods': total_periods,
+            'zero_demand_percentage': zero_demand_percentage,
+            'coefficient_of_variation': coefficient_of_variation,
+            'average_demand_interval': average_demand_interval,
+            'mean_demand': mean_demand
+        }
+    
+    except Exception as e:
+        logger.error(f"Error analyzing intermittent demand pattern: {e}")
+        return {
+            'is_intermittent': False,
+            'error': str(e)
+        }
+
+def recommend_forecast_method(session, sku_id, store_id):
+    """
+    Recommend the appropriate forecasting method for a SKU based on its demand pattern.
+    
+    Args:
+        session: SQLAlchemy session
+        sku_id (str): SKU ID
+        store_id (str): Store ID
+    
+    Returns:
+        dict: Recommendation including recommended method and analysis
+    """
+    try:
+        # Analyze the demand pattern
+        analysis = analyze_intermittent_demand_pattern(session, sku_id, store_id)
+        
+        # Get the current forecast method
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if not sku:
+            return {
+                'recommended_method': 'unknown',
+                'current_method': 'unknown',
+                'reason': 'sku_not_found'
+            }
+        
+        # Get current method
+        current_method = getattr(sku, 'forecast_method', 'E3 Regular AVS')
+        
+        # Determine recommended method based on analysis
+        recommended_method = current_method  # Default to keeping current method
+        reason = 'no_change_needed'
+        
+        # Check if item has a seasonal profile
+        has_seasonal_profile = sku.demand_profile_id is not None
+        
+        # Use enhanced AVS for intermittent patterns
+        if analysis['is_intermittent']:
+            recommended_method = 'E3 Enhanced AVS'
+            reason = 'intermittent_demand'
+        
+        # If very slow moving (very low mean demand), recommend Enhanced AVS
+        elif analysis.get('mean_demand', 0) < ASR_CONFIG.get('slow_mover_limit', 5):
+            recommended_method = 'E3 Enhanced AVS'
+            reason = 'slow_moving'
+        
+        # If item has a seasonal profile, check if there's enough consistent history
+        elif has_seasonal_profile and analysis.get('zero_demand_percentage', 0) > 15:
+            # May need to reconsider seasonal profile if many zero periods
+            reason = 'seasonal_with_gaps'
+        
+        # If regular AVS is appropriate
+        elif not analysis['is_intermittent'] and analysis.get('coefficient_of_variation', 0) < 0.5:
+            recommended_method = 'E3 Regular AVS'
+            reason = 'stable_demand'
+        
+        return {
+            'recommended_method': recommended_method,
+            'current_method': current_method,
+            'reason': reason,
+            'analysis': analysis,
+            'has_seasonal_profile': has_seasonal_profile
+        }
+    
+    except Exception as e:
+        logger.error(f"Error recommending forecast method: {e}")
+        return {
+            'recommended_method': 'E3 Regular AVS',  # Default to regular
+            'current_method': 'unknown',
+            'reason': 'error',
+            'error': str(e)
+        }
+
+def apply_recommended_forecast_methods(session, buyer_id=None, store_id=None, source_id=None, 
+                                       auto_apply=False, threshold=0.9):
+    """
+    Analyze and recommend forecast methods for a group of SKUs.
+    
+    Args:
+        session: SQLAlchemy session
+        buyer_id (str): Filter by buyer ID
+        store_id (str): Filter by store ID
+        source_id (str): Filter by source ID
+        auto_apply (bool): Whether to automatically apply recommendations
+        threshold (float): Confidence threshold for auto-application (0.0-1.0)
+    
+    Returns:
+        dict: Results of the analysis
+    """
+    try:
+        # Build query for SKUs
+        query = session.query(SKU)
+        
+        # Apply filters
+        if buyer_id:
+            query = query.join(SKU.source).filter(Source.buyer_id == buyer_id)
+        
+        if store_id:
+            query = query.filter(SKU.store_id == store_id)
+        
+        if source_id:
+            query = query.join(SKU.source).filter(Source.source_id == source_id)
+        
+        # Get active SKUs
+        skus = query.filter(SKU.buyer_class.in_(['R', 'W'])).all()
+        
+        # Results
+        results = {
+            'total_skus': len(skus),
+            'analyzed': 0,
+            'recommended_changes': 0,
+            'auto_applied': 0,
+            'errors': 0,
+            'recommendations': []
+        }
+        
+        # Process each SKU
+        for sku in skus:
+            try:
+                # Get recommendation
+                recommendation = recommend_forecast_method(session, sku.sku_id, sku.store_id)
+                results['analyzed'] += 1
+                
+                # Check if recommendation differs from current
+                if recommendation['recommended_method'] != recommendation['current_method']:
+                    results['recommended_changes'] += 1
+                    
+                    # Determine confidence - this is a simplified example
+                    # In a real implementation, this would be based on multiple factors
+                    confidence = 0.0
+                    
+                    if recommendation['reason'] == 'intermittent_demand':
+                        # Calculate confidence based on intermittence metrics
+                        analysis = recommendation['analysis']
+                        
+                        if analysis['zero_demand_percentage'] > 50:
+                            confidence = 0.9
+                        elif analysis['coefficient_of_variation'] > 1.5:
+                            confidence = 0.85
+                        elif analysis['average_demand_interval'] > 2.0:
+                            confidence = 0.8
+                        else:
+                            confidence = 0.7
+                    
+                    elif recommendation['reason'] == 'slow_moving':
+                        confidence = 0.85
+                    
+                    elif recommendation['reason'] == 'stable_demand':
+                        confidence = 0.75
+                    
+                    # Add to recommendations list
+                    recommendation_record = {
+                        'sku_id': sku.sku_id,
+                        'store_id': sku.store_id,
+                        'current_method': recommendation['current_method'],
+                        'recommended_method': recommendation['recommended_method'],
+                        'reason': recommendation['reason'],
+                        'confidence': confidence,
+                        'applied': False
+                    }
+                    
+                    # Auto-apply if enabled and confidence is high enough
+                    if auto_apply and confidence >= threshold:
+                        try:
+                            # Update forecast method
+                            sku.forecast_method = recommendation['recommended_method']
+                            recommendation_record['applied'] = True
+                            results['auto_applied'] += 1
+                        except Exception as e:
+                            logger.error(f"Error applying forecast method: {e}")
+                            recommendation_record['error'] = str(e)
+                    
+                    results['recommendations'].append(recommendation_record)
+            
+            except Exception as e:
+                logger.error(f"Error analyzing SKU {sku.sku_id}: {e}")
+                results['errors'] += 1
+        
+        # Commit changes if auto-apply is enabled
+        if auto_apply and results['auto_applied'] > 0:
+            session.commit()
+        
+        return results
+    
+    except Exception as e:
+        logger.error(f"Error applying recommended forecast methods: {e}")
+        if auto_apply:
+            session.rollback()
+        return {'error': str(e)}
