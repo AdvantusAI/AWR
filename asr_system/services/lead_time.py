@@ -16,27 +16,11 @@ from sqlalchemy import and_, func, desc
 
 from models.sku import SKU
 from models.source import Source
+from models.order import Order, OrderLine
 from utils.db import get_session
-from utils.helpers import get_seasonal_index
 from config.settings import ASR_CONFIG
 
 logger = logging.getLogger(__name__)
-
-# Define a model for receipt data - in a real implementation, this would be in models/
-# For this implementation, we'll assume a Receipt model exists with these properties
-class Receipt:
-    """Expected structure for receipt data"""
-    id = None
-    sku_id = None
-    store_id = None
-    source_id = None
-    order_date = None
-    receipt_date = None
-    expected_date = None
-    quantity = None
-    is_expedited = False
-    is_delayed = False
-    receipt_type = None  # 'normal', 'expedited', 'delayed'
 
 def calculate_actual_lead_time(order_date, receipt_date):
     """
@@ -70,33 +54,49 @@ def get_receipt_history(session, sku_id=None, store_id=None, source_id=None, mon
         months (int): Number of months of history to retrieve
     
     Returns:
-        list: List of receipt objects
+        list: List of receipt objects (orders with receipt dates)
     """
     try:
         # Define start date for history
         start_date = datetime.now() - timedelta(days=30 * months)
         
-        # Build query for receipts
-        # In a real implementation, you would use your actual Receipt model
-        query = session.query(Receipt).filter(Receipt.receipt_date >= start_date)
+        # Build query for completed orders
+        query = session.query(Order).filter(
+            Order.receipt_date.isnot(None),
+            Order.receipt_date >= start_date,
+            Order.order_date.isnot(None)
+        )
         
         # Apply filters
-        if sku_id:
-            query = query.filter(Receipt.sku_id == sku_id)
-        
         if store_id:
-            query = query.filter(Receipt.store_id == store_id)
-        
+            query = query.filter(Order.store_id == store_id)
+            
         if source_id:
-            query = query.filter(Receipt.source_id == source_id)
+            # Get the source object first
+            source = session.query(Source).filter(Source.source_id == source_id).first()
+            if source:
+                query = query.filter(Order.source_id == source.id)
         
-        # Order by receipt date (newest first)
-        query = query.order_by(desc(Receipt.receipt_date))
+        # Get orders
+        orders = query.all()
         
-        # Execute query
-        receipts = query.all()
+        # If SKU_ID is provided, filter to only include order lines for that SKU
+        if sku_id and orders:
+            filtered_orders = []
+            
+            for order in orders:
+                # Check if the order has order lines for the specified SKU
+                sku_lines = session.query(OrderLine).join(SKU).filter(
+                    OrderLine.order_id == order.id,
+                    SKU.sku_id == sku_id
+                ).all()
+                
+                if sku_lines:
+                    filtered_orders.append(order)
+            
+            return filtered_orders
         
-        return receipts
+        return orders
     
     except Exception as e:
         logger.error(f"Error getting receipt history: {e}")
@@ -121,14 +121,26 @@ def filter_special_receipts(receipts, exclude_expedited=True, exclude_delayed=Tr
         if not receipt.order_date or not receipt.receipt_date:
             continue
         
-        # Check if receipt should be excluded
-        if exclude_expedited and receipt.is_expedited:
+        # Calculate actual lead time
+        actual_lead_time = calculate_actual_lead_time(receipt.order_date, receipt.receipt_date)
+        
+        # Skip if lead time couldn't be calculated
+        if actual_lead_time is None:
             continue
         
-        if exclude_delayed and receipt.is_delayed:
-            continue
+        # Check if order was expedited based on actual vs. expected lead time
+        if hasattr(receipt, 'expected_delivery_date') and receipt.expected_delivery_date:
+            expected_lead_time = (receipt.expected_delivery_date - receipt.order_date).days
+            
+            # If actual is significantly less than expected, it may have been expedited
+            if exclude_expedited and actual_lead_time < 0.7 * expected_lead_time:
+                continue
+            
+            # If actual is significantly more than expected, it may have been delayed
+            if exclude_delayed and actual_lead_time > 1.5 * expected_lead_time:
+                continue
         
-        # Include in filtered list
+        # Include in filtered list if it passes checks
         filtered_receipts.append(receipt)
     
     return filtered_receipts
@@ -151,7 +163,7 @@ def calculate_lead_time_stats(receipts):
     
     for receipt in receipts:
         lead_time = calculate_actual_lead_time(receipt.order_date, receipt.receipt_date)
-        if lead_time is not None:
+        if lead_time is not None and lead_time > 0:  # Ensure positive lead time
             lead_times.append(lead_time)
     
     if not lead_times:
@@ -183,7 +195,9 @@ def calculate_lead_time_stats(receipts):
         median_lead_time = sorted_lead_times[mid]
     
     # Calculate trend (average of last 3 minus average of first 3)
+    # Sort by chronological order for trend calculation
     if len(lead_times) >= 6:
+        # Assuming receipts are already ordered by date
         recent_avg = sum(lead_times[-3:]) / 3
         older_avg = sum(lead_times[:3]) / 3
         trend = recent_avg - older_avg
@@ -352,8 +366,8 @@ def forecast_lead_time(session, sku_id, store_id, apply_trend=True, exclude_spec
         
         if not lt_stats:
             # Not enough data, use source lead time
-            source_lt = source.lead_time_forecast or source.lead_time_quoted or 0
-            source_lt_variance = source.lead_time_variance or 10.0  # Default 10%
+            source_lt = source.lead_time_forecast or source.lead_time_quoted or ASR_CONFIG.get('default_lead_time', 7)
+            source_lt_variance = source.lead_time_variance or ASR_CONFIG.get('default_lead_time_variance', 10)  # Default 10%
             
             return {
                 'sku_id': sku_id,
@@ -435,8 +449,8 @@ def forecast_source_lead_time(session, source_id, store_id=None, apply_trend=Tru
         
         if not lt_stats:
             # Not enough data, use existing source lead time
-            source_lt = source.lead_time_forecast or source.lead_time_quoted or 0
-            source_lt_variance = source.lead_time_variance or 10.0  # Default 10%
+            source_lt = source.lead_time_forecast or source.lead_time_quoted or ASR_CONFIG.get('default_lead_time', 7)
+            source_lt_variance = source.lead_time_variance or ASR_CONFIG.get('default_lead_time_variance', 10)  # Default 10%
             
             return {
                 'source_id': source_id,
@@ -481,7 +495,7 @@ def forecast_source_lead_time(session, source_id, store_id=None, apply_trend=Tru
             'has_trend': trend_info['has_trend'],
             'trend_direction': trend_info['direction'],
             'trend_value': trend_info['trend_value'],
-            'has_seasonality': seasonality_info['has_seasonality'] if 'has_seasonality' in seasonality_info else False
+            'has_seasonality': seasonality_info.get('has_seasonality', False)
         }
     
     except Exception as e:
@@ -733,13 +747,41 @@ def exclude_expedited_order(session, sku_id, store_id, order_date):
         bool: True if successful, False otherwise
     """
     try:
-        # In a real implementation, you would update your Receipt model
-        # For this implementation, we'll just return True
-        logger.info(f"Marked order for SKU {sku_id} on {order_date} as expedited")
+        # Get the SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if not sku:
+            logger.error(f"SKU {sku_id} not found in store {store_id}")
+            return False
+        
+        # Find order with this order date
+        # Use a small window around the order date to account for time differences
+        order_start = order_date - timedelta(hours=12)
+        order_end = order_date + timedelta(hours=12)
+        
+        order = session.query(Order).filter(
+            Order.store_id == store_id,
+            Order.source_id == sku.source_id,
+            Order.order_date.between(order_start, order_end)
+        ).first()
+        
+        if not order:
+            logger.error(f"Order not found for SKU {sku_id} on {order_date}")
+            return False
+        
+        # Mark order as expedited
+        order.is_expedited = True
+        
+        # Commit changes
+        session.commit()
+        
         return True
     
     except Exception as e:
         logger.error(f"Error excluding expedited order: {e}")
+        session.rollback()
         return False
 
 def exclude_delayed_order(session, sku_id, store_id, order_date):
@@ -756,11 +798,39 @@ def exclude_delayed_order(session, sku_id, store_id, order_date):
         bool: True if successful, False otherwise
     """
     try:
-        # In a real implementation, you would update your Receipt model
-        # For this implementation, we'll just return True
-        logger.info(f"Marked order for SKU {sku_id} on {order_date} as delayed")
+        # Get the SKU
+        sku = session.query(SKU).filter(
+            and_(SKU.sku_id == sku_id, SKU.store_id == store_id)
+        ).first()
+        
+        if not sku:
+            logger.error(f"SKU {sku_id} not found in store {store_id}")
+            return False
+        
+        # Find order with this order date
+        # Use a small window around the order date to account for time differences
+        order_start = order_date - timedelta(hours=12)
+        order_end = order_date + timedelta(hours=12)
+        
+        order = session.query(Order).filter(
+            Order.store_id == store_id,
+            Order.source_id == sku.source_id,
+            Order.order_date.between(order_start, order_end)
+        ).first()
+        
+        if not order:
+            logger.error(f"Order not found for SKU {sku_id} on {order_date}")
+            return False
+        
+        # Mark order as delayed
+        order.is_delayed = True
+        
+        # Commit changes
+        session.commit()
+        
         return True
     
     except Exception as e:
         logger.error(f"Error excluding delayed order: {e}")
+        session.rollback()
         return False
