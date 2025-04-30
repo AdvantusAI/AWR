@@ -699,6 +699,7 @@ class ItemService:
         periodicity = self.company_settings['history_periodicity_default']
         current_period, current_year = get_current_period(periodicity)
         
+        
         # Process each item
         for item in items:
             try:

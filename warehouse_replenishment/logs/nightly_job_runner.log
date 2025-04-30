@@ -186,3 +186,30 @@ DETAIL:  Ya existe la llave (id)=(30).
 [SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
 [parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
 (Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:05:59,781 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 15:05:59,782 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 15:06:00,242 - nightly_job_runner - ERROR - Nightly job failed: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(31).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:10:20,952 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 15:10:20,953 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 15:10:21,254 - nightly_job_runner - ERROR - Nightly job failed: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(32).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:11:26,514 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 15:11:26,514 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 15:11:26,696 - nightly_job_runner - ERROR - Nightly job failed: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(33).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)

@@ -100,3 +100,11 @@
 2025-04-30 14:29:57,827 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
 2025-04-30 14:40:51,264 - nightly_job - INFO - Updating stock status for warehouse_id=None
 2025-04-30 14:40:51,527 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 15:05:59,786 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 15:06:00,175 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 15:10:20,954 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 15:10:21,144 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 15:11:26,517 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 15:11:26,651 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 15:11:26,651 - nightly_job - INFO - entering item_service.
+2025-04-30 15:11:26,651 - nightly_job - INFO - entering item_service.calculate_lost_sales

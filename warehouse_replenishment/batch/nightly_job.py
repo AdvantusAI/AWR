@@ -46,7 +46,9 @@ def calculate_lost_sales(warehouse_id: Optional[int] = None) -> Dict:
     logger.info(f"Calculating lost sales for warehouse_id={warehouse_id}")
     
     with session_scope() as session:
+        logger.info(f"entering item_service.")
         item_service = ItemService(session)
+        logger.info(f"entering item_service.calculate_lost_sales")
         results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
     
     return results
@@ -190,18 +192,21 @@ def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
         }
         
         # Step 1: Update stock status
+        job_logger.info(f"# Step 1: Update stock status")
         results['processes']['update_stock_status'] = update_stock_status(warehouse_id)
         
-        # Step 2: Calculate lost sales
+        
+        job_logger.info(f"# Step 2: Calculate lost sales")
         results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
         
-        # Step 3: Update safety stock levels
+        job_logger.info(f"# Step 3: Update safety stock levels")
         results['processes']['update_safety_stock'] = update_safety_stock(warehouse_id)
         
-        # Step 4: Process time-based parameters
+        
+        job_logger.info(f"# Step 4: Process time-based parameters")
         results['processes']['time_based_parameters'] = process_time_based_parameters()
         
-        # Step 5: Expire deals
+        job_logger.info(f"# Step 5: Expire deals")
         results['processes']['expire_deals'] = expire_deals()
         
         # Step 6: Update lead time forecasts (weekly)
