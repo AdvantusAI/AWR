@@ -25,7 +25,7 @@ def update_vendor_counts():
             # Count active items for this vendor
             active_items = session.query(Item).filter(
                 Item.vendor_id == vendor.id,
-                Item.buyer_class != BuyerClassCode.DISCONTINUED
+                Item.buyer_class != 'D'
             ).count()
             
             print(f"\nVendor: {vendor.name} (ID: {vendor.id})")

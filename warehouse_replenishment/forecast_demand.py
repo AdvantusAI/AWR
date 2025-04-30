@@ -112,7 +112,7 @@ def run_forecast(
             
             # Only include active items (Regular or Watch) unless specified
             if not include_inactive:
-                query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+                query = query.filter(Item.buyer_class.in_(['R', 'W']))
             
             # Exclude items with frozen forecasts
             today = date.today()
@@ -331,7 +331,7 @@ def run_period_end_reforecasting(
                 query = query.filter(Item.buyer_id == buyer_id)
             
             # Only include active items
-            query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+            query = query.filter(Item.buyer_class.in_(['R', 'W']))
             
             # Exclude items with frozen forecasts
             today = date.today()

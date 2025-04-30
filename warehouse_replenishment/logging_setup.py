@@ -5,6 +5,7 @@ from pathlib import Path
 import time
 import traceback
 from datetime import datetime
+import sys
 
 from warehouse_replenishment.config import config
 
@@ -64,10 +65,10 @@ class Logger:
         """Get a logger with the specified name.
         
         Args:
-            name: Logger name
+            name: Name of the logger
             
         Returns:
-            Logger instance
+            Configured logger instance
         """
         if name in self._loggers:
             return self._loggers[name]
@@ -80,6 +81,10 @@ class Logger:
         level = getattr(logging, level_name, logging.INFO)
         logger.setLevel(level)
         
+        # Remove existing handlers to prevent duplicates
+        for handler in logger.handlers[:]:
+            logger.removeHandler(handler)
+        
         # Create log file handler with rotation
         log_file = self._log_dir / f"{name}.log"
         file_handler = logging.handlers.RotatingFileHandler(
@@ -89,6 +94,15 @@ class Logger:
         )
         file_handler.setFormatter(logging.Formatter(self._log_config['format']))
         logger.addHandler(file_handler)
+        
+        # Add console handler if enabled
+        if self._log_config['console_output']:
+            console_handler = logging.StreamHandler()
+            console_handler.setFormatter(logging.Formatter(self._log_config['format']))
+            logger.addHandler(console_handler)
+        
+        # Prevent propagation to root logger to avoid duplicates
+        logger.propagate = False
         
         self._loggers[name] = logger
         return logger

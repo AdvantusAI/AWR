@@ -172,7 +172,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 16:49:36,093 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -189,7 +189,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 16:50:42,653 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 74, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -206,7 +206,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 16:52:24,598 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 74, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -224,7 +224,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:04:36,441 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 75, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -243,7 +243,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:04:57,470 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -262,7 +262,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:05:19,455 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 76, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -282,7 +282,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:05:50,661 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -302,7 +302,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:06:23,051 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -322,7 +322,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:06:36,723 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 77, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -343,7 +343,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:06:58,557 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 78, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)
@@ -365,7 +365,7 @@ NameError: name 'logger' is not defined. Did you mean: 'self.logger'?
 2025-04-15 17:07:47,968 - forecast - ERROR - name 'logger' is not defined
 Traceback (most recent call last):
   File "D:\Personal\Code\AWR\warehouse_replenishment\main.py", line 79, in generate_forecast
-    query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+    query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
   File "<string>", line 2, in filter
   File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\base.py", line 280, in _generative
     x = fn(self, *args, **kw)

@@ -297,7 +297,7 @@ def build_order(session, source_id, store_id):
         order_checks = {
             'order_point_a': 0,
             'order_point': 0,
-            'watch': 0,
+            BuyerClassCode.WATCH: 0,
             'manual': 0,
             'new': 0,
             'uninitialized': 0,
@@ -366,7 +366,7 @@ def build_order(session, source_id, store_id):
             
             # Update order checks
             if sku.buyer_class == 'W':
-                order_checks['watch'] += 1
+                order_checks[BuyerClassCode.WATCH] += 1
             
             if sku.buyer_class == 'M':
                 order_checks['manual'] += 1
@@ -693,7 +693,7 @@ def recalculate_order(session, order_id):
         order_checks = {
             'order_point_a': 0,
             'order_point': 0,
-            'watch': 0,
+            BuyerClassCode.WATCH: 0,
             'manual': 0,
             'new': 0,
             'uninitialized': 0,

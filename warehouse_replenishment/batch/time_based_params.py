@@ -296,7 +296,7 @@ def get_items_for_parameter(
     
     # Default: affect all active items
     return session.query(Item).filter(
-        Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH])
+        Item.buyer_class.in_(['R', 'W'])
     ).all()
 
 def process_demand_forecast_parameter(

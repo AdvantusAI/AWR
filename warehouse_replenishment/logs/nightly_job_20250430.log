@@ -1,0 +1,7 @@
+2025-04-30 12:46:41,310 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:46:41,418 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:46:41,470 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:46:41,482 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:46:41,485 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:46:41,488 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:46:41,502 - nightly_job - INFO - Purging accepted orders

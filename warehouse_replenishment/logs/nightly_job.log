@@ -1,0 +1,102 @@
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+%(asctime)s - %(name)s - %(levelname)s - %(message)s
+2025-04-30 12:47:38,453 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:47:38,553 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:47:38,603 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:47:38,612 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:47:38,616 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:47:38,617 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:47:38,632 - nightly_job - INFO - Purging accepted orders
+2025-04-30 12:50:00,626 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:50:00,739 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:50:46,524 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:50:46,636 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:50:46,697 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:50:46,709 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:50:46,714 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:50:46,715 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:50:46,730 - nightly_job - INFO - Purging accepted orders
+2025-04-30 14:12:49,971 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 14:12:50,121 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 14:12:50,176 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 14:12:50,184 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 14:12:50,189 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 14:12:50,190 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 14:12:50,204 - nightly_job - INFO - Purging accepted orders
+2025-04-30 14:19:34,530 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 14:19:34,680 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 14:29:57,606 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 14:29:57,827 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 14:40:51,264 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 14:40:51,527 - nightly_job - INFO - Calculating lost sales for warehouse_id=None

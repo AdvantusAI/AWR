@@ -1,0 +1,12 @@
+2025-04-30 12:50:46,637 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:50:46,696 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 12:50:46,696 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 12:50:46,696 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 12:50:46,696 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 12:50:46,696 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 14:12:50,121 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 14:12:50,174 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 14:12:50,174 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 14:12:50,175 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 14:12:50,175 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: get_current_period() missing 1 required positional argument: 'periodicity'
+2025-04-30 14:12:50,175 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: get_current_period() missing 1 required positional argument: 'periodicity'

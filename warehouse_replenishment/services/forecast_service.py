@@ -736,7 +736,7 @@ class ForecastService:
             query = query.filter(Item.id.in_(item_ids))
         
         # Only include active items (Regular or Watch)
-        query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+        query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
         
         # Exclude items with frozen forecasts
         query = query.filter(
@@ -802,7 +802,7 @@ class ForecastService:
             query = query.filter(Item.id.in_(item_ids))
         
         # Only include active items (Regular or Watch)
-        query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+        query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
         
         # Exclude items with frozen forecasts
         query = query.filter(

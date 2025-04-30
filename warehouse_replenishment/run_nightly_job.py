@@ -15,6 +15,7 @@ if parent_dir not in sys.path:
 
 from warehouse_replenishment.batch.nightly_job import run_nightly_job
 from warehouse_replenishment.logging_setup import get_logger
+from warehouse_replenishment.database import session_scope
 
 def main():
     """Run the nightly job."""
@@ -27,16 +28,25 @@ def main():
     
     # Set up logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
-    logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(Path(parent_dir) / 'logs' / f'nightly_job_{datetime.now().strftime("%Y%m%d")}.log'),
-            logging.StreamHandler()
-        ]
-    )
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    # File handler
+    log_file = Path(parent_dir) / 'logs' / f'nightly_job_{datetime.now().strftime("%Y%m%d")}.log'
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(formatter)
+    
+    # Console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    
+    # Configure root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(log_level)
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
     
     logger = get_logger('nightly_job_runner')
+    logger.setLevel(log_level)
     
     logger.info("Starting nightly job runner...")
     logger.info(f"Warehouse filter: {args.warehouse if args.warehouse is not None else 'All warehouses'}")

@@ -1,0 +1,914 @@
+2025-04-30 10:51:50,536 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 10:51:50,536 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 10:51:50,537 - batch - INFO - Starting nightly job at 2025-04-30 10:51:50.537274
+2025-04-30 10:51:50,537 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 10:51:50,697 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 10:51:50,715 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: (psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(24).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-30 10:51:50,722 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: (psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(25).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 2, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-30 10:51:50,728 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: (psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(26).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 3, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-30 10:51:50,733 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: (psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(27).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 4, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-30 10:51:50,737 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: (psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(28).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 5, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-04-30 10:51:50,738 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 10:51:50,741 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 10:51:50,743 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 10:51:50,745 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 10:51:50,746 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 10:51:50,747 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 10:51:50,748 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 10:51:50,754 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 10:51:50,755 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 10:51:50,772 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 10:51:50,774 - nightly_job - INFO - Purging accepted orders
+2025-04-30 10:51:50,785 - batch - INFO - Nightly job completed successfully in 0:00:00.247436
+2025-04-30 10:51:50,785 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 10:51:50,785 - nightly_job_runner - INFO - Duration: 0:00:00.247436
+2025-04-30 10:51:50,786 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 10:51:50,786 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 10:51:50,786 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 10:51:50,786 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 10:51:50,787 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 10:51:50,787 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 10:51:50,787 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 10:51:50,787 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 10:54:43,055 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 10:54:43,056 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 10:54:43,056 - batch - INFO - Starting nightly job at 2025-04-30 10:54:43.056768
+2025-04-30 10:54:43,057 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 10:54:43,207 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 10:54:43,208 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 10:54:43,208 - batch - ERROR - Error during nightly job: name 'session_scope' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 196, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 50, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 623, in calculate_lost_sales
+    with session_scope() as session:
+         ^^^^^^^^^^^^^
+NameError: name 'session_scope' is not defined
+2025-04-30 10:54:43,214 - nightly_job_runner - ERROR - Nightly job failed: name 'session_scope' is not defined
+2025-04-30 11:08:53,110 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 11:08:53,111 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 11:08:53,112 - batch - INFO - Starting nightly job at 2025-04-30 11:08:53.111317
+2025-04-30 11:08:53,112 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 11:08:53,279 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 11:08:53,280 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 11:08:53,340 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 11:08:53,340 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 11:08:53,340 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 11:08:53,341 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 11:08:53,341 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 11:08:53,342 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 11:08:53,347 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 11:08:53,348 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 11:08:53,350 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 11:08:53,352 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 11:08:53,354 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 11:08:53,354 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 11:08:53,362 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 11:08:53,362 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 11:08:53,378 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 11:08:53,380 - nightly_job - INFO - Purging accepted orders
+2025-04-30 11:08:53,386 - batch - INFO - Nightly job completed successfully in 0:00:00.274634
+2025-04-30 11:08:53,386 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 11:08:53,386 - nightly_job_runner - INFO - Duration: 0:00:00.274634
+2025-04-30 11:08:53,386 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 11:08:53,387 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 11:08:53,387 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 11:08:53,388 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 11:08:53,388 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 11:08:53,388 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 11:08:53,388 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 11:08:53,388 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 12:45:54,152 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 12:45:54,153 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 12:45:54,154 - batch - INFO - Starting nightly job at 2025-04-30 12:45:54.153597
+2025-04-30 12:45:54,154 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:45:54,293 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:45:54,294 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:45:54,344 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:45:54,344 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:45:54,345 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:45:54,345 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:45:54,345 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:45:54,346 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:45:54,351 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:45:54,351 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:45:54,352 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:45:54,354 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:45:54,356 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:45:54,357 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:45:54,364 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:45:54,366 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:45:54,379 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 12:45:54,381 - nightly_job - INFO - Purging accepted orders
+2025-04-30 12:45:54,386 - batch - INFO - Nightly job completed successfully in 0:00:00.232627
+2025-04-30 12:45:54,386 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 12:45:54,386 - nightly_job_runner - INFO - Duration: 0:00:00.232627
+2025-04-30 12:45:54,387 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 12:45:54,387 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 12:45:54,387 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 12:45:54,388 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 12:45:54,388 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 12:45:54,388 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 12:45:54,388 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 12:45:54,388 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 12:46:41,309 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 12:46:41,310 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 12:46:41,310 - batch - INFO - Starting nightly job at 2025-04-30 12:46:41.310698
+2025-04-30 12:46:41,310 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:46:41,418 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:46:41,418 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:46:41,467 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:46:41,468 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:46:41,468 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:46:41,468 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:46:41,469 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:46:41,470 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:46:41,476 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:46:41,477 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:46:41,479 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:46:41,480 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:46:41,481 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:46:41,482 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:46:41,485 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:46:41,488 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:46:41,501 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 12:46:41,502 - nightly_job - INFO - Purging accepted orders
+2025-04-30 12:46:41,507 - batch - INFO - Nightly job completed successfully in 0:00:00.196891
+2025-04-30 12:46:41,508 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 12:46:41,508 - nightly_job_runner - INFO - Duration: 0:00:00.196891
+2025-04-30 12:46:41,509 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 12:46:41,509 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 12:46:41,509 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 12:46:41,510 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 12:46:41,510 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 12:46:41,511 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 12:46:41,511 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 12:46:41,511 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 12:47:38,453 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 12:47:38,453 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 12:47:38,453 - batch - INFO - Starting nightly job at 2025-04-30 12:47:38.453794
+2025-04-30 12:47:38,453 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:47:38,553 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:47:38,553 - warehouse_replenishment.services.item_service - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:47:38,601 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 1: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:47:38,602 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 2: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:47:38,602 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 3: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:47:38,602 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 4: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:47:38,602 - warehouse_replenishment.services.item_service - ERROR - Error calculating lost sales for item 5: 'ItemService' object has no attribute 'get_current_period'
+2025-04-30 12:47:38,603 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-04-30 12:47:38,607 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:47:38,608 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:47:38,609 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:47:38,611 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:47:38,611 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:47:38,612 - nightly_job - INFO - Processing time-based parameters
+2025-04-30 12:47:38,616 - nightly_job - INFO - Expiring outdated deals
+2025-04-30 12:47:38,617 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-04-30 12:47:38,630 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 12:47:38,632 - nightly_job - INFO - Purging accepted orders
+2025-04-30 12:47:38,638 - batch - INFO - Nightly job completed successfully in 0:00:00.184811
+2025-04-30 12:47:38,639 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 12:47:38,639 - nightly_job_runner - INFO - Duration: 0:00:00.184811
+2025-04-30 12:47:38,639 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 12:47:38,639 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 12:47:38,640 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 12:47:38,640 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 12:47:38,641 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 12:47:38,641 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 12:47:38,641 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 12:47:38,641 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 12:50:00,625 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 12:50:00,625 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 12:50:00,626 - batch - INFO - Starting nightly job at 2025-04-30 12:50:00.626056
+2025-04-30 12:50:00,626 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-04-30 12:50:00,739 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-04-30 12:50:00,740 - batch - ERROR - Error during nightly job: 'Logger' object has no attribute 'info'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 196, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 50, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 618, in calculate_lost_sales
+    logger.info(f"Calculating lost sales for warehouse_id={warehouse_id}")
+    ^^^^^^^^^^^
+AttributeError: 'Logger' object has no attribute 'info'
+2025-04-30 12:50:00,743 - nightly_job_runner - ERROR - Nightly job failed: 'Logger' object has no attribute 'info'
+2025-04-30 12:50:46,524 - batch - INFO - Starting nightly job at 2025-04-30 12:50:46.524242
+2025-04-30 12:50:46,702 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:50:46,703 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:50:46,705 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:50:46,707 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:50:46,709 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 12:50:46,728 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 12:50:46,735 - batch - INFO - Nightly job completed successfully in 0:00:00.211353
+2025-04-30 14:12:49,970 - batch - INFO - Starting nightly job at 2025-04-30 14:12:49.970190
+2025-04-30 14:12:50,180 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 14:12:50,181 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 14:12:50,182 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 14:12:50,183 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 14:12:50,184 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 14:12:50,202 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 14:12:50,209 - batch - INFO - Nightly job completed successfully in 0:00:00.238927
+2025-04-30 14:19:34,530 - batch - INFO - Starting nightly job at 2025-04-30 14:19:34.529427
+2025-04-30 14:19:34,703 - batch - ERROR - Error during nightly job: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(29).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(29).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 673, in calculate_lost_sales
+    ).first()
+      ~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(29).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 196, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 50, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 736, in calculate_lost_sales
+    logger.error(f"Error calculating lost sales for item {item.id}: {str(e)}")
+                                                          ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(29).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 14:29:57,606 - batch - INFO - Starting nightly job at 2025-04-30 14:29:57.605108
+2025-04-30 14:29:57,834 - batch - ERROR - Error during nightly job: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s)]
+[parameters: {'buyer_class_1_1': <BuyerClassCode.REGULAR: 'R'>, 'buyer_class_1_2': <BuyerClassCode.WATCH: 'W'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.ProgrammingError: can't adapt type 'BuyerClassCode'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 196, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 50, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 689, in calculate_lost_sales
+    items = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.ProgrammingError: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s)]
+[parameters: {'buyer_class_1_1': <BuyerClassCode.REGULAR: 'R'>, 'buyer_class_1_2': <BuyerClassCode.WATCH: 'W'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 14:40:51,263 - batch - INFO - Starting nightly job at 2025-04-30 14:40:51.262889
+2025-04-30 14:40:51,578 - batch - ERROR - Error during nightly job: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(30).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(30).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 710, in calculate_lost_sales
+    ).first()
+      ~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(30).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 196, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 50, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 774, in calculate_lost_sales
+    logger.error(f"Error calculating lost sales for item {item.id}: {str(e)}")
+                                                          ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(30).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)

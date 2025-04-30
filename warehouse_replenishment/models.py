@@ -8,11 +8,42 @@ import enum
 Base = declarative_base()
 
 class BuyerClassCode(enum.Enum):
+    """Enum for buyer class codes.
+    
+    Values:
+        REGULAR ('R'): Regular items that are actively managed
+        WATCH ('W'): Items that need special attention
+        MANUAL ('M'): Items that require manual intervention
+        DISCONTINUED ('D'): Items that are no longer active
+        UNINITIALIZED ('U'): Items that haven't been classified yet
+    """
     REGULAR = 'R'
     WATCH = 'W'
     MANUAL = 'M'
     DISCONTINUED = 'D'
-    UNINITIALIZED = 'U'  # Added UNINITIALIZED to match usage in the Item class
+    UNINITIALIZED = 'U'
+
+    def __str__(self):
+        """Return the string value of the enum."""
+        return self.value
+
+    @classmethod
+    def from_string(cls, value: str) -> 'BuyerClassCode':
+        """Create a BuyerClassCode from a string value.
+        
+        Args:
+            value: String value ('R', 'W', 'M', 'D', 'U')
+            
+        Returns:
+            BuyerClassCode enum value
+            
+        Raises:
+            ValueError if the string value is not valid
+        """
+        try:
+            return cls(value)
+        except ValueError:
+            raise ValueError(f"Invalid buyer class code: {value}. Valid values are: R, W, M, D, U")
 
 class SystemClassCode(enum.Enum):
     REGULAR = 'R'
@@ -23,7 +54,7 @@ class SystemClassCode(enum.Enum):
     ALTERNATE = 'A'
 
 class VendorType(enum.Enum):
-    REGULAR = 'REGULAR'      # Standard vendor for normal inventory replenishment
+    REGULAR = BuyerClassCode.REGULAR      # Standard vendor for normal inventory replenishment
                             # Business Impact: 
                             # - Primary source for regular inventory items
                             # - Subject to standard order cycles and lead times
@@ -264,118 +295,67 @@ class VendorBracket(Base):
     vendor = relationship("Vendor", back_populates="brackets")
 
 class Item(Base):
+    """Item model for inventory management."""
     __tablename__ = 'item'
-    
+
     id = Column(Integer, primary_key=True)
     item_id = Column(String(50), nullable=False)
     description = Column(String(255))
-    vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id')) 
-    
-    # Item Detail
+    vendor_id = Column(Integer, ForeignKey('vendor.id'), nullable=False)
+    warehouse_id = Column(Integer, ForeignKey('warehouse.id'), nullable=False)
     service_level_goal = Column(Float)
-    service_level_maintained = Column(Boolean, default=False)  # If service level was manually set
-    service_level_attained = Column(Float, default=0.0)
-    suggested_service_level = Column(Float)
-    
-    # Stock Status
+    service_level_maintained = Column(Boolean, default=False)
+    lead_time_forecast = Column(Integer)
+    lead_time_variance = Column(Float)
+    lead_time_maintained = Column(Boolean, default=False)
+    buying_multiple = Column(Float, default=1.0)
+    minimum_quantity = Column(Float, default=1.0)
+    purchase_price = Column(Float, default=0.0)
+    sales_price = Column(Float, default=0.0)
+    buyer_id = Column(String(50))
+    buyer_class = Column(String(1), default='U')  # Changed from Enum(BuyerClassCode) to String(1)
     on_hand = Column(Float, default=0.0)
     on_order = Column(Float, default=0.0)
     customer_back_order = Column(Float, default=0.0)
     reserved = Column(Float, default=0.0)
     held_until = Column(Date)
     quantity_held = Column(Float, default=0.0)
-    
-    # Lead Time
-    lead_time_forecast = Column(Integer)
-    lead_time_variance = Column(Float)
-    lead_time_maintained = Column(Boolean, default=False)  # If lead time was manually set
-    calculated_in_days = Column(Integer)
-    calculated_variance = Column(Float)
-    lead_time_profile = Column(String(20))
-    fill_in_lead_time = Column(Integer)
-    
-    # Item Parameters
-    units_per_case = Column(Float, default=1.0)
-    weight_per_unit = Column(Float, default=0.0)
-    volume_per_unit = Column(Float, default=0.0)
-    units_per_layer = Column(Float, default=0.0)
-    units_per_pallet = Column(Float, default=0.0)
-    buying_multiple = Column(Float, default=1.0)
-    minimum_quantity = Column(Float, default=1.0)
-    convenience_pack = Column(Float, default=0.0)
-    conv_pk_breakpoint = Column(Float, default=0.0)
-    number_of_conv_packs = Column(Integer, default=0)
-    shelf_life_days = Column(Integer, default=0)
-    out_of_stock_point = Column(Float, default=0.0)
-    
-    # Demand Forecasting
-    buyer_class = Column(Enum(BuyerClassCode), default=BuyerClassCode.UNINITIALIZED)
-    system_class = Column(Enum(SystemClassCode), default=SystemClassCode.UNINITIALIZED)
-    forecast_method = Column(Enum(ForecastMethod), default=ForecastMethod.E3_REGULAR_AVS)
-    forecasting_periodicity = Column(Integer)
-    history_periodicity = Column(Integer)
-    
-    # Item classification
-    item_group_codes = Column(String(100))
-    
-    # Forecast data
+    auxiliary_balance = Column(Float, default=0.0)
+    sstf = Column(Float)  # Safety Stock Time Factor
+    item_order_point_days = Column(Float)
+    item_order_point_units = Column(Float)
+    vendor_order_point_days = Column(Float)
+    order_up_to_level_days = Column(Float)
+    order_up_to_level_units = Column(Float)
+    item_cycle_days = Column(Float)
     demand_weekly = Column(Float, default=0.0)
     demand_4weekly = Column(Float, default=0.0)
     demand_monthly = Column(Float, default=0.0)
     demand_quarterly = Column(Float, default=0.0)
     demand_yearly = Column(Float, default=0.0)
-    forecast_date = Column(DateTime)
-    madp = Column(Float, default=0.0)
+    madp = Column(Float, default=0.0)  # Mean Absolute Deviation Percentage
     track = Column(Float, default=0.0)
-    sstf = Column(Float, default=0.0)  # Safety Stock Time Factor
-    freeze_until_date = Column(Date)
-    demand_profile = Column(String(20))
-    
-    # Manual max/min controls
-    buyer_max = Column(Float, default=0.0)
-    buyer_min = Column(Float, default=0.0)
-    type_for_min_max = Column(String(1), default='U')  # 'U'=Units, 'D'=Days
-    
-    # Manual Safety Stock
-    manual_ss = Column(Float, default=0.0)
-    ss_type = Column(Enum(SafetyStockType), default=SafetyStockType.NEVER)
-    
-    # Price information
-    purchase_price = Column(Float, default=0.0)
-    purchase_price_divisor = Column(Float, default=1.0)
-    sales_price = Column(Float, default=0.0)
-    carrying_cost_adjustments = Column(Float, default=0.0)
-    handling_cost_adjustments = Column(Float, default=0.0)
-    
-    # Supersession relationships
-    supersede_to_item_id = Column(String(50))
-    supersede_from_item_id = Column(String(50))
-    
-    # Calculated fields for ordering
-    item_order_point_units = Column(Float, default=0.0)  # IOP
-    item_order_point_days = Column(Float, default=0.0)
-    vendor_order_point_days = Column(Float, default=0.0)  # VOP
-    order_up_to_level_units = Column(Float, default=0.0)  # OUTL
-    order_up_to_level_days = Column(Float, default=0.0)
-    item_cycle_units = Column(Float, default=0.0)  # ICYC
-    item_cycle_days = Column(Float, default=0.0)
-    
+    service_level_attained = Column(Float)
+    manual_ss = Column(Float)
+    manual_ss_type = Column(String(50))
+
+    # Relationships
     vendor = relationship("Vendor", back_populates="items")
     warehouse = relationship("Warehouse", back_populates="items")
     demand_history = relationship("DemandHistory", back_populates="item")
-    item_prices = relationship("ItemPrice", back_populates="item")
-    
-    forecasts = relationship("ItemForecast", back_populates="item")
-    vendor = relationship("Vendor", back_populates="items")
-    warehouse = relationship("Warehouse", back_populates="items")
-    demand_history = relationship("DemandHistory", back_populates="item")
+    item_forecast = relationship("ItemForecast", back_populates="item")
+    order_items = relationship("OrderItem", back_populates="item")
     item_prices = relationship("ItemPrice", back_populates="item")
 
-    __table_args__ = (
-        # Unique constraint for item_id, vendor_id and warehouse_id combination
-        {'sqlite_autoincrement': True},
-    )
+    @property
+    def buyer_class_enum(self) -> BuyerClassCode:
+        """Get the buyer class as an enum value."""
+        return BuyerClassCode.from_string(self.buyer_class)
+
+    @buyer_class_enum.setter
+    def buyer_class_enum(self, value: BuyerClassCode):
+        """Set the buyer class from an enum value."""
+        self.buyer_class = value.value
 
 class DemandHistory(Base):
     __tablename__ = 'demand_history'
@@ -487,7 +467,9 @@ class OrderItem(Base):
     balance_units = Column(Float)
     order_up_to_level_units = Column(Float)
     
+    # Relationships
     order = relationship("Order", back_populates="order_items")
+    item = relationship("Item", back_populates="order_items")
 
 class SeasonalProfile(Base):
     __tablename__ = 'seasonal_profile'
@@ -661,7 +643,7 @@ class ItemForecast(Base):
     created_by = Column(String(50))
     
     # Relationships
-    item = relationship("Item", back_populates="forecasts")
+    item = relationship("Item", back_populates="item_forecast")
     
     __table_args__ = (
         # Index for faster lookups by item and period
@@ -669,6 +651,3 @@ class ItemForecast(Base):
         # Index for faster lookups by date
         Index('idx_item_forecast_date', 'forecast_date'),
     )
-
-# Add to the Item class
-forecasts = relationship("ItemForecast", back_populates="item")

@@ -31,9 +31,9 @@ def check_database_state():
         
         # Check items
         total_items = session.query(Item).count()
-        regular_items = session.query(Item).filter(Item.buyer_class == BuyerClassCode.REGULAR).count()
-        watch_items = session.query(Item).filter(Item.buyer_class == BuyerClassCode.WATCH).count()
-        manual_items = session.query(Item).filter(Item.buyer_class == BuyerClassCode.MANUAL).count()
+        regular_items = session.query(Item).filter(Item.buyer_class == 'R').count()
+        watch_items = session.query(Item).filter(Item.buyer_class == 'W').count()
+        manual_items = session.query(Item).filter(Item.buyer_class == 'M').count()
         
         print(f"\nItems:")
         print(f"  Total items: {total_items}")

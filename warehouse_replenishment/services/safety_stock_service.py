@@ -354,8 +354,8 @@ class SafetyStockService:
         if vendor_id is not None:
             query = query.filter(Item.vendor_id == vendor_id)
         
-        # Only include active items - use the Enum values instead of strings
-        query = query.filter(Item.buyer_class.in_([BuyerClassCode.REGULAR, BuyerClassCode.WATCH]))
+        # Only include active items - use string values instead of enum
+        query = query.filter(Item.buyer_class.in_(['R', 'W']))
         
         items = query.all()
         

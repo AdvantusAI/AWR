@@ -11,5 +11,6 @@ __all__ = [
     'OrderService',
     'ExceptionService',
     'ReportingService',
-    'SafetyStockService'
+    'SafetyStockService',
+    'TimeBasedParameterService'
 ]
