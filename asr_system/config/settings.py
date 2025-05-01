@@ -11,7 +11,7 @@ DB_CONFIG = {
     'password': os.environ.get('DB_PASSWORD', 'Admin0606'),
     'host': os.environ.get('DB_HOST', 'localhost'),
     'port': os.environ.get('DB_PORT', '5433'),
-    'database': os.environ.get('DB_NAME', 'warehouse_replenishment'),
+    'database': os.environ.get('DB_NAME', 'm8_aws'),
 }
      
          

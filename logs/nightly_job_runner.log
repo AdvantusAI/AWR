@@ -1,0 +1,39 @@
+2025-04-30 20:00:14,966 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 20:00:14,966 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 20:00:15,184 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 20:00:15,184 - nightly_job_runner - INFO - Duration: 0:00:00.217093
+2025-04-30 20:00:15,185 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 20:00:15,185 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 20:00:15,185 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 20:00:15,185 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 20:00:15,185 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 20:00:15,186 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 20:00:15,186 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 20:00:15,186 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 20:00:15,186 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-04-30 20:04:45,504 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-04-30 20:04:45,504 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-04-30 20:04:45,694 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-04-30 20:04:45,694 - nightly_job_runner - INFO - Duration: 0:00:00.189007
+2025-04-30 20:04:45,694 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-04-30 20:04:45,695 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 20:04:45,695 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-04-30 20:04:45,696 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-04-30 20:04:45,696 - nightly_job_runner - INFO -   Updated items: 5
+2025-04-30 20:04:45,696 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-04-30 20:04:45,697 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-04-30 20:04:45,697 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-04-30 20:04:45,697 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-05-01 08:30:38,692 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-01 08:30:38,693 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-01 08:30:39,039 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-05-01 08:30:39,039 - nightly_job_runner - INFO - Duration: 0:00:00.345580
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-05-01 08:30:39,040 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-05-01 08:30:39,041 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-05-01 08:30:39,041 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False

@@ -42,7 +42,7 @@ class Config:
             'engine': 'postgresql',
             'host': 'localhost',
             'port': '5432',
-            'database': 'warehouse_replenishment',
+            'database': 'm8_aws',
             'username': 'postgres',
             'password': 'postgres',
             'echo': 'False'
@@ -124,7 +124,7 @@ class Config:
         password = self.get('DATABASE', 'password', 'Admin0606')
         host = self.get('DATABASE', 'host', 'localhost')
         port = self.get('DATABASE', 'port', '5433')
-        database = self.get('DATABASE', 'database', 'warehouse_replenishment')
+        database = self.get('DATABASE', 'database', 'm8_aws')
         
         return f"{engine}://{username}:{password}@{host}:{port}/{database}"
     

@@ -1633,3 +1633,1106 @@ DETAIL:  Ya existe la llave (id)=(33).
 [SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
 [parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
 (Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:42:48,895 - batch - INFO - Starting nightly job at 2025-04-30 15:42:48.882553
+2025-04-30 15:42:48,899 - batch - INFO - # Step 1: Update stock status
+2025-04-30 15:42:49,546 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 15:42:49,675 - batch - ERROR - Error during nightly job: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(34).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(34).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 711, in calculate_lost_sales
+    ).first()
+      ~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(34).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 200, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 52, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 775, in calculate_lost_sales
+    logger.error(f"Error calculating lost sales for item {item.id}: {str(e)}")
+                                                          ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(34).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:45:15,038 - batch - INFO - Starting nightly job at 2025-04-30 15:45:15.038508
+2025-04-30 15:45:15,039 - batch - INFO - # Step 1: Update stock status
+2025-04-30 15:45:15,256 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 15:45:15,279 - batch - ERROR - Error during nightly job: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(35).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(35).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 711, in calculate_lost_sales
+    ).first()
+      ~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(35).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 200, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 52, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 775, in calculate_lost_sales
+    logger.error(f"Error calculating lost sales for item {item.id}: {str(e)}")
+                                                          ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(35).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 15:57:56,292 - batch - INFO - Starting nightly job at 2025-04-30 15:57:56.291276
+2025-04-30 15:57:56,292 - batch - INFO - # Step 1: Update stock status
+2025-04-30 15:57:56,609 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 15:57:56,692 - batch - ERROR - Error during nightly job: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(36).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(36).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 711, in calculate_lost_sales
+    ).first()
+      ~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2230, in _execute_internal
+    ) = compile_state_cls.orm_pre_session_exec(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        False,
+        ^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 577, in orm_pre_session_exec
+    session._autoflush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3065, in _autoflush
+    raise e.with_traceback(sys.exc_info()[2])
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 3054, in _autoflush
+    self.flush()
+    ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(36).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 200, in run_nightly_job
+    results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
+                                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 52, in calculate_lost_sales
+    results = item_service.calculate_lost_sales(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 775, in calculate_lost_sales
+    logger.error(f"Error calculating lost sales for item {item.id}: {str(e)}")
+                                                          ^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.UniqueViolation) llave duplicada viola restricción de unicidad «demand_history_pkey»
+DETAIL:  Ya existe la llave (id)=(36).
+
+[SQL: INSERT INTO demand_history (item_id, period_number, period_year, shipped, lost_sales, promotional_demand, total_demand, is_ignored, is_adjusted, out_of_stock_days) VALUES (%(item_id)s, %(period_number)s, %(period_year)s, %(shipped)s, %(lost_sales)s, %(promotional_demand)s, %(total_demand)s, %(is_ignored)s, %(is_adjusted)s, %(out_of_stock_days)s) RETURNING demand_history.id]
+[parameters: {'item_id': 1, 'period_number': 5, 'period_year': 2025, 'shipped': 0.0, 'lost_sales': 0.0, 'promotional_demand': 0.0, 'total_demand': 0.0, 'is_ignored': False, 'is_adjusted': False, 'out_of_stock_days': 0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-04-30 16:52:28,304 - batch - INFO - Starting nightly job at 2025-04-30 16:52:28.302969
+2025-04-30 16:52:28,305 - batch - INFO - # Step 1: Update stock status
+2025-04-30 16:52:28,512 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 16:52:28,543 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 16:52:28,550 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 16:52:28,551 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 16:52:28,554 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 16:52:28,557 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 16:52:28,559 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 16:52:28,559 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 16:52:28,570 - batch - INFO - # Step 5: Expire deals
+2025-04-30 16:52:28,600 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: (psycopg2.ProgrammingError) can't adapt type 'BuyerClassCode'
+[SQL: SELECT anon_1.anon_2_item_id_1 AS anon_1_anon_2_item_id_1, anon_1.anon_2_item_item_id AS anon_1_anon_2_item_item_id, anon_1.anon_2_item_description AS anon_1_anon_2_item_description, anon_1.anon_2_item_vendor_id AS anon_1_anon_2_item_vendor_id, anon_1.anon_2_item_warehouse_id AS anon_1_anon_2_item_warehouse_id, anon_1.anon_2_item_service_level_goal AS anon_1_anon_2_item_service_level_goal, anon_1.anon_2_item_service_level_maintained AS anon_1_anon_2_item_service_level_maintained, anon_1.anon_2_item_lead_time_forecast AS anon_1_anon_2_item_lead_time_forecast, anon_1.anon_2_item_lead_time_variance AS anon_1_anon_2_item_lead_time_variance, anon_1.anon_2_item_lead_time_maintained AS anon_1_anon_2_item_lead_time_maintained, anon_1.anon_2_item_buying_multiple AS anon_1_anon_2_item_buying_multiple, anon_1.anon_2_item_minimum_quantity AS anon_1_anon_2_item_minimum_quantity, anon_1.anon_2_item_purchase_price AS anon_1_anon_2_item_purchase_price, anon_1.anon_2_item_sales_price AS anon_1_anon_2_item_sales_price, anon_1.anon_2_item_buyer_id AS anon_1_anon_2_item_buyer_id, anon_1.anon_2_item_buyer_class AS anon_1_anon_2_item_buyer_class, anon_1.anon_2_item_on_hand AS anon_1_anon_2_item_on_hand, anon_1.anon_2_item_on_order AS anon_1_anon_2_item_on_order, anon_1.anon_2_item_customer_back_order AS anon_1_anon_2_item_customer_back_order, anon_1.anon_2_item_reserved AS anon_1_anon_2_item_reserved, anon_1.anon_2_item_held_until AS anon_1_anon_2_item_held_until, anon_1.anon_2_item_quantity_held AS anon_1_anon_2_item_quantity_held, anon_1.anon_2_item_auxiliary_balance AS anon_1_anon_2_item_auxiliary_balance, anon_1.anon_2_item_sstf AS anon_1_anon_2_item_sstf, anon_1.anon_2_item_item_order_point_days AS anon_1_anon_2_item_item_order_point_days, anon_1.anon_2_item_item_order_point_units AS anon_1_anon_2_item_item_order_point_units, anon_1.anon_2_item_vendor_order_point_days AS anon_1_anon_2_item_vendor_order_point_days, anon_1.anon_2_item_order_up_to_level_days AS anon_1_anon_2_item_order_up_to_level_days, anon_1.anon_2_item_order_up_to_level_units AS anon_1_anon_2_item_order_up_to_level_units, anon_1.anon_2_item_item_cycle_days AS anon_1_anon_2_item_item_cycle_days, anon_1.anon_2_item_demand_weekly AS anon_1_anon_2_item_demand_weekly, anon_1.anon_2_item_demand_4weekly AS anon_1_anon_2_item_demand_4weekly, anon_1.anon_2_item_demand_monthly AS anon_1_anon_2_item_demand_monthly, anon_1.anon_2_item_demand_quarterly AS anon_1_anon_2_item_demand_quarterly, anon_1.anon_2_item_demand_yearly AS anon_1_anon_2_item_demand_yearly, anon_1.anon_2_item_madp AS anon_1_anon_2_item_madp, anon_1.anon_2_item_track AS anon_1_anon_2_item_track, anon_1.anon_2_item_service_level_attained AS anon_1_anon_2_item_service_level_attained, anon_1.anon_2_item_manual_ss AS anon_1_anon_2_item_manual_ss, anon_1.anon_2_item_manual_ss_type AS anon_1_anon_2_item_manual_ss_type 
+FROM (SELECT anon_2.item_id_1 AS anon_2_item_id_1, anon_2.item_item_id AS anon_2_item_item_id, anon_2.item_description AS anon_2_item_description, anon_2.item_vendor_id AS anon_2_item_vendor_id, anon_2.item_warehouse_id AS anon_2_item_warehouse_id, anon_2.item_service_level_goal AS anon_2_item_service_level_goal, anon_2.item_service_level_maintained AS anon_2_item_service_level_maintained, anon_2.item_lead_time_forecast AS anon_2_item_lead_time_forecast, anon_2.item_lead_time_variance AS anon_2_item_lead_time_variance, anon_2.item_lead_time_maintained AS anon_2_item_lead_time_maintained, anon_2.item_buying_multiple AS anon_2_item_buying_multiple, anon_2.item_minimum_quantity AS anon_2_item_minimum_quantity, anon_2.item_purchase_price AS anon_2_item_purchase_price, anon_2.item_sales_price AS anon_2_item_sales_price, anon_2.item_buyer_id AS anon_2_item_buyer_id, anon_2.item_buyer_class AS anon_2_item_buyer_class, anon_2.item_on_hand AS anon_2_item_on_hand, anon_2.item_on_order AS anon_2_item_on_order, anon_2.item_customer_back_order AS anon_2_item_customer_back_order, anon_2.item_reserved AS anon_2_item_reserved, anon_2.item_held_until AS anon_2_item_held_until, anon_2.item_quantity_held AS anon_2_item_quantity_held, anon_2.item_auxiliary_balance AS anon_2_item_auxiliary_balance, anon_2.item_sstf AS anon_2_item_sstf, anon_2.item_item_order_point_days AS anon_2_item_item_order_point_days, anon_2.item_item_order_point_units AS anon_2_item_item_order_point_units, anon_2.item_vendor_order_point_days AS anon_2_item_vendor_order_point_days, anon_2.item_order_up_to_level_days AS anon_2_item_order_up_to_level_days, anon_2.item_order_up_to_level_units AS anon_2_item_order_up_to_level_units, anon_2.item_item_cycle_days AS anon_2_item_item_cycle_days, anon_2.item_demand_weekly AS anon_2_item_demand_weekly, anon_2.item_demand_4weekly AS anon_2_item_demand_4weekly, anon_2.item_demand_monthly AS anon_2_item_demand_monthly, anon_2.item_demand_quarterly AS anon_2_item_demand_quarterly, anon_2.item_demand_yearly AS anon_2_item_demand_yearly, anon_2.item_madp AS anon_2_item_madp, anon_2.item_track AS anon_2_item_track, anon_2.item_service_level_attained AS anon_2_item_service_level_attained, anon_2.item_manual_ss AS anon_2_item_manual_ss, anon_2.item_manual_ss_type AS anon_2_item_manual_ss_type 
+FROM (SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_1)s AND item.buyer_class = %(buyer_class_1)s UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_2)s AND item.buyer_class = %(buyer_class_2)s) AS anon_2 UNION SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type 
+FROM item 
+WHERE item.vendor_id = %(vendor_id_3)s AND item.buyer_class = %(buyer_class_3)s) AS anon_1]
+[parameters: {'vendor_id_1': 1, 'buyer_class_1': <BuyerClassCode.REGULAR: 'R'>, 'vendor_id_2': 1, 'buyer_class_2': <BuyerClassCode.WATCH: 'W'>, 'vendor_id_3': 1, 'buyer_class_3': <BuyerClassCode.MANUAL: 'M'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-04-30 16:52:28,614 - batch - INFO - Nightly job completed successfully in 0:00:00.311634
+2025-04-30 18:07:04,150 - batch - INFO - Starting nightly job at 2025-04-30 18:07:04.149947
+2025-04-30 18:07:04,150 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:07:04,296 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:07:04,307 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:07:04,309 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:07:04,310 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:07:04,310 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:07:04,311 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:07:04,312 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:07:04,313 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:07:04,325 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:07:04,385 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:07:04,389 - batch - INFO - Nightly job completed successfully in 0:00:00.239005
+2025-04-30 18:08:31,665 - batch - INFO - Starting nightly job at 2025-04-30 18:08:31.665341
+2025-04-30 18:08:31,665 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:08:31,763 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:08:31,771 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:08:31,773 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:08:31,774 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 2: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:08:31,774 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:08:31,775 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:08:31,777 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 5: 'Item' object has no attribute 'ss_type'
+2025-04-30 18:08:31,777 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:08:31,781 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:08:31,826 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:08:31,829 - batch - INFO - Nightly job completed successfully in 0:00:00.164283
+2025-04-30 18:28:47,431 - batch - INFO - Starting nightly job at 2025-04-30 18:28:47.431229
+2025-04-30 18:28:47,431 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:28:47,565 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:28:47,580 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:28:47,602 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:28:47,610 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:28:47,663 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:28:47,669 - batch - INFO - Nightly job completed successfully in 0:00:00.238512
+2025-04-30 18:37:14,705 - batch - INFO - Starting nightly job at 2025-04-30 18:37:14.705235
+2025-04-30 18:37:14,705 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:37:14,802 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:37:14,814 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:37:14,828 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:37:14,832 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:37:14,866 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:37:14,869 - batch - INFO - Nightly job completed successfully in 0:00:00.164530
+2025-04-30 18:37:44,667 - batch - INFO - Starting nightly job at 2025-04-30 18:37:44.667548
+2025-04-30 18:37:44,667 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:37:44,764 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:37:44,776 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:37:44,789 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:37:44,793 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:37:44,846 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:37:44,850 - batch - INFO - Nightly job completed successfully in 0:00:00.183291
+2025-04-30 18:39:43,519 - batch - INFO - Starting nightly job at 2025-04-30 18:39:43.519694
+2025-04-30 18:39:43,520 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:39:43,615 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:39:43,627 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:39:43,644 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:39:43,647 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:39:43,681 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:39:43,684 - batch - INFO - Nightly job completed successfully in 0:00:00.164979
+2025-04-30 18:41:22,489 - batch - INFO - Starting nightly job at 2025-04-30 18:41:22.489572
+2025-04-30 18:41:22,489 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:41:22,586 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:41:22,595 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:41:22,611 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:41:22,615 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:41:22,677 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:41:22,680 - batch - INFO - Nightly job completed successfully in 0:00:00.191044
+2025-04-30 18:42:48,653 - batch - INFO - Starting nightly job at 2025-04-30 18:42:48.653429
+2025-04-30 18:42:48,653 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:42:48,760 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:42:48,773 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:42:48,789 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:42:48,793 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:42:48,828 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'weight_per_unit'
+2025-04-30 18:42:48,831 - batch - INFO - Nightly job completed successfully in 0:00:00.178148
+2025-04-30 18:58:15,036 - batch - INFO - Starting nightly job at 2025-04-30 18:58:15.036859
+2025-04-30 18:58:15,037 - batch - INFO - # Step 1: Update stock status
+2025-04-30 18:58:15,190 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 18:58:15,233 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 18:58:15,253 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,255 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,256 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,259 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,262 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,264 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,266 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,268 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,270 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,271 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,273 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,275 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,277 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,279 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,281 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,291 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,293 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,294 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,296 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,298 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,299 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,300 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,302 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,304 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,305 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,309 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,311 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,313 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,315 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,317 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 18:58:15,323 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 18:58:15,328 - batch - INFO - # Step 5: Expire deals
+2025-04-30 18:58:15,371 - batch - INFO - Nightly job completed successfully in 0:00:00.334829
+2025-04-30 19:51:18,680 - batch - INFO - Starting nightly job at 2025-04-30 19:51:18.680304
+2025-04-30 19:51:18,680 - batch - INFO - # Step 1: Update stock status
+2025-04-30 19:51:18,825 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 19:51:18,852 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 19:51:18,861 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,863 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,864 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,867 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,869 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,871 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,872 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,876 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,877 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,879 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,889 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,892 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,898 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,900 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,902 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,904 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,906 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,911 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,912 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,913 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,915 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,917 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,918 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,920 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,922 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,924 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,926 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,927 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,929 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,930 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:51:18,936 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 19:51:18,942 - batch - INFO - # Step 5: Expire deals
+2025-04-30 19:51:18,984 - batch - INFO - Nightly job completed successfully in 0:00:00.304572
+2025-04-30 19:52:24,499 - batch - INFO - Starting nightly job at 2025-04-30 19:52:24.498927
+2025-04-30 19:52:24,499 - batch - INFO - # Step 1: Update stock status
+2025-04-30 19:52:24,628 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 19:52:24,665 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 19:52:24,677 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,679 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,680 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,682 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,684 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,687 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,689 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,691 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,692 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,694 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,706 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,708 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,716 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,718 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,719 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,721 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,723 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,727 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,730 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,731 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,733 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,735 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,737 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,738 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,739 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,742 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,743 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,745 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,747 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,749 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:52:24,755 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 19:52:24,759 - batch - INFO - # Step 5: Expire deals
+2025-04-30 19:52:24,800 - batch - INFO - Nightly job completed successfully in 0:00:00.301831
+2025-04-30 19:59:29,035 - batch - INFO - Starting nightly job at 2025-04-30 19:59:29.035860
+2025-04-30 19:59:29,036 - batch - INFO - # Step 1: Update stock status
+2025-04-30 19:59:29,165 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 19:59:29,190 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 19:59:29,201 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,202 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,204 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,206 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,207 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,210 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,212 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,214 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,215 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,217 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,228 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,230 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,236 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,238 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,239 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,241 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,243 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,247 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,249 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,250 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,252 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,254 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,255 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,256 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,259 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,261 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,262 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,264 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,265 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,266 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 19:59:29,272 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 19:59:29,276 - batch - INFO - # Step 5: Expire deals
+2025-04-30 19:59:29,317 - batch - INFO - Nightly job completed successfully in 0:00:00.281995
+2025-04-30 20:00:14,967 - batch - INFO - Starting nightly job at 2025-04-30 20:00:14.967217
+2025-04-30 20:00:14,967 - batch - INFO - # Step 1: Update stock status
+2025-04-30 20:00:15,078 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 20:00:15,088 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 20:00:15,105 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 20:00:15,112 - batch - INFO - # Step 5: Expire deals
+2025-04-30 20:00:15,180 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'shelf_life_days'
+2025-04-30 20:00:15,184 - batch - INFO - Nightly job completed successfully in 0:00:00.217093
+2025-04-30 20:02:24,957 - batch - INFO - Starting nightly job at 2025-04-30 20:02:24.957861
+2025-04-30 20:02:24,958 - batch - INFO - # Step 1: Update stock status
+2025-04-30 20:02:25,092 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 20:02:25,115 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 20:02:25,125 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,126 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,128 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,129 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,131 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,132 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,135 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,136 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,137 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,138 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,148 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,150 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,156 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,158 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,160 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,161 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,163 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,168 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,169 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,171 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,172 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,174 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,176 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,177 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,178 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,179 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,182 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,183 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,184 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,185 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:02:25,191 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 20:02:25,195 - batch - INFO - # Step 5: Expire deals
+2025-04-30 20:02:25,235 - batch - INFO - Nightly job completed successfully in 0:00:00.277440
+2025-04-30 20:04:41,549 - batch - INFO - Starting nightly job at 2025-04-30 20:04:41.549735
+2025-04-30 20:04:41,550 - batch - INFO - # Step 1: Update stock status
+2025-04-30 20:04:41,683 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 20:04:41,714 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 20:04:41,727 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,730 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,732 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,734 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,736 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,738 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,739 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,741 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,743 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,745 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,756 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,758 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,765 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,767 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,769 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,771 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,772 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,776 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,778 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,780 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,781 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,783 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,784 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,786 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,788 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,789 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,791 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,792 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,794 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,796 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:04:41,801 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 20:04:41,805 - batch - INFO - # Step 5: Expire deals
+2025-04-30 20:04:41,847 - batch - INFO - Nightly job completed successfully in 0:00:00.297580
+2025-04-30 20:04:45,505 - batch - INFO - Starting nightly job at 2025-04-30 20:04:45.505042
+2025-04-30 20:04:45,505 - batch - INFO - # Step 1: Update stock status
+2025-04-30 20:04:45,610 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 20:04:45,620 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 20:04:45,637 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 20:04:45,642 - batch - INFO - # Step 5: Expire deals
+2025-04-30 20:04:45,690 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: 'Item' object has no attribute 'shelf_life_days'
+2025-04-30 20:04:45,694 - batch - INFO - Nightly job completed successfully in 0:00:00.189007
+2025-04-30 20:25:41,311 - batch - INFO - Starting nightly job at 2025-04-30 20:25:41.311762
+2025-04-30 20:25:41,312 - batch - INFO - # Step 1: Update stock status
+2025-04-30 20:25:41,442 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 20:25:41,463 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 20:25:41,475 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 8: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,476 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 9: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,478 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 11: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,479 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 13: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,481 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 14: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,482 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 16: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,484 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 17: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,486 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 18: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,487 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 19: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,488 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 21: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,497 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 23: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,499 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 24: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,519 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 27: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,521 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 26: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,523 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 28: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,525 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 29: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,527 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 31: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,531 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 1: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,532 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 3: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,534 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 4: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,536 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 6: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,537 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 7: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,539 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 33: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,541 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 34: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,543 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 35: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,544 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 36: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,546 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 37: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,547 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 38: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,549 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 39: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,551 - warehouse_replenishment.services.safety_stock_service - ERROR - Error updating safety stock for item 40: '>' not supported between instances of 'NoneType' and 'int'
+2025-04-30 20:25:41,556 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 20:25:41,560 - batch - INFO - # Step 5: Expire deals
+2025-04-30 20:25:41,600 - batch - INFO - Nightly job completed successfully in 0:00:00.288671
+2025-04-30 21:33:38,812 - batch - INFO - Starting nightly job at 2025-04-30 21:33:38.812297
+2025-04-30 21:33:38,813 - batch - INFO - # Step 1: Update stock status
+2025-04-30 21:33:38,977 - batch - INFO - # Step 2: Calculate lost sales
+2025-04-30 21:33:39,015 - batch - INFO - # Step 3: Update safety stock levels
+2025-04-30 21:33:39,108 - batch - INFO - # Step 4: Process time-based parameters
+2025-04-30 21:33:39,114 - batch - INFO - # Step 5: Expire deals
+2025-04-30 21:33:39,157 - batch - INFO - Nightly job completed successfully in 0:00:00.344867

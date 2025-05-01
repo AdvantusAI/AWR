@@ -475,14 +475,16 @@ class ItemService:
             return
         
         # Get effective order cycle
-        effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+        vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+        item_cycle = item.item_cycle_days if item.item_cycle_days is not None else 0
+        effective_order_cycle = max(vendor_cycle, item_cycle)
         
         # Calculate safety stock in days
         safety_stock_days = calculate_safety_stock(
             service_level_goal=item.service_level_goal or self.company_settings['service_level_goal'],
-            madp=item.madp or 0.0,
-            lead_time=item.lead_time_forecast or 0,
-            lead_time_variance=item.lead_time_variance or 0.0,
+            madp=item.madp if item.madp is not None else 0.0,
+            lead_time=item.lead_time_forecast if item.lead_time_forecast is not None else 0,
+            lead_time_variance=item.lead_time_variance if item.lead_time_variance is not None else 0.0,
             order_cycle=effective_order_cycle
         )
         
@@ -494,10 +496,12 @@ class ItemService:
         item.sstf = safety_stock_days
         
         # Calculate order points and levels
-        item.item_order_point_days = safety_stock_days + (item.lead_time_forecast or 0)
+        lead_time = item.lead_time_forecast if item.lead_time_forecast is not None else 0
+        item.item_order_point_days = safety_stock_days + lead_time
         item.item_order_point_units = item.item_order_point_days * daily_demand
         
-        item.vendor_order_point_days = item.item_order_point_days + (vendor.order_cycle or 0)
+        vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+        item.vendor_order_point_days = item.item_order_point_days + vendor_cycle
         
         item.order_up_to_level_days = item.item_order_point_days + effective_order_cycle
         item.order_up_to_level_units = item.order_up_to_level_days * daily_demand

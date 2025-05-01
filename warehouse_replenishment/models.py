@@ -338,6 +338,12 @@ class Item(Base):
     service_level_attained = Column(Float)
     manual_ss = Column(Float)
     manual_ss_type = Column(String(50))
+    shelf_life_days = Column(Integer)  # Number of days an item can be stored before it expires
+    
+    # Physical characteristics
+    units_per_case = Column(Integer, default=1)
+    weight_per_unit = Column(Float, default=0.0)  # Weight per unit in kg
+    volume_per_unit = Column(Float, default=0.0)  # Volume per unit in cubic meters
 
     # Relationships
     vendor = relationship("Vendor", back_populates="items")

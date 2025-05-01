@@ -85,62 +85,71 @@ class SafetyStockService:
         # Determine service level to use
         if service_level_override is not None:
             service_level = service_level_override
-        elif item.service_level_goal:
+        elif item.service_level_goal is not None:
             service_level = item.service_level_goal
-        elif vendor.service_level_goal:
+        elif vendor.service_level_goal is not None:
             service_level = vendor.service_level_goal
         else:
             service_level = self.company_settings['service_level_goal']
         
-        # Get effective order cycle
+        # Get effective order cycle - handle potential None values
         effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+        
+        # Ensure we have values for MADP and lead times - use defaults if None
+        madp = item.madp if item.madp is not None else 20.0  # Default MADP
+        lead_time = item.lead_time_forecast if item.lead_time_forecast is not None else (vendor.lead_time_forecast or 7)
+        lead_time_variance = item.lead_time_variance if item.lead_time_variance is not None else (vendor.lead_time_variance or 0.0)
         
         # Calculate safety stock in days
         safety_stock_days = calculate_safety_stock(
             service_level_goal=service_level,
-            madp=item.madp,
-            lead_time=item.lead_time_forecast,
-            lead_time_variance=item.lead_time_variance,
+            madp=madp,
+            lead_time=lead_time,
+            lead_time_variance=lead_time_variance,
             order_cycle=effective_order_cycle
         )
         
-        
-        
-        daily_demand = item.demand_4weekly / 28  # Assuming 28 days in a 4-weekly period
+        # Ensure daily_demand is not None
+        daily_demand = (item.demand_4weekly or 0) / 28  # Assuming 28 days in a 4-weekly period
         safety_stock_units = calculate_safety_stock_units(safety_stock_days, daily_demand)
         
         # If manual safety stock is set and safety stock type is not NEVER
         manual_ss_applied = False
         
-        
-        
-        if item.manual_ss > 0 and item.ss_type != SafetyStockType.NEVER:
-            if item.ss_type == SafetyStockType.ALWAYS:
-                # Always use manual safety stock
-                safety_stock_units = item.manual_ss
-                # Recalculate days based on the manual units
-                safety_stock_days = safety_stock_units / daily_demand if daily_demand > 0 else 0
-                manual_ss_applied = True
-            elif item.ss_type == SafetyStockType.LESSER_OF:                
-                if item.manual_ss < safety_stock_units:
+        # Handle potential None or missing values for manual safety stock
+        if hasattr(item, 'manual_ss') and item.manual_ss is not None and item.manual_ss > 0:
+            # Default to LESSER_OF if ss_type is None
+            ss_type = getattr(item, 'ss_type', SafetyStockType.LESSER_OF)
+            if ss_type is None:
+                ss_type = SafetyStockType.LESSER_OF
+                
+            if ss_type != SafetyStockType.NEVER:
+                if ss_type == SafetyStockType.ALWAYS:
+                    # Always use manual safety stock
                     safety_stock_units = item.manual_ss
                     # Recalculate days based on the manual units
                     safety_stock_days = safety_stock_units / daily_demand if daily_demand > 0 else 0
                     manual_ss_applied = True
-                    
+                elif ss_type == SafetyStockType.LESSER_OF:                
+                    if item.manual_ss < safety_stock_units:
+                        safety_stock_units = item.manual_ss
+                        # Recalculate days based on the manual units
+                        safety_stock_days = safety_stock_units / daily_demand if daily_demand > 0 else 0
+                        manual_ss_applied = True
+                        
         return {
             'item_id': item_id,
             'service_level': service_level,
-            'lead_time': item.lead_time_forecast,
-            'lead_time_variance': item.lead_time_variance,
-            'madp': item.madp,
+            'lead_time': lead_time,
+            'lead_time_variance': lead_time_variance,
+            'madp': madp,
             'order_cycle': effective_order_cycle,
             'safety_stock_days': safety_stock_days,
             'safety_stock_units': safety_stock_units,
             'daily_demand': daily_demand,
             'manual_ss_applied': manual_ss_applied,
-            'manual_ss': item.manual_ss if item.manual_ss > 0 else None,
-            'manual_ss_type': item.ss_type.name if item.ss_type else None
+            'manual_ss': item.manual_ss if hasattr(item, 'manual_ss') and item.manual_ss is not None and item.manual_ss > 0 else None,
+            'manual_ss_type': item.ss_type.name if hasattr(item, 'ss_type') and item.ss_type is not None else None
         }
     
     def update_safety_stock_for_item(
@@ -162,7 +171,7 @@ class SafetyStockService:
             True if safety stock was updated successfully
         """
         item = self.session.query(Item).get(item_id)
-       
+    
         if not item:
             raise ItemError(f"Item with ID {item_id} not found")
         
@@ -181,19 +190,27 @@ class SafetyStockService:
             if not vendor:
                 raise ItemError(f"Vendor with ID {item.vendor_id} not found")
             
-            # Update item order point days and units
-            item.item_order_point_days = float(ss_result['safety_stock_days'] + item.lead_time_forecast)
-            item.item_order_point_units = float(item.item_order_point_days * ss_result['daily_demand'])
+            # Ensure lead_time_forecast has a default value if None
+            if item.lead_time_forecast is None:
+                item.lead_time_forecast = vendor.lead_time_forecast or 7  # Default to 7 days if vendor lead time is also None
             
-            # Update vendor order point days
-            item.vendor_order_point_days = float(item.item_order_point_days + (vendor.order_cycle or 0))
+            # Update item order point days and units - ensure we don't have None values
+            item.item_order_point_days = float(ss_result['safety_stock_days'] + (item.lead_time_forecast or 0))
             
-            # Get effective order cycle
-            effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+            # Ensure daily_demand is not None before calculation
+            daily_demand = ss_result.get('daily_demand', 0) or 0
+            item.item_order_point_units = float(item.item_order_point_days * daily_demand)
+            
+            # Update vendor order point days - handle potential None values
+            vendor_order_cycle = vendor.order_cycle or 0
+            item.vendor_order_point_days = float(item.item_order_point_days + vendor_order_cycle)
+            
+            # Get effective order cycle - handle potential None values
+            effective_order_cycle = max(vendor_order_cycle, item.item_cycle_days or 0)
             
             # Update order up to level
             item.order_up_to_level_days = float(item.item_order_point_days + effective_order_cycle)
-            item.order_up_to_level_units = float(item.order_up_to_level_days * ss_result['daily_demand'])
+            item.order_up_to_level_units = float(item.order_up_to_level_days * daily_demand)
         
         try:
             self.session.commit()
@@ -201,6 +218,7 @@ class SafetyStockService:
         except Exception as e:
             self.session.rollback()
             raise SafetyStockError(f"Failed to update safety stock: {str(e)}")
+        
     
     def adjust_safety_stock_empirically(
         self,
@@ -313,10 +331,12 @@ class SafetyStockService:
             item.item_order_point_units = item.item_order_point_days * daily_demand
             
             # Update vendor order point days
-            item.vendor_order_point_days = item.item_order_point_days + vendor.order_cycle
+            item.vendor_order_point_days = item.item_order_point_days + (vendor.order_cycle if vendor.order_cycle is not None else 0)
             
             # Get effective order cycle
-            effective_order_cycle = max(vendor.order_cycle or 0, item.item_cycle_days or 0)
+            vendor_cycle = vendor.order_cycle if vendor.order_cycle is not None else 0
+            item_cycle = item.item_cycle_days if item.item_cycle_days is not None else 0
+            effective_order_cycle = max(vendor_cycle, item_cycle)
             
             # Update order up to level
             item.order_up_to_level_days = item.item_order_point_days + effective_order_cycle
@@ -410,7 +430,7 @@ class SafetyStockService:
         
         # Update manual safety stock fields
         item.manual_ss = manual_ss
-        item.ss_type = ss_type
+        item.manual_ss_type = ss_type
         
         # Update safety stock if needed
         if ss_type != SafetyStockType.NEVER and update_order_points:

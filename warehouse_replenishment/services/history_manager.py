@@ -102,7 +102,7 @@ class HistoryManager:
         # Calculate total demand
         total_demand = shipped + lost_sales - promotional_demand
         
-        # Create new period - FIXED: Don't set the ID, let the database generate it
+        # Create new period - FIX: Don't set the ID, let the database generate it
         history_period = DemandHistory(
             item_id=item_id,
             period_number=period_number,

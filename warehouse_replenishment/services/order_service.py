@@ -1008,26 +1008,25 @@ class OrderService:
             order_date = datetime.now()
             
         # Get all active items for this vendor
+        # Build the query with string values instead of enum values
         query = self.session.query(Item).filter(
             Item.vendor_id == vendor_id,
-            Item.buyer_class == BuyerClassCode.REGULAR
+            Item.buyer_class == 'R'  # REGULAR
         )
         
         if include_watch:
-            query = query.union(
-                self.session.query(Item).filter(
-                    Item.vendor_id == vendor_id,
-                    Item.buyer_class == BuyerClassCode.WATCH
-                )
+            query_watch = self.session.query(Item).filter(
+                Item.vendor_id == vendor_id,
+                Item.buyer_class == 'W'  # WATCH
             )
+            query = query.union(query_watch)
             
         if include_manual:
-            query = query.union(
-                self.session.query(Item).filter(
-                    Item.vendor_id == vendor_id,
-                    Item.buyer_class == BuyerClassCode.MANUAL
-                )
+            query_manual = self.session.query(Item).filter(
+                Item.vendor_id == vendor_id,
+                Item.buyer_class == 'M'  # MANUAL
             )
+            query = query.union(query_manual)
             
         items = query.all()
         
@@ -1123,7 +1122,8 @@ class OrderService:
             query = query.filter(Vendor.id == vendor_id)
             
         # Only include regular vendors (not transfer, kitting, etc.)
-        query = query.filter(Vendor.vendor_type == VendorType.REGULAR)
+        # Use string value for enum
+        query = query.filter(Vendor.vendor_type == 'REGULAR')
         
         # Filter out vendors with no active items
         query = query.filter(Vendor.active_items_count > 0)
