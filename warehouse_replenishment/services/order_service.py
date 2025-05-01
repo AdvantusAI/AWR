@@ -960,6 +960,16 @@ class OrderService:
         if item.minimum_quantity is not None and soq < item.minimum_quantity:
             soq = item.minimum_quantity
             
+        # Log detailed information for debugging
+        logger.info(f"Item {item_id} ({item.description}):")
+        logger.info(f"  Balance: {balance}")
+        logger.info(f"  IOP: {iop}")
+        logger.info(f"  OUTL: {outl}")
+        logger.info(f"  Initial SOQ: {soq}")
+        logger.info(f"  Buying multiple: {item.buying_multiple}")
+        logger.info(f"  Minimum quantity: {item.minimum_quantity}")
+        logger.info(f"  Is at order point: {balance < iop}")
+            
         results = {
             'item_id': item_id,
             'balance': balance,
@@ -1137,6 +1147,8 @@ class OrderService:
         
         vendors = query.all()
         
+        logger.info(f"Found {len(vendors)} eligible vendors for order generation")
+        
         # Process results
         results = {
             'total_vendors': len(vendors),
@@ -1149,6 +1161,11 @@ class OrderService:
         # Process each vendor
         for vendor in vendors:
             try:
+                logger.info(f"Processing vendor {vendor.id} ({vendor.name})")
+                logger.info(f"Active items: {vendor.active_items_count}")
+                logger.info(f"Vendor type: {vendor.vendor_type}")
+                logger.info(f"Deactivate until: {vendor.deactivate_until}")
+                
                 vendor_result = self.generate_vendor_order(
                     vendor_id=vendor.id,
                     include_watch=include_watch,
@@ -1165,10 +1182,14 @@ class OrderService:
                         'vendor_name': vendor.name,
                         'total_items': vendor_result.get('total_items', 0)
                     })
+                    logger.info(f"Successfully generated order for vendor {vendor.id} with {vendor_result.get('total_items', 0)} items")
+                else:
+                    logger.info(f"No order generated for vendor {vendor.id}: {vendor_result.get('message', 'Unknown reason')}")
             except Exception as e:
                 logger.error(f"Error generating order for vendor {vendor.id}: {str(e)}")
                 results['errors'] += 1
         
+        logger.info(f"Order generation complete. Generated {results['generated_orders']} orders for {results['total_items']} items")
         return results
     
     def determine_next_order_date(

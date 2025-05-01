@@ -41,6 +41,25 @@ class NightlyJobAnalyzer:
         self.recommendations = []
         self.insights = []
         
+    def _serialize_for_json(self, obj: Any) -> Any:
+        """Serialize objects for JSON storage.
+        
+        Args:
+            obj: Object to serialize
+            
+        Returns:
+            JSON-serializable object
+        """
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        elif isinstance(obj, timedelta):
+            return obj.total_seconds()
+        elif isinstance(obj, dict):
+            return {k: self._serialize_for_json(v) for k, v in obj.items()}
+        elif isinstance(obj, (list, tuple)):
+            return [self._serialize_for_json(item) for item in obj]
+        return obj
+
     def analyze_nightly_job_results(self, job_results: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze the results of a nightly job execution.
         
@@ -118,6 +137,9 @@ class NightlyJobAnalyzer:
             stock_status_details = analysis['detailed_analysis'].get('stock_status', {})
             order_generation_details = analysis['detailed_analysis'].get('order_generation', {})
             
+            # Serialize job results for JSON storage
+            serialized_job_results = self._serialize_for_json(job_results)
+            
             # Create main analysis record
             ai_analysis = AIAnalysis(
                 analysis_date=self.analysis_date,
@@ -128,8 +150,8 @@ class NightlyJobAnalyzer:
                 total_orders_generated=order_generation_details.get('generated_orders', 0),
                 lost_sales_value=lost_sales_details.get('lost_sales_value', 0.0),
                 out_of_stock_count=self._get_out_of_stock_count(),
-                detailed_analysis=job_results,
-                insights=analysis['insights'],
+                detailed_analysis=serialized_job_results,
+                insights=self._serialize_for_json(analysis['insights']),
                 recommendations=[rec['title'] for rec in analysis['recommendations']],
                 processing_duration=job_results.get('duration', timedelta()).total_seconds() if job_results.get('duration') else None,
                 error_message=analysis.get('error')
