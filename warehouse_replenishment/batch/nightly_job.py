@@ -10,6 +10,7 @@ from warehouse_replenishment.db import session_scope
 from warehouse_replenishment.models import Company, Warehouse, Item
 from warehouse_replenishment.services.order_service import OrderService
 from warehouse_replenishment.services.item_service import ItemService
+from warehouse_replenishment.services.ai_agent_service import NightlyJobAnalyzer
 from warehouse_replenishment.exceptions import BatchProcessError
 from warehouse_replenishment.logging_setup import get_logger
 
@@ -168,6 +169,45 @@ def update_safety_stock(warehouse_id: Optional[int] = None) -> Dict:
     
     return results
 
+def run_ai_analysis(job_results: Dict) -> Dict:
+    """Run AI analysis on the nightly job results.
+    
+    Args:
+        job_results: Results from the nightly job processes
+        
+    Returns:
+        Dictionary with AI analysis results
+    """
+    logger.info("Running AI analysis of nightly job results")
+    
+    try:
+        with session_scope() as session:
+            analyzer = NightlyJobAnalyzer(session)
+            analysis_results = analyzer.analyze_nightly_job_results(job_results)
+            
+            # Log summary of analysis
+            logger.info(f"AI Analysis completed. Overall health: {analysis_results.get('overall_health', 'UNKNOWN')}")
+            
+            # Log executive summary
+            if 'executive_summary' in analysis_results:
+                logger.info(f"Executive Summary: {analysis_results['executive_summary']}")
+            
+            # Log top recommendations
+            if 'recommendations' in analysis_results:
+                top_recommendations = analysis_results['recommendations'][:3]
+                for i, rec in enumerate(top_recommendations, 1):
+                    logger.info(f"Top Recommendation {i}: {rec.get('title', '')}")
+            
+            return analysis_results
+            
+    except Exception as e:
+        logger.error(f"Error during AI analysis: {str(e)}", exc_info=True)
+        return {
+            'success': False,
+            'error': str(e),
+            'overall_health': 'ERROR'
+        }
+
 def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
     """Run the nightly job.
     
@@ -188,24 +228,27 @@ def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
             'start_time': start_time,
             'end_time': None,
             'duration': None,
-            'processes': {}
+            'processes': {},
+            'ai_analysis': None
         }
         
         # Step 1: Update stock status
         job_logger.info(f"# Step 1: Update stock status")
         results['processes']['update_stock_status'] = update_stock_status(warehouse_id)
         
-        
+        # Step 2: Calculate lost sales
         job_logger.info(f"# Step 2: Calculate lost sales")
         results['processes']['calculate_lost_sales'] = calculate_lost_sales(warehouse_id)
         
+        # Step 3: Update safety stock levels
         job_logger.info(f"# Step 3: Update safety stock levels")
         results['processes']['update_safety_stock'] = update_safety_stock(warehouse_id)
         
-        
+        # Step 4: Process time-based parameters
         job_logger.info(f"# Step 4: Process time-based parameters")
         results['processes']['time_based_parameters'] = process_time_based_parameters()
         
+        # Step 5: Expire deals
         job_logger.info(f"# Step 5: Expire deals")
         results['processes']['expire_deals'] = expire_deals()
         
@@ -216,9 +259,11 @@ def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
             results['processes']['lead_time_forecasts'] = update_lead_time_forecasts(warehouse_id)
         
         # Step 7: Generate orders
+        job_logger.info(f"# Step 7: Generate orders")
         results['processes']['generate_orders'] = generate_orders(warehouse_id)
         
         # Step 8: Purge accepted orders
+        job_logger.info(f"# Step 8: Purge accepted orders")
         results['processes']['purge_accepted_orders'] = purge_accepted_orders()
         
         # Set end time and duration
@@ -226,19 +271,33 @@ def run_nightly_job(warehouse_id: Optional[int] = None) -> Dict:
         results['duration'] = results['end_time'] - start_time
         results['success'] = True
         
-        job_logger.info(f"Nightly job completed successfully in {results['duration']}")
+        # Step 9: Run AI analysis
+        job_logger.info(f"# Step 9: Running AI analysis")
+        ai_analysis_results = run_ai_analysis(results)
+        results['ai_analysis'] = ai_analysis_results
+        
+        # Log completion with AI analysis summary
+        ai_health = ai_analysis_results.get('overall_health', 'UNKNOWN')
+        job_logger.info(f"Nightly job completed successfully in {results['duration']}. AI Analysis Health: {ai_health}")
         
         return results
     
     except Exception as e:
         job_logger.error(f"Error during nightly job: {str(e)}", exc_info=True)
         
-        return {
-            'success': False,
-            'error': str(e),
-            'start_time': start_time,
-            'end_time': datetime.now()
-        }
+        results['end_time'] = datetime.now()
+        results['duration'] = results['end_time'] - start_time
+        results['success'] = False
+        results['error'] = str(e)
+        
+        # Try to run AI analysis even on error to capture what went wrong
+        try:
+            ai_analysis_results = run_ai_analysis(results)
+            results['ai_analysis'] = ai_analysis_results
+        except Exception as ai_error:
+            job_logger.error(f"Error during AI analysis after job failure: {str(ai_error)}")
+        
+        return results
 
 if __name__ == "__main__":
     run_nightly_job()

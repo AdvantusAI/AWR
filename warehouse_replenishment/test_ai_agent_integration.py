@@ -11,11 +11,11 @@ parent_dir = str(Path(__file__).parent.parent)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from warehouse_replenishment.db import db, session_scope
-from warehouse_replenishment.batch.nightly_job import run_nightly_job
-from warehouse_replenishment.services.ai_agent_service import NightlyJobAnalyzer
-from warehouse_replenishment.scripts.query_ai_analysis import query_latest_analysis
-from warehouse_replenishment.logging_setup import get_logger
+from .db import db, session_scope
+from .batch.nightly_job import run_nightly_job
+from .services.ai_agent_service import NightlyJobAnalyzer
+from .scripts.query_ai_analysis import query_latest_analysis
+from .logging_setup import get_logger
 
 logger = get_logger('test_ai_agent')
 

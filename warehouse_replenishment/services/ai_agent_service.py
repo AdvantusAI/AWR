@@ -13,12 +13,15 @@ parent_dir = str(Path(__file__).parent.parent.parent)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from sqlalchemy import and_, func, desc
+from sqlalchemy import and_, func, desc, or_
 from sqlalchemy.orm import Session
 
 from warehouse_replenishment.models import (
     Item, Order, OrderItem, Vendor, Warehouse, DemandHistory,
     HistoryException, ManagementException, BuyerClassCode, SystemClassCode
+)
+from warehouse_replenishment.models.ai_analysis import (
+    AIAnalysis, AIAnalysisInsight, AIAnalysisRecommendation, AIAnalysisMetric
 )
 from warehouse_replenishment.exceptions import AIAgentError
 from warehouse_replenishment.logging_setup import logger
@@ -83,16 +86,121 @@ class NightlyJobAnalyzer:
             # 8. Generate executive summary
             analysis['executive_summary'] = self._create_executive_summary(analysis)
             
-            # Save analysis to database
-        self._save_analysis_to_database(analysis, job_results)
-        
-        return analysis
+            # 9. Save analysis to database
+            analysis['db_id'] = self._save_analysis_to_database(analysis, job_results)
+            
+            return analysis
             
         except Exception as e:
             logger.error(f"Error in nightly job analysis: {str(e)}")
             analysis['overall_health'] = 'ERROR'
             analysis['error'] = str(e)
+            
+            # Try to save error analysis to database
+            try:
+                analysis['db_id'] = self._save_analysis_to_database(analysis, job_results)
+            except Exception as db_error:
+                logger.error(f"Failed to save error analysis to database: {str(db_error)}")
+            
             return analysis
+    
+    def _save_analysis_to_database(self, analysis: Dict[str, Any], job_results: Dict[str, Any]) -> int:
+        """Save the analysis results to the database.
+        
+        Args:
+            analysis: Analysis results dictionary
+            job_results: Original job results
+            
+        Returns:
+            ID of the saved analysis record
+        """
+        try:
+            # Extract summary data
+            lost_sales_details = analysis['detailed_analysis'].get('lost_sales', {})
+            stock_status_details = analysis['detailed_analysis'].get('stock_status', {})
+            order_generation_details = analysis['detailed_analysis'].get('order_generation', {})
+            
+            # Create main analysis record
+            ai_analysis = AIAnalysis(
+                analysis_date=self.analysis_date,
+                job_date=datetime.strptime(analysis['job_date'], '%Y-%m-%d').date(),
+                overall_health=analysis['overall_health'],
+                executive_summary=analysis.get('executive_summary', ''),
+                total_items_processed=stock_status_details.get('total_items', 0),
+                total_orders_generated=order_generation_details.get('generated_orders', 0),
+                lost_sales_value=lost_sales_details.get('lost_sales_value', 0.0),
+                out_of_stock_count=self._get_out_of_stock_count(),
+                detailed_analysis=job_results,
+                insights=analysis['insights'],
+                recommendations=[rec['title'] for rec in analysis['recommendations']],
+                processing_duration=job_results.get('duration', timedelta()).total_seconds() if job_results.get('duration') else None,
+                error_message=analysis.get('error')
+            )
+            self.session.add(ai_analysis)
+            self.session.flush()  # Get the ID but don't commit yet
+            
+            # Create insight records
+            for insight in analysis.get('insights', []):
+                insight_record = AIAnalysisInsight(
+                    analysis_id=ai_analysis.id,
+                    type=insight.get('type', 'INFO'),
+                    category=insight.get('category', 'GENERAL'),
+                    message=insight.get('message', ''),
+                    priority=insight.get('priority', 'LOW'),
+                    item_count=insight.get('item_count', 0),
+                    financial_impact=insight.get('financial_impact', 0.0)
+                )
+                self.session.add(insight_record)
+            
+            # Create recommendation records
+            for recommendation in analysis.get('recommendations', []):
+                rec_record = AIAnalysisRecommendation(
+                    analysis_id=ai_analysis.id,
+                    title=recommendation.get('title', ''),
+                    priority=recommendation.get('priority', 'LOW'),
+                    category=recommendation.get('category', 'GENERAL'),
+                    description=recommendation.get('description', ''),
+                    action_items=recommendation.get('action_items', []),
+                    status='PENDING',
+                    estimated_savings=recommendation.get('estimated_savings', 0.0),
+                    estimated_cost_to_implement=recommendation.get('estimated_cost_to_implement', 0.0)
+                )
+                self.session.add(rec_record)
+            
+            # Create metrics records
+            metrics_data = {
+                'lost_sales_value': lost_sales_details.get('lost_sales_value', 0.0),
+                'out_of_stock_count': self._get_out_of_stock_count(),
+                'orders_generated': order_generation_details.get('generated_orders', 0),
+                'safety_stock_errors': analysis['detailed_analysis'].get('safety_stock', {}).get('errors', 0),
+                'total_errors': sum(
+                    details.get('errors', 0) 
+                    for details in analysis['detailed_analysis'].values()
+                    if isinstance(details, dict)
+                )
+            }
+            
+            for metric_name, metric_value in metrics_data.items():
+                metric_record = AIAnalysisMetric(
+                    analysis_id=ai_analysis.id,
+                    metric_name=metric_name,
+                    metric_value=metric_value,
+                    metric_category='OPERATIONAL'
+                )
+                self.session.add(metric_record)
+            
+            # Commit all records
+            self.session.commit()
+            
+            logger.info(f"Saved AI analysis to database with ID: {ai_analysis.id}")
+            return ai_analysis.id
+            
+        except Exception as e:
+            self.session.rollback()
+            logger.error(f"Error saving AI analysis to database: {str(e)}")
+            raise
+
+    # ... [rest of the existing methods from analyze_stock_status through generate_html_report remain unchanged] ...
     
     def _analyze_stock_status(self, job_results: Dict[str, Any], analysis: Dict[str, Any]):
         """Analyze stock status update results."""
@@ -499,7 +607,7 @@ class NightlyJobAnalyzer:
     def _identify_frequent_stockout_items(self) -> List[Dict]:
         """Identify items with frequent stockouts."""
         # Items with multiple stockout days in recent periods
-        result = []
+        results = []
         recent_periods = self.session.query(
             DemandHistory.item_id,
             func.sum(DemandHistory.out_of_stock_days).label('total_oos_days'),
@@ -510,17 +618,17 @@ class NightlyJobAnalyzer:
             func.sum(DemandHistory.out_of_stock_days) > 3
         ).all()
         
-        for item_id, total_oos_days, periods_checked in result:
+        for item_id, total_oos_days, periods_checked in recent_periods:
             item = self.session.query(Item).get(item_id)
             if item:
-                result.append({
+                results.append({
                     'item_id': item.item_id,
                     'description': item.description,
                     'total_oos_days': total_oos_days,
                     'periods_checked': periods_checked
                 })
         
-        return result
+        return results
     
     def _identify_low_safety_stock_items(self) -> List[Dict]:
         """Identify items with insufficient safety stock."""
