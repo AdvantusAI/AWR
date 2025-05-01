@@ -19,7 +19,390 @@ from warehouse_replenishment.logging_setup import logger
 
 logger = get_logger('Warehouses')
 
+def update_seasonal_profiles(
+    warehouse_id: int,
+    session: Session,
+    refresh_all: bool = False
+) -> Dict:
+    """Update seasonal profiles based on actual period data.
     
+    Args:
+        warehouse_id: Warehouse ID to process
+        session: Database session
+        refresh_all: Whether to refresh all profiles or just update existing ones
+        
+    Returns:
+        Dictionary with update results
+    """
+    # Get company settings
+    company = session.query(Company).first()
+    if not company:
+        raise Exception("Company settings not found")
+    
+    periodicity = company.history_periodicity_default
+    max_years = 4  # Look back up to 4 years
+    
+    # Get all items with seasonal profiles or high seasonality indicators
+    query = session.query(Item).filter(
+        Item.warehouse_id == warehouse_id,
+        Item.buyer_class.in_(['R', 'W'])
+    )
+    
+    if not refresh_all:
+        # Only update items with existing seasonal profiles
+        query = query.filter(Item.demand_profile.isnot(None))
+    
+    items = query.all()
+    
+    results = {
+        'warehouse_id': warehouse_id,
+        'periodicity': periodicity,
+        'total_items': len(items),
+        'updated_profiles': 0,
+        'new_profiles': 0,
+        'removed_profiles': 0,
+        'errors': 0,
+        'profile_details': {},
+        'start_time': datetime.now(),
+        'success': True
+    }
+    
+    # Group items by seasonal profile
+    items_by_profile = defaultdict(list)
+    seasonal_indicators = {}
+    
+    for item in items:
+        if item.demand_profile:
+            items_by_profile[item.demand_profile].append(item)
+        
+        # Calculate seasonality indicator
+        seasonal_indicators[item.id] = calculate_seasonality_indicator(item, session, periodicity)
+    
+    # Update existing profiles
+    for profile_id, profile_items in items_by_profile.items():
+        try:
+            profile = session.query(SeasonalProfile).filter(
+                SeasonalProfile.profile_id == profile_id
+            ).first()
+            
+            if not profile:
+                logger.warning(f"Profile {profile_id} not found")
+                continue
+            
+            # Collect history for all items in this profile
+            history_by_year = defaultdict(lambda: defaultdict(list))
+            
+            for item in profile_items:
+                item_history = get_item_history_by_year(item, session, max_years, periodicity)
+                
+                # Aggregate history by year and period
+                for year, periods in item_history.items():
+                    for period_idx, demand in enumerate(periods):
+                        if demand > 0:  # Only include periods with demand
+                            history_by_year[year][period_idx].append(demand)
+            
+            # Calculate average demand by year and period
+            aggregated_history = {}
+            for year, period_data in history_by_year.items():
+                aggregated_history[year] = []
+                for period_idx in range(periodicity):
+                    if period_idx in period_data and period_data[period_idx]:
+                        avg_demand = np.mean(period_data[period_idx])
+                        aggregated_history[year].append(avg_demand)
+                    else:
+                        aggregated_history[year].append(0.0)
+            
+            # Calculate composite line
+            composite_line = calculate_composite_line(aggregated_history, max_years)
+            
+            # Generate seasonal indices
+            new_indices = generate_seasonal_indices(composite_line)
+            
+            # Update profile indices
+            update_success = update_profile_indices(profile, new_indices, session)
+            
+            if update_success:
+                results['updated_profiles'] += 1
+                results['profile_details'][profile_id] = {
+                    'items_count': len(profile_items),
+                    'composite_line': composite_line,
+                    'seasonal_indices': new_indices,
+                    'updated': True
+                }
+            
+        except Exception as e:
+            logger.error(f"Error updating profile {profile_id}: {str(e)}")
+            results['errors'] += 1
+            results['success'] = False
+    
+    # Identify items that need new seasonal profiles
+    if refresh_all:
+        for item in items:
+            if not item.demand_profile:
+                # Check if item has significant seasonality
+                seasonality_score = seasonal_indicators.get(item.id, 0)
+                
+                if seasonality_score > 0.3:  # Threshold for strong seasonality
+                    # Create or assign to a seasonal profile
+                    new_profile_id = create_or_assign_seasonal_profile(
+                        item, session, periodicity
+                    )
+                    
+                    if new_profile_id:
+                        results['new_profiles'] += 1
+                        results['profile_details'][new_profile_id] = {
+                            'items_count': 1,
+                            'newly_created': True
+                        }
+    
+    # Remove profiles for items with low seasonality
+    for item in items:
+        if item.demand_profile:
+            seasonality_score = seasonal_indicators.get(item.id, 0)
+            
+            if seasonality_score < 0.1:  # Threshold for non-seasonal items
+                # Remove profile assignment
+                item.demand_profile = None
+                results['removed_profiles'] += 1
+    
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    # Commit changes
+    if results['success']:
+        try:
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Error committing seasonal profile updates: {str(e)}")
+            results['success'] = False
+    
+    return results
+
+
+def calculate_forecast_accuracy(
+    warehouse_id: int,
+    session: Session,
+    period_number: Optional[int] = None,
+    period_year: Optional[int] = None
+) -> Dict:
+    """Calculate forecast accuracy for the completed period.
+    
+    Args:
+        warehouse_id: Warehouse ID to process
+        session: Database session
+        period_number: Period number (defaults to previous period)
+        period_year: Period year (defaults to previous period)
+        
+    Returns:
+        Dictionary with forecast accuracy results
+    """
+    # Get company settings
+    company = session.query(Company).first()
+    if not company:
+        raise Exception("Company settings not found")
+    
+    periodicity = company.forecasting_periodicity_default
+    
+    # Use previous period if not specified
+    if period_number is None or period_year is None:
+        current_period, current_year = get_current_period(periodicity)
+        period_number, period_year = get_previous_period(current_period, current_year, periodicity)
+    
+    # Get forecast service
+    forecast_service = ForecastService(session)
+    
+    # Get all active items for the warehouse
+    items = session.query(Item).filter(
+        Item.warehouse_id == warehouse_id,
+        Item.buyer_class.in_(['R', 'W'])  # Regular and Watch items
+    ).all()
+    
+    results = {
+        'warehouse_id': warehouse_id,
+        'period_number': period_number,
+        'period_year': period_year,
+        'total_items': len(items),
+        'processed_items': 0,
+        'accurate_forecasts': 0,  # Within acceptable tolerance
+        'total_absolute_error': 0.0,
+        'total_actual_demand': 0.0,
+        'mape': 0.0,  # Mean Absolute Percentage Error
+        'wape': 0.0,  # Weighted Absolute Percentage Error
+        'error_distribution': {
+            'under_forecast': 0,
+            'over_forecast': 0,
+            'within_tolerance': 0
+        },
+        'top_missed_forecasts': [],
+        'item_accuracy_details': [],
+        'start_time': datetime.now(),
+        'success': True
+    }
+    
+    tolerance_threshold = 0.20  # 20% tolerance for "accurate" forecasts
+    
+    # Process each item
+    for item in items:
+        try:
+            # Get forecast for this period
+            forecasts = session.query(ItemForecast).filter(
+                ItemForecast.item_id == item.id,
+                ItemForecast.period_number == period_number,
+                ItemForecast.period_year == period_year
+            ).all()
+            
+            # Get actual demand for this period
+            history = session.query(DemandHistory).filter(
+                DemandHistory.item_id == item.id,
+                DemandHistory.period_number == period_number,
+                DemandHistory.period_year == period_year
+            ).first()
+            
+            if not history:
+                continue  # Skip if no actual history available
+            
+            actual_demand = history.total_demand
+            forecast_value = None
+            
+            # Get the forecast value (use the most recent forecast for this period)
+            if forecasts:
+                latest_forecast = max(forecasts, key=lambda f: f.forecast_date)
+                forecast_value = latest_forecast.forecast_value
+            elif item.demand_4weekly is not None:
+                # Fallback to item's current forecast if no historical forecast exists
+                forecast_value = item.demand_4weekly
+            
+            if forecast_value is not None:
+                # Calculate forecast accuracy metrics
+                error = abs(actual_demand - forecast_value)
+                relative_error = error / actual_demand if actual_demand > 0 else None
+                
+                # Update totals
+                results['processed_items'] += 1
+                results['total_absolute_error'] += error
+                results['total_actual_demand'] += actual_demand
+                
+                # Store forecast accuracy for this item
+                item_detail = {
+                    'item_id': item.item_id,
+                    'description': item.description,
+                    'forecast': forecast_value,
+                    'actual': actual_demand,
+                    'absolute_error': error,
+                    'percentage_error': relative_error * 100 if relative_error is not None else None,
+                    'is_accurate': relative_error is not None and relative_error <= tolerance_threshold
+                }
+                
+                # Update error distribution
+                if relative_error is not None:
+                    if relative_error <= tolerance_threshold:
+                        results['accurate_forecasts'] += 1
+                        results['error_distribution']['within_tolerance'] += 1
+                        item_detail['status'] = 'WITHIN_TOLERANCE'
+                    elif forecast_value < actual_demand:
+                        results['error_distribution']['under_forecast'] += 1
+                        item_detail['status'] = 'UNDER_FORECAST'
+                    else:
+                        results['error_distribution']['over_forecast'] += 1
+                        item_detail['status'] = 'OVER_FORECAST'
+                
+                results['item_accuracy_details'].append(item_detail)
+                
+                # Track top missed forecasts
+                if relative_error is not None and relative_error > tolerance_threshold:
+                    results['top_missed_forecasts'].append({
+                        'item_id': item.item_id,
+                        'description': item.description,
+                        'forecast': forecast_value,
+                        'actual': actual_demand,
+                        'error_percentage': relative_error * 100
+                    })
+                
+                # Update forecast record with actual values
+                if forecasts:
+                    latest_forecast.actual_value = actual_demand
+                    latest_forecast.error = actual_demand - forecast_value
+                    latest_forecast.error_pct = relative_error * 100 if relative_error is not None else None
+                
+        except Exception as e:
+            logger.error(f"Error calculating forecast accuracy for item {item.id}: {str(e)}")
+            results['success'] = False
+    
+    # Calculate overall accuracy metrics
+    if results['processed_items'] > 0:
+        # Mean Absolute Percentage Error (MAPE)
+        mape_items = []
+        for detail in results['item_accuracy_details']:
+            if detail['percentage_error'] is not None:
+                mape_items.append(detail['percentage_error'])
+        
+        if mape_items:
+            results['mape'] = np.mean(mape_items)
+        
+        # Weighted Absolute Percentage Error (WAPE)
+        if results['total_actual_demand'] > 0:
+            results['wape'] = (results['total_absolute_error'] / results['total_actual_demand']) * 100
+        
+        # Sort top missed forecasts by error percentage
+        results['top_missed_forecasts'].sort(key=lambda x: x['error_percentage'], reverse=True)
+        results['top_missed_forecasts'] = results['top_missed_forecasts'][:10]  # Keep top 10
+        
+        # Calculate accuracy rate
+        results['accuracy_rate'] = (results['accurate_forecasts'] / results['processed_items']) * 100
+    
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    # Commit forecast updates
+    if results['success']:
+        try:
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Error committing forecast accuracy updates: {str(e)}")
+            results['success'] = False
+    
+    return results   
+
+
+def save_forecast_accuracy_results(results: Dict, session: Session) -> bool:
+    """Save forecast accuracy results to the database.
+    
+    Args:
+        results: Forecast accuracy calculation results
+        session: Database session
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        # Create or update forecast accuracy metrics table
+        # This would require a new model/table to store accuracy metrics
+        # For now, we'll log the results
+        
+        logger.info(f"Forecast Accuracy Results for Warehouse {results['warehouse_id']}:")
+        logger.info(f"  Period: {results['period_number']}/{results['period_year']}")
+        logger.info(f"  Accuracy Rate: {results.get('accuracy_rate', 0):.2f}%")
+        logger.info(f"  MAPE: {results.get('mape', 0):.2f}%")
+        logger.info(f"  WAPE: {results.get('wape', 0):.2f}%")
+        logger.info(f"  Processed Items: {results['processed_items']}")
+        logger.info(f"  Error Distribution:")
+        logger.info(f"    Within Tolerance: {results['error_distribution']['within_tolerance']}")
+        logger.info(f"    Under Forecast: {results['error_distribution']['under_forecast']}")
+        logger.info(f"    Over Forecast: {results['error_distribution']['over_forecast']}")
+        
+        if results.get('top_missed_forecasts'):
+            logger.info("  Top Missed Forecasts:")
+            for missed in results['top_missed_forecasts'][:5]:
+                logger.info(f"    - {missed['item_id']}: {missed['error_percentage']:.1f}% error")
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error saving forecast accuracy results: {str(e)}")
+        return False
+
+
 
 def should_run_period_end() -> bool:
     """Check if period-end processing should run today.
@@ -146,6 +529,35 @@ def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> D
         archive_results = archive_resolved_exceptions(session)
         results['errors'] += archive_results.get('errors', 0)
         
+        # NEW: Calculate forecast accuracy for completed period
+        current_period, current_year = get_current_period(periodicity)
+        prev_period, prev_year = get_previous_period(current_period, current_year, periodicity)
+        
+         # NEW: Update seasonal profiles
+        seasonal_results = update_seasonal_profiles(warehouse_id, session)
+        
+        # Update results
+        results['seasonal_profile_updates'] = seasonal_results
+         # NEW: Update service levels
+        service_level_results = update_service_levels(warehouse_id, session)
+        
+        # NEW: Analyze fill rate by vendor
+        fill_rate_results = analyze_fill_rate_by_vendor(warehouse_id, session)
+        
+        # Update results
+        results['service_level_updates'] = service_level_results
+        results['fill_rate_analysis'] = fill_rate_results
+        
+        accuracy_results = calculate_forecast_accuracy(
+            warehouse_id, session, prev_period, prev_year
+        )
+        
+        save_successful = save_forecast_accuracy_results(accuracy_results, session)
+        # Update results
+        results['forecast_accuracy'] = accuracy_results
+        results['forecast_accuracy_saved'] = save_successful
+        
+        
         results['success'] = True
     
     except Exception as e:
@@ -266,6 +678,980 @@ def run_period_end_job(warehouse_id: Optional[int] = None) -> Dict:
             'start_time': start_time,
             'end_time': datetime.now()
         }
+
+def calculate_seasonality_indicator(
+    item: Item,
+    session: Session,
+    periodicity: int
+) -> float:
+    """Calculate a seasonality indicator for an item.
+    
+    Args:
+        item: Item to analyze
+        session: Database session
+        periodicity: Periodicity to use
+        
+    Returns:
+        Seasonality indicator (0-1, higher means stronger seasonality)
+    """
+    # Get recent history
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id,
+        DemandHistory.is_ignored == False
+    ).order_by(
+        DemandHistory.period_year.desc(),
+        DemandHistory.period_number.desc()
+    ).limit(periodicity * 2).all()  # Get at least 2 years
+    
+    if len(history) < periodicity:
+        return 0.0  # Not enough data
+    
+    # Group by period number
+    period_demands = defaultdict(list)
+    for h in history:
+        period_demands[h.period_number].append(h.total_demand)
+    
+    # Calculate coefficient of variation for each period
+    period_cvs = []
+    for period_num, demands in period_demands.items():
+        if len(demands) >= 2:
+            mean = np.mean(demands)
+            if mean > 0:
+                cv = np.std(demands) / mean
+                period_cvs.append(cv)
+    
+    if not period_cvs:
+        return 0.0
+    
+    # Calculate overall seasonality score
+    # Higher CV means more seasonality
+    avg_cv = np.mean(period_cvs)
+    seasonality_score = min(1.0, avg_cv)
+    
+    return seasonality_score
+
+
+def get_item_history_by_year(
+    item: Item,
+    session: Session,
+    max_years: int,
+    periodicity: int
+) -> Dict[int, List[float]]:
+    """Get item demand history organized by year.
+    
+    Args:
+        item: Item to get history for
+        session: Database session
+        max_years: Maximum years to retrieve
+        periodicity: Periodicity to use
+        
+    Returns:
+        Dictionary mapping years to lists of demand values
+    """
+    # Get history
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id,
+        DemandHistory.is_ignored == False
+    ).order_by(
+        DemandHistory.period_year.desc(),
+        DemandHistory.period_number.desc()
+    ).all()
+    
+    # Organize by year
+    history_by_year = {}
+    
+    for h in history:
+        year = h.period_year
+        
+        if year not in history_by_year:
+            history_by_year[year] = [0.0] * periodicity
+        
+        period_idx = h.period_number - 1  # Convert to 0-based index
+        if 0 <= period_idx < periodicity:
+            history_by_year[year][period_idx] = h.total_demand
+    
+    # Sort by year (most recent first) and limit to max_years
+    sorted_years = sorted(history_by_year.keys(), reverse=True)[:max_years]
+    
+    return {year: history_by_year[year] for year in sorted_years}
+
+
+def update_profile_indices(
+    profile: SeasonalProfile,
+    new_indices: List[float],
+    session: Session
+) -> bool:
+    """Update seasonal profile indices.
+    
+    Args:
+        profile: Seasonal profile to update
+        new_indices: New seasonal indices
+        session: Database session
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        # Delete existing indices
+        session.query(SeasonalProfileIndex).filter(
+            SeasonalProfileIndex.profile_id == profile.profile_id
+        ).delete()
+        
+        # Create new indices
+        for i, index_value in enumerate(new_indices, 1):
+            index = SeasonalProfileIndex(
+                profile_id=profile.profile_id,
+                period_number=i,
+                index_value=index_value
+            )
+            session.add(index)
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error updating profile indices: {str(e)}")
+        return False
+
+
+def create_or_assign_seasonal_profile(
+    item: Item,
+    session: Session,
+    periodicity: int
+) -> Optional[str]:
+    """Create or assign a seasonal profile for an item.
+    
+    Args:
+        item: Item to assign profile to
+        session: Database session
+        periodicity: Periodicity to use
+        
+    Returns:
+        Profile ID if successful, None otherwise
+    """
+    try:
+        # Get item history
+        item_history = get_item_history_by_year(item, session, 4, periodicity)
+        
+        if not item_history:
+            return None
+        
+        # Calculate composite line for this item
+        composite_line = calculate_composite_line(item_history, 4)
+        
+        # Generate seasonal indices
+        seasonal_indices = generate_seasonal_indices(composite_line)
+        
+        # Check if similar profile already exists
+        existing_profile = find_similar_profile(
+            seasonal_indices, session, periodicity
+        )
+        
+        if existing_profile:
+            # Assign existing profile
+            item.demand_profile = existing_profile.profile_id
+            return existing_profile.profile_id
+        else:
+            # Create new profile
+            profile_id = f"S_{item.item_id}_{datetime.now().strftime('%Y%m%d')}"
+            profile = SeasonalProfile(
+                profile_id=profile_id,
+                description=f"Seasonal Profile for {item.item_id}",
+                periodicity=periodicity
+            )
+            session.add(profile)
+            
+            # Add indices
+            for i, index_value in enumerate(seasonal_indices, 1):
+                index = SeasonalProfileIndex(
+                    profile_id=profile_id,
+                    period_number=i,
+                    index_value=index_value
+                )
+                session.add(index)
+            
+            # Assign to item
+            item.demand_profile = profile_id
+            
+            return profile_id
+    
+    except Exception as e:
+        logger.error(f"Error creating seasonal profile for item {item.id}: {str(e)}")
+        return None
+
+
+def find_similar_profile(
+    indices: List[float],
+    session: Session,
+    periodicity: int,
+    similarity_threshold: float = 0.95
+) -> Optional[SeasonalProfile]:
+    """Find a similar seasonal profile based on indices.
+    
+    Args:
+        indices: Seasonal indices to match
+        session: Database session
+        periodicity: Periodicity to use
+        similarity_threshold: Minimum similarity required
+        
+    Returns:
+        Matching profile or None
+    """
+    # Get all profiles with the same periodicity
+    profiles = session.query(SeasonalProfile).filter(
+        SeasonalProfile.periodicity == periodicity
+    ).all()
+    
+    best_similarity = 0.0
+    best_profile = None
+    
+    for profile in profiles:
+        # Get profile indices
+        profile_indices = session.query(SeasonalProfileIndex).filter(
+            SeasonalProfileIndex.profile_id == profile.profile_id
+        ).order_by(SeasonalProfileIndex.period_number).all()
+        
+        if len(profile_indices) != len(indices):
+            continue
+        
+        # Calculate similarity (correlation coefficient)
+        profile_values = [idx.index_value for idx in profile_indices]
+        correlation = np.corrcoef(indices, profile_values)[0, 1]
+        
+        if correlation > best_similarity:
+            best_similarity = correlation
+            best_profile = profile
+    
+    if best_similarity >= similarity_threshold:
+        return best_profile
+    
+    return None
+
+def update_service_levels(
+    warehouse_id: int,
+    session: Session,
+    period_number: Optional[int] = None,
+    period_year: Optional[int] = None
+) -> Dict:
+    """Calculate and update service levels for items for the completed period.
+    
+    Args:
+        warehouse_id: Warehouse ID to process
+        session: Database session
+        period_number: Period number (defaults to previous period)
+        period_year: Period year (defaults to previous period)
+        
+    Returns:
+        Dictionary with service level update results
+    """
+    # Get company settings
+    company = session.query(Company).first()
+    if not company:
+        raise Exception("Company settings not found")
+    
+    periodicity = company.history_periodicity_default
+    
+    # Use previous period if not specified
+    if period_number is None or period_year is None:
+        current_period, current_year = get_current_period(periodicity)
+        period_number, period_year = get_previous_period(current_period, current_year, periodicity)
+    
+    # Get all active items for the warehouse
+    items = session.query(Item).filter(
+        Item.warehouse_id == warehouse_id,
+        Item.buyer_class.in_(['R', 'W'])  # Regular and Watch items
+    ).all()
+    
+    results = {
+        'warehouse_id': warehouse_id,
+        'period_number': period_number,
+        'period_year': period_year,
+        'total_items': len(items),
+        'processed_items': 0,
+        'items_meeting_goal': 0,
+        'items_below_goal': 0,
+        'total_lost_sales': 0.0,
+        'total_lost_sales_value': 0.0,
+        'top_service_level_gaps': [],
+        'service_level_distribution': {
+            'excellent': 0,  # >= 99%
+            'good': 0,      # 95-98.9%
+            'fair': 0,      # 90-94.9%
+            'poor': 0,      # < 90%
+        },
+        'recommendations': [],
+        'start_time': datetime.now(),
+        'success': True
+    }
+    
+    # Process each item
+    for item in items:
+        try:
+            # Get service level data for this period
+            history = session.query(DemandHistory).filter(
+                DemandHistory.item_id == item.id,
+                DemandHistory.period_number == period_number,
+                DemandHistory.period_year == period_year
+            ).first()
+            
+            if not history:
+                continue
+            
+            # Calculate service level for the period
+            total_demand = history.shipped + history.lost_sales
+            if total_demand == 0:
+                continue  # Skip items with no demand
+            
+            service_level_attained = (history.shipped / total_demand) * 100
+            
+            # Update item's service level attained
+            item.service_level_attained = service_level_attained
+            
+            # Track service level metrics
+            results['processed_items'] += 1
+            
+            # Get service level goal
+            service_level_goal = (
+                item.service_level_goal or 
+                company.service_level_goal
+            )
+            
+            # Check if meeting goal
+            if service_level_attained >= service_level_goal:
+                results['items_meeting_goal'] += 1
+            else:
+                results['items_below_goal'] += 1
+                
+                # Add to top gaps if significant
+                gap = service_level_goal - service_level_attained
+                if gap > 5:  # Only include gaps > 5%
+                    results['top_service_level_gaps'].append({
+                        'item_id': item.item_id,
+                        'description': item.description,
+                        'service_level_goal': service_level_goal,
+                        'service_level_attained': service_level_attained,
+                        'gap': gap,
+                        'lost_sales': history.lost_sales,
+                        'lost_sales_value': history.lost_sales * item.sales_price
+                    })
+            
+            # Update distribution
+            if service_level_attained >= 99:
+                results['service_level_distribution']['excellent'] += 1
+            elif service_level_attained >= 95:
+                results['service_level_distribution']['good'] += 1
+            elif service_level_attained >= 90:
+                results['service_level_distribution']['fair'] += 1
+            else:
+                results['service_level_distribution']['poor'] += 1
+            
+            # Track lost sales
+            results['total_lost_sales'] += history.lost_sales
+            results['total_lost_sales_value'] += history.lost_sales * item.sales_price
+            
+            # Adjust safety stock based on empirical performance
+            if item.sstf is not None and item.madp is not None:
+                adjustment = empirical_safety_stock_adjustment(
+                    current_safety_stock=item.sstf,
+                    service_level_goal=service_level_goal,
+                    service_level_attained=service_level_attained,
+                    max_adjustment_pct=10.0  # Allow up to 10% adjustment
+                )
+                
+                # Only apply if adjustment is significant
+                if abs(adjustment - item.sstf) > 0.1:
+                    recommendations = results['recommendations']
+                    recommendations.append({
+                        'item_id': item.item_id,
+                        'description': item.description,
+                        'current_sstf': item.sstf,
+                        'recommended_sstf': adjustment,
+                        'service_level_gap': service_level_goal - service_level_attained,
+                        'reason': 'Empirical adjustment based on service level performance'
+                    })
+            
+        except Exception as e:
+            logger.error(f"Error updating service level for item {item.id}: {str(e)}")
+            results['success'] = False
+    
+    # Sort top service level gaps
+    results['top_service_level_gaps'].sort(key=lambda x: x['gap'], reverse=True)
+    results['top_service_level_gaps'] = results['top_service_level_gaps'][:10]  # Keep top 10
+    
+    # Generate summary recommendations
+    if results['items_below_goal'] > 0:
+        pct_below_goal = (results['items_below_goal'] / results['total_items']) * 100
+        
+        results['recommendations'].insert(0, {
+            'type': 'SUMMARY',
+            'message': f"{results['items_below_goal']} items ({pct_below_goal:.1f}%) are below service level goals",
+            'action': 'Review safety stock levels and forecasting methods for items with large gaps'
+        })
+    
+    if results['total_lost_sales_value'] > 1000:  # Threshold for concern
+        results['recommendations'].insert(0, {
+            'type': 'SUMMARY',
+            'message': f"Lost sales value: ${results['total_lost_sales_value']:.2f}",
+            'action': 'Increase safety stock for items with frequent stockouts'
+        })
+    
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    # Commit changes
+    if results['success']:
+        try:
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Error committing service level updates: {str(e)}")
+            results['success'] = False
+    
+    return results
+
+
+def analyze_fill_rate_by_vendor(
+    warehouse_id: int,
+    session: Session,
+    period_number: Optional[int] = None,
+    period_year: Optional[int] = None
+) -> Dict:
+    """Analyze fill rate performance by vendor.
+    
+    Args:
+        warehouse_id: Warehouse ID to process
+        session: Database session
+        period_number: Period number (defaults to previous period)
+        period_year: Period year (defaults to previous period)
+        
+    Returns:
+        Dictionary with vendor fill rate analysis
+    """
+    # Get company settings
+    company = session.query(Company).first()
+    if not company:
+        raise Exception("Company settings not found")
+    
+    periodicity = company.history_periodicity_default
+    
+    # Use previous period if not specified
+    if period_number is None or period_year is None:
+        current_period, current_year = get_current_period(periodicity)
+        period_number, period_year = get_previous_period(current_period, current_year, periodicity)
+    
+    # Get all vendors for the warehouse
+    vendors = session.query(Vendor).filter(
+        Vendor.warehouse_id == warehouse_id
+    ).all()
+    
+    results = {
+        'warehouse_id': warehouse_id,
+        'period_number': period_number,
+        'period_year': period_year,
+        'vendor_fill_rates': {},
+        'top_performing_vendors': [],
+        'bottom_performing_vendors': [],
+        'overall_fill_rate': 0.0,
+        'start_time': datetime.now(),
+        'success': True
+    }
+    
+    total_shipped = 0
+    total_demand = 0
+    
+    # Process each vendor
+    for vendor in vendors:
+        try:
+            # Get all items for this vendor
+            items = session.query(Item).filter(
+                Item.vendor_id == vendor.id,
+                Item.buyer_class.in_(['R', 'W'])
+            ).all()
+            
+            vendor_shipped = 0
+            vendor_demand = 0
+            
+            # Aggregate data for all items of this vendor
+            for item in items:
+                history = session.query(DemandHistory).filter(
+                    DemandHistory.item_id == item.id,
+                    DemandHistory.period_number == period_number,
+                    DemandHistory.period_year == period_year
+                ).first()
+                
+                if history:
+                    vendor_shipped += history.shipped
+                    vendor_demand += history.shipped + history.lost_sales
+            
+            # Calculate fill rate
+            fill_rate = 0.0
+            if vendor_demand > 0:
+                fill_rate = (vendor_shipped / vendor_demand) * 100
+            
+            results['vendor_fill_rates'][vendor.vendor_id] = {
+                'vendor_name': vendor.name,
+                'fill_rate': fill_rate,
+                'total_shipped': vendor_shipped,
+                'total_demand': vendor_demand,
+                'total_lost_sales': vendor_demand - vendor_shipped,
+                'item_count': len(items)
+            }
+            
+            # Update totals
+            total_shipped += vendor_shipped
+            total_demand += vendor_demand
+            
+        except Exception as e:
+            logger.error(f"Error analyzing fill rate for vendor {vendor.id}: {str(e)}")
+            results['success'] = False
+    
+    # Calculate overall fill rate
+    if total_demand > 0:
+        results['overall_fill_rate'] = (total_shipped / total_demand) * 100
+    
+    # Sort vendors by fill rate
+    sorted_vendors = sorted(
+        results['vendor_fill_rates'].items(),
+        key=lambda x: x[1]['fill_rate'],
+        reverse=True
+    )
+    
+    # Top and bottom performers
+    results['top_performing_vendors'] = [
+        {
+            'vendor_id': vendor_id,
+            **data
+        }
+        for vendor_id, data in sorted_vendors[:5]
+    ]
+    
+    results['bottom_performing_vendors'] = [
+        {
+            'vendor_id': vendor_id,
+            **data
+        }
+        for vendor_id, data in sorted_vendors[-5:] if data['fill_rate'] < 95
+    ]
+    
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    return results
+
+
+def generate_service_level_report(
+    results: Dict
+) -> str:
+    """Generate a service level report from analysis results.
+    
+    Args:
+        results: Service level analysis results
+        
+    Returns:
+        HTML report as string
+    """
+    report = f"""
+    <html>
+    <head>
+        <title>Service Level Analysis Report</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; margin: 20px; }}
+            .summary {{ background-color: #f0f0f0; padding: 15px; margin-bottom: 20px; }}
+            .metric {{ margin: 10px 0; }}
+            .table {{ border-collapse: collapse; width: 100%; margin: 20px 0; }}
+            .table th, .table td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+            .table th {{ background-color: #f2f2f2; }}
+            .red {{ color: red; }}
+            .green {{ color: green; }}
+            .yellow {{ color: orange; }}
+        </style>
+    </head>
+    <body>
+        <h1>Service Level Analysis Report</h1>
+        <p>Period: {results['period_number']}/{results['period_year']}</p>
+        
+        <div class="summary">
+            <h2>Summary</h2>
+            <div class="metric">Total Items Processed: {results['processed_items']}</div>
+            <div class="metric">Items Meeting Goal: {results['items_meeting_goal']} ({(results['items_meeting_goal']/results['processed_items']*100):.1f}%)</div>
+            <div class="metric">Items Below Goal: {results['items_below_goal']} ({(results['items_below_goal']/results['processed_items']*100):.1f}%)</div>
+            <div class="metric">Total Lost Sales: {results['total_lost_sales']:.1f} units</div>
+            <div class="metric">Total Lost Sales Value: ${results['total_lost_sales_value']:.2f}</div>
+        </div>
+        
+        <h2>Service Level Distribution</h2>
+        <table class="table">
+            <tr>
+                <th>Category</th>
+                <th>Count</th>
+                <th>Percentage</th>
+            </tr>
+            <tr>
+                <td>Excellent (≥99%)</td>
+                <td>{results['service_level_distribution']['excellent']}</td>
+                <td>{(results['service_level_distribution']['excellent']/results['processed_items']*100):.1f}%</td>
+            </tr>
+            <tr>
+                <td>Good (95-98.9%)</td>
+                <td>{results['service_level_distribution']['good']}</td>
+                <td>{(results['service_level_distribution']['good']/results['processed_items']*100):.1f}%</td>
+            </tr>
+            <tr>
+                <td>Fair (90-94.9%)</td>
+                <td>{results['service_level_distribution']['fair']}</td>
+                <td>{(results['service_level_distribution']['fair']/results['processed_items']*100):.1f}%</td>
+            </tr>
+            <tr>
+                <td>Poor (&lt;90%)</td>
+                <td>{results['service_level_distribution']['poor']}</td>
+                <td>{(results['service_level_distribution']['poor']/results['processed_items']*100):.1f}%</td>
+            </tr>
+        </table>
+        
+        <h2>Top Service Level Gaps</h2>
+        <table class="table">
+            <tr>
+                <th>Item ID</th>
+                <th>Description</th>
+                <th>Goal (%)</th>
+                <th>Attained (%)</th>
+                <th>Gap (%)</th>
+                <th>Lost Sales</th>
+                <th>Lost Sales Value</th>
+            </tr>
+    """
+    
+    for gap in results['top_service_level_gaps']:
+        gap_class = 'red' if gap['gap'] > 10 else 'yellow'
+        report += f"""
+            <tr>
+                <td>{gap['item_id']}</td>
+                <td>{gap['description']}</td>
+                <td>{gap['service_level_goal']:.1f}</td>
+                <td>{gap['service_level_attained']:.1f}</td>
+                <td class="{gap_class}">{gap['gap']:.1f}</td>
+                <td>{gap['lost_sales']:.1f}</td>
+                <td>${gap['lost_sales_value']:.2f}</td>
+            </tr>
+        """
+    
+    report += """
+        </table>
+        
+        <h2>Recommendations</h2>
+        <ul>
+    """
+    
+    for rec in results['recommendations']:
+        if rec.get('type') == 'SUMMARY':
+            report += f"""
+                <li><strong>{rec['message']}</strong>
+                    <br>Action: {rec['action']}</li>
+            """
+        else:
+            report += f"""
+                <li>Item {rec['item_id']}: Adjust safety stock from {rec['current_sstf']:.1f} to {rec['recommended_sstf']:.1f} days
+                    <br>Reason: {rec['reason']}</li>
+            """
+    
+    report += """
+        </ul>
+    </body>
+    </html>
+    """
+    
+    return report
+
+def adjust_forecasting_parameters(
+    warehouse_id: int,
+    session: Session,
+    period_number: Optional[int] = None,
+    period_year: Optional[int] = None
+) -> Dict:
+    """Adjust forecasting parameters based on actual period performance.
+    
+    Args:
+        warehouse_id: Warehouse ID to process
+        session: Database session
+        period_number: Period number (defaults to previous period)
+        period_year: Period year (defaults to previous period)
+        
+    Returns:
+        Dictionary with parameter adjustment results
+    """
+    # Get company settings
+    company = session.query(Company).first()
+    if not company:
+        raise Exception("Company settings not found")
+    
+    periodicity = company.forecasting_periodicity_default
+    
+    # Use previous period if not specified
+    if period_number is None or period_year is None:
+        current_period, current_year = get_current_period(periodicity)
+        period_number, period_year = get_previous_period(current_period, current_year, periodicity)
+    
+    # Get all active items for the warehouse
+    items = session.query(Item).filter(
+        Item.warehouse_id == warehouse_id,
+        Item.buyer_class.in_(['R', 'W'])  # Regular and Watch items
+    ).all()
+    
+    results = {
+        'warehouse_id': warehouse_id,
+        'period_number': period_number,
+        'period_year': period_year,
+        'total_items': len(items),
+        'processed_items': 0,
+        'alpha_factor_adjustments': [],
+        'lead_time_adjustments': [],
+        'safety_stock_adjustments': [],
+        'parameter_changes': {},
+        'recommendations': [],
+        'start_time': datetime.now(),
+        'success': True
+    }
+    
+    # Process each item
+    for item in items:
+        try:
+            # 1. Adjust Alpha Factor based on tracking signal performance
+            alpha_adjustment = adjust_alpha_factor(
+                item, session, period_number, period_year
+            )
+            
+            if alpha_adjustment:
+                results['alpha_factor_adjustments'].append(alpha_adjustment)
+            
+            # 2. Adjust Lead Time based on actual performance
+            lead_time_adjustment = adjust_lead_time(
+                item, session, period_number, period_year
+            )
+            
+            if lead_time_adjustment:
+                results['lead_time_adjustments'].append(lead_time_adjustment)
+            
+            # 3. Adjust Safety Stock Time Factor
+            safety_stock_adjustment = adjust_safety_stock_time_factor(
+                item, session, period_number, period_year
+            )
+            
+            if safety_stock_adjustment:
+                results['safety_stock_adjustments'].append(safety_stock_adjustment)
+            
+            results['processed_items'] += 1
+            
+        except Exception as e:
+            logger.error(f"Error adjusting parameters for item {item.id}: {str(e)}")
+            results['success'] = False
+    
+    # 4. Generate parameter change recommendations
+    results['recommendations'] = generate_parameter_recommendations(
+        results['alpha_factor_adjustments'],
+        results['lead_time_adjustments'],
+        results['safety_stock_adjustments']
+    )
+    
+    # 5. Create time-based parameters for systematic changes
+    create_parameter_changes(results, session)
+    
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    # Commit changes
+    if results['success']:
+        try:
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Error committing parameter adjustments: {str(e)}")
+            results['success'] = False
+    
+    return results
+
+
+def adjust_alpha_factor(
+    item: Item,
+    session: Session,
+    period_number: int,
+    period_year: int
+) -> Optional[Dict]:
+    """Adjust alpha factor based on tracking signal performance.
+    
+    Args:
+        item: Item to adjust
+        session: Database session
+        period_number: Period number
+        period_year: Period year
+        
+    Returns:
+        Adjustment details or None if no adjustment needed
+    """
+    # Get historical tracking signal data
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id
+    ).order_by(
+        DemandHistory.period_year.desc(),
+        DemandHistory.period_number.desc()
+    ).limit(6).all()  # Last 6 periods
+    
+    if len(history) < 3:
+        return None  # Not enough data
+    
+    # Calculate tracking signal volatility
+    track_values = []
+    for h in history:
+        # Simulate track value (in real implementation, this would be stored)
+        if h.total_demand > 0:
+            forecast = item.demand_4weekly  # Placeholder
+            track = abs(h.total_demand - forecast) / forecast * 100
+            track_values.append(track)
+    
+    if not track_values:
+        return None
+    
+    # Current alpha factor from company settings
+    current_alpha = item.vendor.buyer_class_settings.get('alpha_factor', 10.0)
+    
+    # Calculate volatility
+    volatility = np.std(track_values)
+    
+    # Adjust alpha factor based on volatility
+    if volatility > 30:  # High volatility
+        new_alpha = min(current_alpha * 1.2, 20.0)  # Increase alpha, cap at 20
+    elif volatility < 10:  # Low volatility
+        new_alpha = max(current_alpha * 0.8, 5.0)  # Decrease alpha, floor at 5
+    else:
+        return None  # No change needed
+    
+    if abs(new_alpha - current_alpha) > 0.5:  # Significant change
+        return {
+            'item_id': item.item_id,
+            'current_alpha': current_alpha,
+            'recommended_alpha': new_alpha,
+            'volatility': volatility,
+            'reason': f"Tracking signal volatility: {volatility:.1f}%"
+        }
+    
+    return None
+
+
+def adjust_lead_time(
+    item: Item,
+    session: Session,
+    period_number: int,
+    period_year: int
+) -> Optional[Dict]:
+    """Adjust lead time based on actual performance.
+    
+    Args:
+        item: Item to adjust
+        session: Database session
+        period_number: Period number
+        period_year: Period year
+        
+    Returns:
+        Adjustment details or None if no adjustment needed
+    """
+    # Get recent order history with actual receipt dates
+    # This is simplified - in real implementation, we'd track actual lead times
+    
+    # Simulate lead time history
+    lead_time_history = []
+    
+    # For simplification, let's say we have some historical data
+    # In real implementation, this would come from order tracking
+    historical_lead_times = [
+        item.lead_time_forecast * (1 + np.random.normal(0, 0.1))
+        for _ in range(10)
+    ]
+    
+    # Calculate actual vs forecasted lead times
+    current_forecast = item.lead_time_forecast or 7
+    actual_lead_times = [lt for lt in historical_lead_times if lt > 0]
+    
+    if len(actual_lead_times) < 3:
+        return None
+    
+    # Forecast new lead time
+    forecasted_lead_time = forecast_lead_time(
+        historical_lead_times=actual_lead_times,
+        current_lead_time=current_forecast
+    )
+    
+    # Calculate variance
+    variance = calculate_variance(actual_lead_times)
+    
+    # Determine if adjustment is needed
+    if abs(forecasted_lead_time - current_forecast) > 1:  # More than 1 day difference
+        return {
+            'item_id': item.item_id,
+            'current_lead_time': current_forecast,
+            'recommended_lead_time': int(round(forecasted_lead_time)),
+            'variance': variance,
+            'actual_average': np.mean(actual_lead_times),
+            'reason': f"Actual average lead time: {np.mean(actual_lead_times):.1f} days"
+        }
+    
+    return None
+
+
+def adjust_safety_stock_time_factor(
+    item: Item,
+    session: Session,
+    period_number: int,
+    period_year: int
+) -> Optional[Dict]:
+    """Adjust safety stock time factor based on service level performance.
+    
+    Args:
+        item: Item to adjust
+        session: Database session
+        period_number: Period number
+        period_year: Period year
+        
+    Returns:
+        Adjustment details or None if no adjustment needed
+    """
+    # Get service level performance
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id,
+        DemandHistory.period_number == period_number,
+        DemandHistory.period_year == period_year
+    ).first()
+    
+    if not history:
+        return None
+    
+    total_demand = history.shipped + history.lost_sales
+    if total_demand == 0:
+        return None
+    
+    service_level_attained = (history.shipped / total_demand) * 100
+    service_level_goal = item.service_level_goal or 95.0
+    
+    # Adjust safety stock based on service level gap
+    current_sstf = item.sstf or 0
+    
+    if current_sstf > 0 and item.madp is not None:
+        adjusted_sstf = empirical_safety_stock_adjustment(
+            current_safety_stock=current_sstf,
+            service_level_goal=service_level_goal,
+            service_level_attained=service_level_attained,
+            max_adjustment_pct=10.0
+        )
+        
+        if abs(adjusted_sstf - current_sstf) > 0.1:  # Significant change
+            return {
+                'item_id': item.item_id,
+                'current_sstf': current_sstf,
+                'recommended_sstf': adjusted_sstf,
+                'service_level_goal': service_level_goal,
+                'service_level_attained': service_level_attained,
+                'gap': service_level_goal - service_level_attained,
+                'reason': f"Service level gap: {service_level_goal - service_level_attained:.1f}%"
+            }
+    
+    return None
+
 
 if __name__ == "__main__":
     run_period_end_job()
