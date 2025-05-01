@@ -1,23 +1,33 @@
-# warehouse_replenishment/warehouse_replenishment/batch/period_end_job.py
+# warehouse_replenishment/batch/period_end_job.py
 import logging
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
+from collections import defaultdict
+import numpy as np
+import math
 
 from sqlalchemy.orm import Session
 from warehouse_replenishment.logging_setup import get_logger
 from warehouse_replenishment.config import config
 from warehouse_replenishment.db import session_scope
-from warehouse_replenishment.models import Company, Item, Warehouse
+from warehouse_replenishment.models import (
+    Company, Item, Warehouse, SeasonalProfile, SeasonalProfileIndex,
+    DemandHistory, ItemForecast, ForecastMethod, SystemClassCode, BuyerClassCode
+)
 from warehouse_replenishment.services.forecast_service import ForecastService
 from warehouse_replenishment.services.history_manager import HistoryManager
+from warehouse_replenishment.services.safety_stock_service import SafetyStockService
 from warehouse_replenishment.utils.date_utils import (
-    get_current_period, get_period_dates, is_period_end_day, 
+    get_current_period, get_previous_period, get_period_dates, is_period_end_day, 
     get_period_type, add_days
 )
-from warehouse_replenishment.exceptions import BatchProcessError
+from warehouse_replenishment.utils.math_utils import calculate_madp, calculate_track
+from warehouse_replenishment.core.demand_forecast import calculate_composite_line, generate_seasonal_indices
+from warehouse_replenishment.core.safety_stock import empirical_safety_stock_adjustment
+from warehouse_replenishment.exceptions import BatchProcessError, ForecastError
 from warehouse_replenishment.logging_setup import logger
 
-logger = get_logger('Warehouses')
+logger = get_logger('period_end_job')
 
 def update_seasonal_profiles(
     warehouse_id: int,
@@ -179,6 +189,247 @@ def update_seasonal_profiles(
     
     return results
 
+def calculate_seasonality_indicator(
+    item: Item,
+    session: Session,
+    periodicity: int
+) -> float:
+    """Calculate a seasonality indicator for an item.
+    
+    Args:
+        item: Item to analyze
+        session: Database session
+        periodicity: Periodicity to use
+        
+    Returns:
+        Seasonality indicator (0-1, higher means stronger seasonality)
+    """
+    # Get recent history
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id,
+        DemandHistory.is_ignored == False
+    ).order_by(
+        DemandHistory.period_year.desc(),
+        DemandHistory.period_number.desc()
+    ).limit(periodicity * 2).all()  # Get at least 2 years
+    
+    if len(history) < periodicity:
+        return 0.0  # Not enough data
+    
+    # Group by period number
+    period_demands = defaultdict(list)
+    for h in history:
+        period_demands[h.period_number].append(h.total_demand)
+    
+    # Calculate coefficient of variation for each period
+    period_cvs = []
+    for period_num, demands in period_demands.items():
+        if len(demands) >= 2:
+            mean = np.mean(demands)
+            if mean > 0:
+                cv = np.std(demands) / mean
+                period_cvs.append(cv)
+    
+    if not period_cvs:
+        return 0.0
+    
+    # Calculate overall seasonality score
+    # Higher CV means more seasonality
+    avg_cv = np.mean(period_cvs)
+    seasonality_score = min(1.0, avg_cv)
+    
+    return seasonality_score
+
+def get_item_history_by_year(
+    item: Item,
+    session: Session,
+    max_years: int,
+    periodicity: int
+) -> Dict[int, List[float]]:
+    """Get item demand history organized by year.
+    
+    Args:
+        item: Item to get history for
+        session: Database session
+        max_years: Maximum years to retrieve
+        periodicity: Periodicity to use
+        
+    Returns:
+        Dictionary mapping years to lists of demand values
+    """
+    # Get history
+    history = session.query(DemandHistory).filter(
+        DemandHistory.item_id == item.id,
+        DemandHistory.is_ignored == False
+    ).order_by(
+        DemandHistory.period_year.desc(),
+        DemandHistory.period_number.desc()
+    ).all()
+    
+    # Organize by year
+    history_by_year = {}
+    
+    for h in history:
+        year = h.period_year
+        
+        if year not in history_by_year:
+            history_by_year[year] = [0.0] * periodicity
+        
+        period_idx = h.period_number - 1  # Convert to 0-based index
+        if 0 <= period_idx < periodicity:
+            history_by_year[year][period_idx] = h.total_demand
+    
+    # Sort by year (most recent first) and limit to max_years
+    sorted_years = sorted(history_by_year.keys(), reverse=True)[:max_years]
+    
+    return {year: history_by_year[year] for year in sorted_years}
+
+def update_profile_indices(
+    profile: SeasonalProfile,
+    new_indices: List[float],
+    session: Session
+) -> bool:
+    """Update seasonal profile indices.
+    
+    Args:
+        profile: Seasonal profile to update
+        new_indices: New seasonal indices
+        session: Database session
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        # Delete existing indices
+        session.query(SeasonalProfileIndex).filter(
+            SeasonalProfileIndex.profile_id == profile.profile_id
+        ).delete()
+        
+        # Create new indices
+        for i, index_value in enumerate(new_indices, 1):
+            index = SeasonalProfileIndex(
+                profile_id=profile.profile_id,
+                period_number=i,
+                index_value=index_value
+            )
+            session.add(index)
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error updating profile indices: {str(e)}")
+        return False
+
+def create_or_assign_seasonal_profile(
+    item: Item,
+    session: Session,
+    periodicity: int
+) -> Optional[str]:
+    """Create or assign a seasonal profile for an item.
+    
+    Args:
+        item: Item to assign profile to
+        session: Database session
+        periodicity: Periodicity to use
+        
+    Returns:
+        Profile ID if successful, None otherwise
+    """
+    try:
+        # Get item history
+        item_history = get_item_history_by_year(item, session, 4, periodicity)
+        
+        if not item_history:
+            return None
+        
+        # Calculate composite line for this item
+        composite_line = calculate_composite_line(item_history, 4)
+        
+        # Generate seasonal indices
+        seasonal_indices = generate_seasonal_indices(composite_line)
+        
+        # Check if similar profile already exists
+        existing_profile = find_similar_profile(
+            seasonal_indices, session, periodicity
+        )
+        
+        if existing_profile:
+            # Assign existing profile
+            item.demand_profile = existing_profile.profile_id
+            return existing_profile.profile_id
+        else:
+            # Create new profile
+            profile_id = f"S_{item.item_id}_{datetime.now().strftime('%Y%m%d')}"
+            profile = SeasonalProfile(
+                profile_id=profile_id,
+                description=f"Seasonal Profile for {item.item_id}",
+                periodicity=periodicity
+            )
+            session.add(profile)
+            
+            # Add indices
+            for i, index_value in enumerate(seasonal_indices, 1):
+                index = SeasonalProfileIndex(
+                    profile_id=profile_id,
+                    period_number=i,
+                    index_value=index_value
+                )
+                session.add(index)
+            
+            # Assign to item
+            item.demand_profile = profile_id
+            
+            return profile_id
+    
+    except Exception as e:
+        logger.error(f"Error creating seasonal profile for item {item.id}: {str(e)}")
+        return None
+
+def find_similar_profile(
+    indices: List[float],
+    session: Session,
+    periodicity: int,
+    similarity_threshold: float = 0.95
+) -> Optional[SeasonalProfile]:
+    """Find a similar seasonal profile based on indices.
+    
+    Args:
+        indices: Seasonal indices to match
+        session: Database session
+        periodicity: Periodicity to use
+        similarity_threshold: Minimum similarity required
+        
+    Returns:
+        Matching profile or None
+    """
+    # Get all profiles with the same periodicity
+    profiles = session.query(SeasonalProfile).filter(
+        SeasonalProfile.periodicity == periodicity
+    ).all()
+    
+    best_similarity = 0.0
+    best_profile = None
+    
+    for profile in profiles:
+        # Get profile indices
+        profile_indices = session.query(SeasonalProfileIndex).filter(
+            SeasonalProfileIndex.profile_id == profile.profile_id
+        ).order_by(SeasonalProfileIndex.period_number).all()
+        
+        if len(profile_indices) != len(indices):
+            continue
+        
+        # Calculate similarity (correlation coefficient)
+        profile_values = [idx.index_value for idx in profile_indices]
+        correlation = np.corrcoef(indices, profile_values)[0, 1]
+        
+        if correlation > best_similarity:
+            best_similarity = correlation
+            best_profile = profile
+    
+    if best_similarity >= similarity_threshold:
+        return best_profile
+    
+    return None
 
 def calculate_forecast_accuracy(
     warehouse_id: int,
@@ -363,8 +614,7 @@ def calculate_forecast_accuracy(
             logger.error(f"Error committing forecast accuracy updates: {str(e)}")
             results['success'] = False
     
-    return results   
-
+    return results
 
 def save_forecast_accuracy_results(results: Dict, session: Session) -> bool:
     """Save forecast accuracy results to the database.
@@ -401,529 +651,6 @@ def save_forecast_accuracy_results(results: Dict, session: Session) -> bool:
     except Exception as e:
         logger.error(f"Error saving forecast accuracy results: {str(e)}")
         return False
-
-
-
-def should_run_period_end() -> bool:
-    """Check if period-end processing should run today.
-    
-    Returns:
-        True if period-end processing should run
-    """
-    # Get company settings
-    with session_scope() as session:
-        company = session.query(Company).first()
-        if not company:
-            logger.error("Company settings not found")
-            return False
-        
-        periodicity = company.forecasting_periodicity_default
-    
-    # Check if today is the last day of a period
-    today = date.today()
-    return True
-    #return is_period_end_day(today, periodicity)
-
-def process_all_warehouses() -> Dict:
-    """Process period-end for all warehouses.
-    
-    Returns:
-        Dictionary with processing results
-    """
-    results = {
-        'total_warehouses': 0,
-        'processed_warehouses': 0,
-        'total_items': 0,
-        'processed_items': 0,
-        'error_warehouses': 0,
-        'errors': 0,
-        'history_exceptions': 0,
-        'start_time': datetime.now(),
-        'end_time': None,
-        'duration': None
-    }
-    
-    try:
-        with session_scope() as session:
-            # Get all warehouses
-            warehouses = session.query(Warehouse).all()
-           
-            results['total_warehouses'] = len(warehouses)
-            
-            # Process each warehouse
-            for warehouse in warehouses:
-                warehouse_results = process_warehouse(warehouse.warehouse_id, session)
-                
-                if warehouse_results.get('success', False):
-                    results['processed_warehouses'] += 1
-                else:
-                    results['error_warehouses'] += 1
-                
-                results['total_items'] += warehouse_results.get('total_items', 0)
-                results['processed_items'] += warehouse_results.get('processed_items', 0)
-                results['errors'] += warehouse_results.get('errors', 0)
-                results['history_exceptions'] += warehouse_results.get('history_exceptions', 0)
-    
-    except Exception as e:
-        logger.error(f"Error during period-end processing: {str(e)}", exc_info=True)
-        results['errors'] += 1
-    
-    # Set end time and duration
-    results['end_time'] = datetime.now()
-    results['duration'] = results['end_time'] - results['start_time']
-    
-    return results
-
-def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> Dict:
-    """Process period-end for a specific warehouse.
-    
-    Args:
-        warehouse_id: Warehouse ID
-        session: Optional database session
-        
-    Returns:
-        Dictionary with processing results
-    """
-    results = {
-        'warehouse_id': warehouse_id,
-        'success': False,
-        'total_items': 0,
-        'processed_items': 0,
-        'errors': 0,
-        'history_exceptions': 0,
-        'start_time': datetime.now(),
-        'end_time': None,
-        'duration': None
-    }
-    
-    # Use provided session or create a new one
-    close_session = False
-    if session is None:
-        session = Session()
-        close_session = True
-    
-    try:
-        # Reforecast all items
-        reforecast_results = reforecast_items(warehouse_id, session)
-        
-        # Update results
-        results['total_items'] = reforecast_results.get('total_items', 0)
-        results['processed_items'] = reforecast_results.get('processed', 0)
-        results['errors'] += reforecast_results.get('errors', 0)
-        
-        # Detect history exceptions
-        exception_results = detect_history_exceptions(warehouse_id, session)
-        
-        # Update results
-        results['history_exceptions'] = (
-            exception_results.get('demand_filter_high', 0) +
-            exception_results.get('demand_filter_low', 0) +
-            exception_results.get('tracking_signal_high', 0) +
-            exception_results.get('tracking_signal_low', 0) +
-            exception_results.get('service_level_check', 0) +
-            exception_results.get('infinity_check', 0)
-        )
-        results['errors'] += exception_results.get('errors', 0)
-        
-        # Archive old resolved exceptions
-        archive_results = archive_resolved_exceptions(session)
-        results['errors'] += archive_results.get('errors', 0)
-        
-        # NEW: Calculate forecast accuracy for completed period
-        current_period, current_year = get_current_period(periodicity)
-        prev_period, prev_year = get_previous_period(current_period, current_year, periodicity)
-        
-         # NEW: Update seasonal profiles
-        seasonal_results = update_seasonal_profiles(warehouse_id, session)
-        
-        # Update results
-        results['seasonal_profile_updates'] = seasonal_results
-         # NEW: Update service levels
-        service_level_results = update_service_levels(warehouse_id, session)
-        
-        # NEW: Analyze fill rate by vendor
-        fill_rate_results = analyze_fill_rate_by_vendor(warehouse_id, session)
-        
-        # Update results
-        results['service_level_updates'] = service_level_results
-        results['fill_rate_analysis'] = fill_rate_results
-        
-        accuracy_results = calculate_forecast_accuracy(
-            warehouse_id, session, prev_period, prev_year
-        )
-        
-        save_successful = save_forecast_accuracy_results(accuracy_results, session)
-        # Update results
-        results['forecast_accuracy'] = accuracy_results
-        results['forecast_accuracy_saved'] = save_successful
-        
-        
-        results['success'] = True
-    
-    except Exception as e:
-        logger.error(f"Error processing warehouse {warehouse_id}: {str(e)}", exc_info=True)
-        results['errors'] += 1
-    
-    finally:
-        if close_session:
-            session.close()
-    
-    # Set end time and duration
-    results['end_time'] = datetime.now()
-    results['duration'] = results['end_time'] - results['start_time']
-    
-    return results
-
-def reforecast_items(warehouse_id: int, session: Session) -> Dict:
-    """Reforecast all items in a warehouse.
-    
-    Args:
-        warehouse_id: Warehouse ID
-        session: Database session
-        
-    Returns:
-        Dictionary with reforecast results
-    """
-    forecast_service = ForecastService(session)
-    
-    # Process reforecasting
-    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
-    
-    return results
-
-def detect_history_exceptions(warehouse_id: int, session: Session) -> Dict:
-    """Detect history exceptions for a warehouse.
-    
-    Args:
-        warehouse_id: Warehouse ID
-        session: Database session
-        
-    Returns:
-        Dictionary with exception detection results
-    """
-    forecast_service = ForecastService(session)
-    
-    # Detect exceptions
-    results = forecast_service.detect_history_exceptions(warehouse_id=warehouse_id)
-    
-    return results
-
-def archive_resolved_exceptions(session: Session) -> Dict:
-    """Archive old resolved history exceptions.
-    
-    Args:
-        session: Database session
-        
-    Returns:
-        Dictionary with archive results
-    """
-    history_manager = HistoryManager(session)
-    
-    # Archive resolved exceptions
-    results = history_manager.archive_resolved_exceptions()
-    
-    return results
-
-def run_period_end_job(warehouse_id: Optional[int] = None) -> Dict:
-    """Run the period-end job.
-    
-    Args:
-        warehouse_id: Optional warehouse ID to process only a specific warehouse
-        
-    Returns:
-        Dictionary with job results
-    """
-    # Set up logging
-    job_logger = logging.getLogger('batch')
-    
-    start_time = datetime.now()
-    job_logger.info(f"Starting period-end job at {start_time}")
-    
-    # Check if we should run period-end
-    if not should_run_period_end():
-        job_logger.info("Today is not a period-end day. Skipping period-end processing.")
-        return {
-            'success': False,
-            'reason': 'Not a period-end day',
-            'start_time': start_time,
-            'end_time': datetime.now()
-        }
-    
-    try:
-        # Process all warehouses or a specific warehouse
-        if warehouse_id is not None:
-            with session_scope() as session:
-                results = process_warehouse(warehouse_id, session)
-        else:
-            results = process_all_warehouses()
-        
-        # Log results
-        job_logger.info(f"Period-end job completed successfully in {results.get('duration')}")
-        job_logger.info(f"Processed {results.get('processed_items', 0)} items")
-        job_logger.info(f"Generated {results.get('history_exceptions', 0)} history exceptions")
-        
-        if results.get('errors', 0) > 0:
-            job_logger.warning(f"Encountered {results.get('errors', 0)} errors during processing")
-        
-        results['success'] = True
-        
-        return results
-    
-    except Exception as e:
-        job_logger.error(f"Error during period-end job: {str(e)}", exc_info=True)
-        
-        return {
-            'success': False,
-            'error': str(e),
-            'start_time': start_time,
-            'end_time': datetime.now()
-        }
-
-def calculate_seasonality_indicator(
-    item: Item,
-    session: Session,
-    periodicity: int
-) -> float:
-    """Calculate a seasonality indicator for an item.
-    
-    Args:
-        item: Item to analyze
-        session: Database session
-        periodicity: Periodicity to use
-        
-    Returns:
-        Seasonality indicator (0-1, higher means stronger seasonality)
-    """
-    # Get recent history
-    history = session.query(DemandHistory).filter(
-        DemandHistory.item_id == item.id,
-        DemandHistory.is_ignored == False
-    ).order_by(
-        DemandHistory.period_year.desc(),
-        DemandHistory.period_number.desc()
-    ).limit(periodicity * 2).all()  # Get at least 2 years
-    
-    if len(history) < periodicity:
-        return 0.0  # Not enough data
-    
-    # Group by period number
-    period_demands = defaultdict(list)
-    for h in history:
-        period_demands[h.period_number].append(h.total_demand)
-    
-    # Calculate coefficient of variation for each period
-    period_cvs = []
-    for period_num, demands in period_demands.items():
-        if len(demands) >= 2:
-            mean = np.mean(demands)
-            if mean > 0:
-                cv = np.std(demands) / mean
-                period_cvs.append(cv)
-    
-    if not period_cvs:
-        return 0.0
-    
-    # Calculate overall seasonality score
-    # Higher CV means more seasonality
-    avg_cv = np.mean(period_cvs)
-    seasonality_score = min(1.0, avg_cv)
-    
-    return seasonality_score
-
-
-def get_item_history_by_year(
-    item: Item,
-    session: Session,
-    max_years: int,
-    periodicity: int
-) -> Dict[int, List[float]]:
-    """Get item demand history organized by year.
-    
-    Args:
-        item: Item to get history for
-        session: Database session
-        max_years: Maximum years to retrieve
-        periodicity: Periodicity to use
-        
-    Returns:
-        Dictionary mapping years to lists of demand values
-    """
-    # Get history
-    history = session.query(DemandHistory).filter(
-        DemandHistory.item_id == item.id,
-        DemandHistory.is_ignored == False
-    ).order_by(
-        DemandHistory.period_year.desc(),
-        DemandHistory.period_number.desc()
-    ).all()
-    
-    # Organize by year
-    history_by_year = {}
-    
-    for h in history:
-        year = h.period_year
-        
-        if year not in history_by_year:
-            history_by_year[year] = [0.0] * periodicity
-        
-        period_idx = h.period_number - 1  # Convert to 0-based index
-        if 0 <= period_idx < periodicity:
-            history_by_year[year][period_idx] = h.total_demand
-    
-    # Sort by year (most recent first) and limit to max_years
-    sorted_years = sorted(history_by_year.keys(), reverse=True)[:max_years]
-    
-    return {year: history_by_year[year] for year in sorted_years}
-
-
-def update_profile_indices(
-    profile: SeasonalProfile,
-    new_indices: List[float],
-    session: Session
-) -> bool:
-    """Update seasonal profile indices.
-    
-    Args:
-        profile: Seasonal profile to update
-        new_indices: New seasonal indices
-        session: Database session
-        
-    Returns:
-        True if successful, False otherwise
-    """
-    try:
-        # Delete existing indices
-        session.query(SeasonalProfileIndex).filter(
-            SeasonalProfileIndex.profile_id == profile.profile_id
-        ).delete()
-        
-        # Create new indices
-        for i, index_value in enumerate(new_indices, 1):
-            index = SeasonalProfileIndex(
-                profile_id=profile.profile_id,
-                period_number=i,
-                index_value=index_value
-            )
-            session.add(index)
-        
-        return True
-    except Exception as e:
-        logger.error(f"Error updating profile indices: {str(e)}")
-        return False
-
-
-def create_or_assign_seasonal_profile(
-    item: Item,
-    session: Session,
-    periodicity: int
-) -> Optional[str]:
-    """Create or assign a seasonal profile for an item.
-    
-    Args:
-        item: Item to assign profile to
-        session: Database session
-        periodicity: Periodicity to use
-        
-    Returns:
-        Profile ID if successful, None otherwise
-    """
-    try:
-        # Get item history
-        item_history = get_item_history_by_year(item, session, 4, periodicity)
-        
-        if not item_history:
-            return None
-        
-        # Calculate composite line for this item
-        composite_line = calculate_composite_line(item_history, 4)
-        
-        # Generate seasonal indices
-        seasonal_indices = generate_seasonal_indices(composite_line)
-        
-        # Check if similar profile already exists
-        existing_profile = find_similar_profile(
-            seasonal_indices, session, periodicity
-        )
-        
-        if existing_profile:
-            # Assign existing profile
-            item.demand_profile = existing_profile.profile_id
-            return existing_profile.profile_id
-        else:
-            # Create new profile
-            profile_id = f"S_{item.item_id}_{datetime.now().strftime('%Y%m%d')}"
-            profile = SeasonalProfile(
-                profile_id=profile_id,
-                description=f"Seasonal Profile for {item.item_id}",
-                periodicity=periodicity
-            )
-            session.add(profile)
-            
-            # Add indices
-            for i, index_value in enumerate(seasonal_indices, 1):
-                index = SeasonalProfileIndex(
-                    profile_id=profile_id,
-                    period_number=i,
-                    index_value=index_value
-                )
-                session.add(index)
-            
-            # Assign to item
-            item.demand_profile = profile_id
-            
-            return profile_id
-    
-    except Exception as e:
-        logger.error(f"Error creating seasonal profile for item {item.id}: {str(e)}")
-        return None
-
-
-def find_similar_profile(
-    indices: List[float],
-    session: Session,
-    periodicity: int,
-    similarity_threshold: float = 0.95
-) -> Optional[SeasonalProfile]:
-    """Find a similar seasonal profile based on indices.
-    
-    Args:
-        indices: Seasonal indices to match
-        session: Database session
-        periodicity: Periodicity to use
-        similarity_threshold: Minimum similarity required
-        
-    Returns:
-        Matching profile or None
-    """
-    # Get all profiles with the same periodicity
-    profiles = session.query(SeasonalProfile).filter(
-        SeasonalProfile.periodicity == periodicity
-    ).all()
-    
-    best_similarity = 0.0
-    best_profile = None
-    
-    for profile in profiles:
-        # Get profile indices
-        profile_indices = session.query(SeasonalProfileIndex).filter(
-            SeasonalProfileIndex.profile_id == profile.profile_id
-        ).order_by(SeasonalProfileIndex.period_number).all()
-        
-        if len(profile_indices) != len(indices):
-            continue
-        
-        # Calculate similarity (correlation coefficient)
-        profile_values = [idx.index_value for idx in profile_indices]
-        correlation = np.corrcoef(indices, profile_values)[0, 1]
-        
-        if correlation > best_similarity:
-            best_similarity = correlation
-            best_profile = profile
-    
-    if best_similarity >= similarity_threshold:
-        return best_profile
-    
-    return None
 
 def update_service_levels(
     warehouse_id: int,
@@ -1058,8 +785,7 @@ def update_service_levels(
                 
                 # Only apply if adjustment is significant
                 if abs(adjustment - item.sstf) > 0.1:
-                    recommendations = results['recommendations']
-                    recommendations.append({
+                    results['recommendations'].append({
                         'item_id': item.item_id,
                         'description': item.description,
                         'current_sstf': item.sstf,
@@ -1106,7 +832,6 @@ def update_service_levels(
             results['success'] = False
     
     return results
-
 
 def analyze_fill_rate_by_vendor(
     warehouse_id: int,
@@ -1235,7 +960,6 @@ def analyze_fill_rate_by_vendor(
     results['duration'] = results['end_time'] - results['start_time']
     
     return results
-
 
 def generate_service_level_report(
     results: Dict
@@ -1467,7 +1191,6 @@ def adjust_forecasting_parameters(
     
     return results
 
-
 def adjust_alpha_factor(
     item: Item,
     session: Session,
@@ -1533,7 +1256,6 @@ def adjust_alpha_factor(
     
     return None
 
-
 def adjust_lead_time(
     item: Item,
     session: Session,
@@ -1593,7 +1315,6 @@ def adjust_lead_time(
     
     return None
 
-
 def adjust_safety_stock_time_factor(
     item: Item,
     session: Session,
@@ -1652,6 +1373,337 @@ def adjust_safety_stock_time_factor(
     
     return None
 
+def generate_parameter_recommendations(
+    alpha_adjustments: List[Dict],
+    lead_time_adjustments: List[Dict],
+    safety_stock_adjustments: List[Dict]
+) -> List[Dict]:
+    """Generate parameter change recommendations.
+    
+    Args:
+        alpha_adjustments: List of alpha factor adjustments
+        lead_time_adjustments: List of lead time adjustments
+        safety_stock_adjustments: List of safety stock adjustments
+        
+    Returns:
+        List of recommendations
+    """
+    recommendations = []
+    
+    # Alpha factor adjustments
+    if alpha_adjustments:
+        alpha_summary = {
+            'total_adjustments': len(alpha_adjustments),
+            'average_change': np.mean([
+                adj['recommended_alpha'] - adj['current_alpha']
+                for adj in alpha_adjustments
+            ]),
+            'items_requiring_increase': len([
+                adj for adj in alpha_adjustments
+                if adj['recommended_alpha'] > adj['current_alpha']
+            ]),
+            'items_requiring_decrease': len([
+                adj for adj in alpha_adjustments
+                if adj['recommended_alpha'] < adj['current_alpha']
+            ])
+        }
+        
+        recommendations.append({
+            'type': 'ALPHA_FACTOR',
+            'summary': alpha_summary,
+            'details': alpha_adjustments[:10]  # Top 10 adjustments
+        })
+    
+    # Lead time adjustments
+    if lead_time_adjustments:
+        lead_time_summary = {
+            'total_adjustments': len(lead_time_adjustments),
+            'average_change': np.mean([
+                adj['recommended_lead_time'] - adj['current_lead_time']
+                for adj in lead_time_adjustments
+            ]),
+            'items_requiring_increase': len([
+                adj for adj in lead_time_adjustments
+                if adj['recommended_lead_time'] > adj['current_lead_time']
+            ]),
+            'items_requiring_decrease': len([
+                adj for adj in lead_time_adjustments
+                if adj['recommended_lead_time'] < adj['current_lead_time']
+            ])
+        }
+        
+        recommendations.append({
+            'type': 'LEAD_TIME',
+            'summary': lead_time_summary,
+            'details': lead_time_adjustments[:10]  # Top 10 adjustments
+        })
+    
+    # Safety stock adjustments
+    if safety_stock_adjustments:
+        safety_stock_summary = {
+            'total_adjustments': len(safety_stock_adjustments),
+            'average_change': np.mean([
+                adj['recommended_sstf'] - adj['current_sstf']
+                for adj in safety_stock_adjustments
+            ]),
+            'items_requiring_increase': len([
+                adj for adj in safety_stock_adjustments
+                if adj['recommended_sstf'] > adj['current_sstf']
+            ]),
+            'items_requiring_decrease': len([
+                adj for adj in safety_stock_adjustments
+                if adj['recommended_sstf'] < adj['current_sstf']
+            ])
+        }
+        
+        recommendations.append({
+            'type': 'SAFETY_STOCK',
+            'summary': safety_stock_summary,
+            'details': safety_stock_adjustments[:10]  # Top 10 adjustments
+        })
+    
+    return recommendations
 
-if __name__ == "__main__":
-    run_period_end_job()
+def create_parameter_changes(results: Dict, session: Session) -> None:
+    """Create time-based parameter changes for systematic adjustments.
+    
+    Args:
+        results: Parameter adjustment results
+        session: Database session
+    """
+    # This would create time-based parameter changes in the database
+    # For now, we'll log the changes that would be created
+    
+    logger.info("Parameter changes that would be created:")
+    
+    # Alpha factor changes
+    for adj in results.get('alpha_factor_adjustments', []):
+        logger.info(f"  Alpha Factor - Item {adj['item_id']}: "
+                   f"{adj['current_alpha']} -> {adj['recommended_alpha']}")
+    
+    # Lead time changes
+    for adj in results.get('lead_time_adjustments', []):
+        logger.info(f"  Lead Time - Item {adj['item_id']}: "
+                   f"{adj['current_lead_time']} -> {adj['recommended_lead_time']}")
+    
+    # Safety stock changes
+    for adj in results.get('safety_stock_adjustments', []):
+        logger.info(f"  Safety Stock - Item {adj['item_id']}: "
+                   f"{adj['current_sstf']} -> {adj['recommended_sstf']}")
+
+def should_run_period_end() -> bool:
+    """Check if period-end processing should run today.
+    
+    Returns:
+        True if period-end processing should run
+    """
+    # Get company settings
+    with session_scope() as session:
+        company = session.query(Company).first()
+        if not company:
+            logger.error("Company settings not found")
+            return False
+        
+        periodicity = company.forecasting_periodicity_default
+    
+    # Check if today is the last day of a period
+    today = date.today()
+    return is_period_end_day(today, periodicity)
+
+def process_all_warehouses() -> Dict:
+    """Process period-end for all warehouses.
+    
+    Returns:
+        Dictionary with processing results
+    """
+    results = {
+        'total_warehouses': 0,
+        'processed_warehouses': 0,
+        'total_items': 0,
+        'processed_items': 0,
+        'error_warehouses': 0,
+        'errors': 0,
+        'history_exceptions': 0,
+        'start_time': datetime.now(),
+        'end_time': None,
+        'duration': None
+    }
+    
+    try:
+        with session_scope() as session:
+            # Get all warehouses
+            warehouses = session.query(Warehouse).all()
+            results['total_warehouses'] = len(warehouses)
+            
+            # Process each warehouse
+            for warehouse in warehouses:
+                warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                
+                if warehouse_results.get('success', False):
+                    results['processed_warehouses'] += 1
+                else:
+                    results['error_warehouses'] += 1
+                
+                results['total_items'] += warehouse_results.get('total_items', 0)
+                results['processed_items'] += warehouse_results.get('processed_items', 0)
+                results['errors'] += warehouse_results.get('errors', 0)
+                results['history_exceptions'] += warehouse_results.get('history_exceptions', 0)
+    
+    except Exception as e:
+        logger.error(f"Error during period-end processing: {str(e)}", exc_info=True)
+        results['errors'] += 1
+    
+    # Set end time and duration
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    return results
+
+def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> Dict:
+    """Process period-end for a specific warehouse.
+    
+    Args:
+        warehouse_id: Warehouse ID
+        session: Optional database session
+        
+    Returns:
+        Dictionary with processing results
+    """
+    results = {
+        'warehouse_id': warehouse_id,
+        'success': False,
+        'total_items': 0,
+        'processed_items': 0,
+        'errors': 0,
+        'history_exceptions': 0,
+        'start_time': datetime.now(),
+        'end_time': None,
+        'duration': None
+    }
+    
+    # Use provided session or create a new one
+    close_session = False
+    if session is None:
+        session = Session()
+        close_session = True
+    
+    try:
+        # Reforecast all items
+        reforecast_results = reforecast_items(warehouse_id, session)
+        
+        # Update results
+        results['total_items'] = reforecast_results.get('total_items', 0)
+        results['processed_items'] = reforecast_results.get('processed', 0)
+        results['errors'] += reforecast_results.get('errors', 0)
+        
+        # Detect history exceptions
+        exception_results = detect_history_exceptions(warehouse_id, session)
+        
+        # Update results
+        results['history_exceptions'] = (
+            exception_results.get('demand_filter_high', 0) +
+            exception_results.get('demand_filter_low', 0) +
+            exception_results.get('tracking_signal_high', 0) +
+            exception_results.get('tracking_signal_low', 0) +
+            exception_results.get('service_level_check', 0) +
+            exception_results.get('infinity_check', 0)
+        )
+        results['errors'] += exception_results.get('errors', 0)
+        
+        # Calculate forecast accuracy for completed period
+        current_period, current_year = get_current_period(periodicity)
+        prev_period, prev_year = get_previous_period(current_period, current_year, periodicity)
+        
+        accuracy_results = calculate_forecast_accuracy(
+            warehouse_id, session, prev_period, prev_year
+        )
+        
+        save_successful = save_forecast_accuracy_results(accuracy_results, session)
+        
+        # Update results
+        results['forecast_accuracy'] = accuracy_results
+        results['forecast_accuracy_saved'] = save_successful
+        
+        # Update seasonal profiles
+        seasonal_results = update_seasonal_profiles(warehouse_id, session)
+        
+        # Update results
+        results['seasonal_profile_updates'] = seasonal_results
+        
+        # Update service levels
+        service_level_results = update_service_levels(warehouse_id, session)
+        
+        # Analyze fill rate by vendor
+        fill_rate_results = analyze_fill_rate_by_vendor(warehouse_id, session)
+        
+        # Update results
+        results['service_level_updates'] = service_level_results
+        results['fill_rate_analysis'] = fill_rate_results
+        
+        # Adjust forecasting parameters
+        parameter_results = adjust_forecasting_parameters(warehouse_id, session)
+        
+        # Update results
+        results['parameter_adjustments'] = parameter_results
+        
+        # Archive old resolved exceptions
+        archive_results = archive_resolved_exceptions(session)
+        results['errors'] += archive_results.get('errors', 0)
+        
+        results['success'] = True
+    
+    except Exception as e:
+        logger.error(f"Error processing warehouse {warehouse_id}: {str(e)}", exc_info=True)
+        results['errors'] += 1
+    
+    finally:
+        if close_session:
+            session.close()
+    
+    # Set end time and duration
+    results['end_time'] = datetime.now()
+    results['duration'] = results['end_time'] - results['start_time']
+    
+    return results
+
+def reforecast_items(warehouse_id: int, session: Session) -> Dict:
+    """Reforecast all items in a warehouse.
+    
+    Args:
+        warehouse_id: Warehouse ID
+        session: Database session
+        
+    Returns:
+        Dictionary with reforecast results
+    """
+    forecast_service = ForecastService(session)
+    
+    # Process reforecasting
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+    
+    return results
+
+def detect_history_exceptions(warehouse_id: int, session: Session) -> Dict:
+    """Detect history exceptions for a warehouse.
+    
+    Args:
+        warehouse_id: Warehouse ID
+        session: Database session
+        
+    Returns:
+        Dictionary with exception detection results
+    """
+    forecast_service = ForecastService(session)
+    
+    # Detect exceptions
+    results = forecast_service.detect_history_exceptions(warehouse_id=warehouse_id)
+    
+    return results
+
+def archive_resolved_exceptions(session: Session) -> Dict:
+    """Archive old resolved history exceptions.
+    
+    Args:
+        session: Database session
+        
+    Returns:
