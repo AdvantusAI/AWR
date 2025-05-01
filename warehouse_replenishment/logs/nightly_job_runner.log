@@ -497,3 +497,16 @@ DETAIL:  Ya existe la llave (id)=(36).
 2025-05-01 08:58:17,329 - nightly_job_runner - INFO - Process 'expire_deals': True
 2025-05-01 08:58:17,329 - nightly_job_runner - INFO - Process 'generate_orders': False
 2025-05-01 08:58:17,329 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-05-01 10:46:11,354 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-01 10:46:11,354 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-01 10:46:11,802 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-05-01 10:46:11,802 - nightly_job_runner - INFO - Duration: 0:00:00.390422
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-05-01 10:46:11,803 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-05-01 10:46:11,804 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False

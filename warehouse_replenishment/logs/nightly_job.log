@@ -300,3 +300,24 @@
 2025-05-01 08:58:17,281 - nightly_job - INFO - Expiring outdated deals
 2025-05-01 08:58:17,281 - nightly_job - INFO - Generating orders for warehouse_id=None
 2025-05-01 08:58:17,319 - nightly_job - INFO - Purging accepted orders
+2025-05-01 10:46:11,360 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-01 10:46:11,566 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-05-01 10:46:11,566 - nightly_job - INFO - entering item_service.
+2025-05-01 10:46:11,566 - nightly_job - INFO - entering item_service.calculate_lost_sales
+2025-05-01 10:46:11,598 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-05-01 10:46:11,694 - nightly_job - INFO - Processing time-based parameters
+2025-05-01 10:46:11,701 - nightly_job - INFO - Expiring outdated deals
+2025-05-01 10:46:11,702 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-05-01 10:46:11,738 - nightly_job - INFO - Purging accepted orders
+2025-05-01 10:46:11,745 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-01 10:46:11,801 - nightly_job - INFO - AI Analysis completed. Overall health: ERROR
+2025-05-01 10:46:11,801 - nightly_job - INFO - Executive Summary: System Health: FAIR
+- 40 of 40 items updated successfully
+- Generated 0 orders for 0 items
+
+Key Concerns:
+- 9 items have frequent stockouts
+
+Top Recommendations:
+- Improve Order Generation
+2025-05-01 10:46:11,802 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation

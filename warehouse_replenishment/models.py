@@ -1,5 +1,5 @@
 # warehouse_replenishment/models.py
-from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text, Enum, Index
+from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text, Enum, Index, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -7,6 +7,7 @@ import enum
 
 Base = declarative_base()
 
+# Enums
 class BuyerClassCode(enum.Enum):
     """Enum for buyer class codes.
     
@@ -55,52 +56,11 @@ class SystemClassCode(enum.Enum):
 
 class VendorType(enum.Enum):
     REGULAR = BuyerClassCode.REGULAR      # Standard vendor for normal inventory replenishment
-                            # Business Impact: 
-                            # - Primary source for regular inventory items
-                            # - Subject to standard order cycles and lead times
-                            # - Included in automatic order generation
-                            # - Uses standard pricing and discount structures
-                            # - Key for maintaining normal inventory levels
-
     ALTERNATE = 'ALTERNATE'  # Secondary/backup vendor for specific items
-                            # Business Impact:
-                            # - Used when primary vendor is unavailable
-                            # - Helps maintain supply chain resilience
-                            # - Often has different pricing structures
-                            # - May have different lead times and order cycles
-                            # - Critical for risk management and continuity
-
     EDA = 'EDA'             # Emergency/Disaster Alternative vendor
-                            # Business Impact:
-                            # - Specialized for emergency situations
-                            # - May have expedited shipping options
-                            # - Often has premium pricing
-                            # - Critical for business continuity
-                            # - Used when regular supply chains are disrupted
-
     KITTING = 'KITTING'      # Vendor for assembly/kit operations
-                            # Business Impact:
-                            # - Handles product assembly and packaging
-                            # - May have special order requirements
-                            # - Often involves multiple components
-                            # - Critical for value-added services
-                            # - May have different lead time calculations
-
     TRANSFER = 'TRANSFER'    # Internal transfer between warehouses
-                            # Business Impact:
-                            # - Manages internal inventory movement
-                            # - No external purchasing involved
-                            # - Used for warehouse balancing
-                            # - Helps optimize inventory distribution
-                            # - Critical for multi-warehouse operations
-
     REGIONAL_WHS = 'REGIONAL_WHS'  # Regional warehouse vendor
-                                   # Business Impact:
-                                   # - Manages regional inventory distribution
-                                   # - May have different service level goals
-                                   # - Often involves cross-docking operations
-                                   # - Critical for regional market coverage
-                                   # - Helps optimize regional inventory levels
 
 class ForecastMethod(enum.Enum):
     E3_REGULAR_AVS = 'E3_REGULAR_AVS'
@@ -114,6 +74,7 @@ class SafetyStockType(enum.Enum):
     LESSER_OF = 1
     ALWAYS = 2
 
+# Core Models
 class Company(Base):
     __tablename__ = 'company'
     
@@ -187,7 +148,6 @@ class Vendor(Base):
     id = Column(Integer, primary_key=True)
     vendor_id = Column(String(20), nullable=False)
     name = Column(String(100), nullable=False)
-    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
     warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id')) 
     
     # Vendor Control Factors
@@ -213,7 +173,7 @@ class Vendor(Base):
     
     # Order Control Factors
     deactivate_until = Column(Date)
-    deactivation_reason = Column(String(255))  # Reason for vendor deactivation
+    deactivation_reason = Column(String(255))
     order_days_in_week = Column(String(7))  # e.g. "135" for Mon, Wed, Fri
     week = Column(Integer, default=0)  # 0=every, 1=odd, 2=even
     order_day_in_month = Column(Integer)
@@ -259,8 +219,6 @@ class Vendor(Base):
     items = relationship("Item", back_populates="vendor")
     
     __table_args__ = (
-        # Unique constraint for vendor_id and warehouse_id combination
-        # Ensure we don't have duplicate vendors in same warehouse
         {'sqlite_autoincrement': True},
     )
 
@@ -313,7 +271,7 @@ class Item(Base):
     purchase_price = Column(Float, default=0.0)
     sales_price = Column(Float, default=0.0)
     buyer_id = Column(String(50))
-    buyer_class = Column(String(1), default='U')  # Changed from Enum(BuyerClassCode) to String(1)
+    buyer_class = Column(String(1), default='U')
     on_hand = Column(Float, default=0.0)
     on_order = Column(Float, default=0.0)
     customer_back_order = Column(Float, default=0.0)
@@ -398,8 +356,7 @@ class Order(Base):
     
     id = Column(Integer, primary_key=True)
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))  # Change to String
-    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))
     order_date = Column(DateTime, default=func.now())
     
     # Order status
@@ -524,8 +481,7 @@ class ManagementException(Base):
     __tablename__ = 'management_exception'
     
     id = Column(Integer, primary_key=True)
-    #warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
-    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))  # Change to String
+    warehouse_id = Column(String(20), ForeignKey('warehouse.warehouse_id'))
     exception_type = Column(String(50), nullable=False)  # TOP_SELLING_ITEMS, FORECAST_GREATER_THAN_AVERAGE, etc.
     
     # Exception parameters
@@ -617,8 +573,6 @@ class ArchivedHistoryException(Base):
     resolution_action = Column(String(50))
     resolution_notes = Column(Text)
 
-# Add this to your models.py file
-
 class ItemForecast(Base):
     """Model for tracking forecast history and accuracy over time."""
     __tablename__ = 'item_forecast'
@@ -656,4 +610,122 @@ class ItemForecast(Base):
         Index('idx_item_forecast_item_period', 'item_id', 'period_year', 'period_number'),
         # Index for faster lookups by date
         Index('idx_item_forecast_date', 'forecast_date'),
+    )
+
+# AI Analysis Models
+class AIAnalysis(Base):
+    """Model for storing AI analysis results from nightly job processing."""
+    __tablename__ = 'ai_analysis'
+    
+    id = Column(Integer, primary_key=True)
+    analysis_date = Column(DateTime, default=func.now(), nullable=False)
+    job_date = Column(Date, nullable=False)
+    overall_health = Column(String(20), nullable=False)  # HEALTHY, FAIR, NEEDS_ATTENTION, ERROR
+    
+    # Summary fields
+    executive_summary = Column(Text)
+    total_items_processed = Column(Integer)
+    total_orders_generated = Column(Integer)
+    lost_sales_value = Column(Float)
+    out_of_stock_count = Column(Integer)
+    
+    # Analysis results as JSON
+    detailed_analysis = Column(JSON)
+    insights = Column(JSON)
+    recommendations = Column(JSON)
+    
+    # Processing metadata
+    processing_duration = Column(Float)  # Duration in seconds
+    error_message = Column(Text)
+    
+    # Relationships
+    insights_records = relationship("AIAnalysisInsight", back_populates="analysis")
+    recommendations_records = relationship("AIAnalysisRecommendation", back_populates="analysis")
+    
+    __table_args__ = (
+        Index('idx_ai_analysis_date', 'analysis_date'),
+        Index('idx_ai_analysis_job_date', 'job_date'),
+        Index('idx_ai_analysis_health', 'overall_health'),
+    )
+
+
+class AIAnalysisInsight(Base):
+    """Model for storing individual insights from AI analysis."""
+    __tablename__ = 'ai_analysis_insight'
+    
+    id = Column(Integer, primary_key=True)
+    analysis_id = Column(Integer, ForeignKey('ai_analysis.id'), nullable=False)
+    
+    type = Column(String(20))  # CONCERN, OPPORTUNITY, INFO
+    category = Column(String(50))
+    message = Column(Text)
+    priority = Column(String(10))  # HIGH, MEDIUM, LOW
+    
+    # Additional metadata
+    item_count = Column(Integer)
+    financial_impact = Column(Float)
+    
+    # Relationships
+    analysis = relationship("AIAnalysis", back_populates="insights_records")
+    
+    __table_args__ = (
+        Index('idx_insight_analysis_id', 'analysis_id'),
+        Index('idx_insight_priority', 'priority'),
+        Index('idx_insight_category', 'category'),
+    )
+
+
+class AIAnalysisRecommendation(Base):
+    """Model for storing individual recommendations from AI analysis."""
+    __tablename__ = 'ai_analysis_recommendation'
+    
+    id = Column(Integer, primary_key=True)
+    analysis_id = Column(Integer, ForeignKey('ai_analysis.id'), nullable=False)
+    
+    title = Column(String(255))
+    priority = Column(String(10))  # HIGH, MEDIUM, LOW
+    category = Column(String(50))
+    description = Column(Text)
+    action_items = Column(JSON)
+    
+    # Implementation tracking
+    status = Column(String(20), default='PENDING')  # PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+    assigned_to = Column(String(100))
+    due_date = Column(Date)
+    completion_date = Column(DateTime)
+    
+    # Financial impact estimate
+    estimated_savings = Column(Float)
+    estimated_cost_to_implement = Column(Float)
+    
+    # Relationships
+    analysis = relationship("AIAnalysis", back_populates="recommendations_records")
+    
+    __table_args__ = (
+        Index('idx_recommendation_analysis_id', 'analysis_id'),
+        Index('idx_recommendation_priority', 'priority'),
+        Index('idx_recommendation_status', 'status'),
+    )
+
+
+class AIAnalysisMetric(Base):
+    """Model for storing performance metrics over time."""
+    __tablename__ = 'ai_analysis_metric'
+    
+    id = Column(Integer, primary_key=True)
+    analysis_id = Column(Integer, ForeignKey('ai_analysis.id'), nullable=False)
+    
+    metric_name = Column(String(100), nullable=False)
+    metric_value = Column(Float)
+    metric_category = Column(String(50))
+    
+    # Trend information
+    previous_value = Column(Float)
+    percent_change = Column(Float)
+    trend = Column(String(20))  # IMPROVING, DECLINING, STABLE
+    
+    __table_args__ = (
+        Index('idx_metric_analysis_id', 'analysis_id'),
+        Index('idx_metric_name', 'metric_name'),
+        Index('idx_metric_category', 'metric_category'),
     )

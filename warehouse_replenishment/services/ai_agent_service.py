@@ -18,9 +18,7 @@ from sqlalchemy.orm import Session
 
 from warehouse_replenishment.models import (
     Item, Order, OrderItem, Vendor, Warehouse, DemandHistory,
-    HistoryException, ManagementException, BuyerClassCode, SystemClassCode
-)
-from warehouse_replenishment.models.ai_analysis import (
+    HistoryException, ManagementException, BuyerClassCode, SystemClassCode,
     AIAnalysis, AIAnalysisInsight, AIAnalysisRecommendation, AIAnalysisMetric
 )
 from warehouse_replenishment.exceptions import AIAgentError

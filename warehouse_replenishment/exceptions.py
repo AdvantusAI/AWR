@@ -162,3 +162,11 @@ class ReportingError(AWRError):
     def __init__(self, message=None, code=None, details=None):
         message = message or "Reporting error"
         super().__init__(message, code, details)
+
+
+class AIAgentError(AWRError):
+    """Exception raised for AI agent-related errors."""
+    
+    def __init__(self, message=None, code=None, details=None):
+        message = message or "AI agent error"
+        super().__init__(message, code, details)
