@@ -63,3 +63,6 @@ Top Recommendations:
 - Address Unresolved Exceptions
 2025-05-01 21:38:19,187 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
 2025-05-01 21:38:19,187 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-01 22:16:49,789 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-01 22:16:49,828 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-01 22:16:49,837 - nightly_job - INFO - AI Analysis completed. Overall health: ERROR

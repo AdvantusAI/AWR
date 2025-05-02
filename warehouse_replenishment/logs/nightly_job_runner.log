@@ -26,3 +26,6 @@
 2025-05-01 21:38:19,189 - nightly_job_runner - INFO - Process 'generate_orders': False
 2025-05-01 21:38:19,189 - nightly_job_runner - INFO -   Generated orders: 1
 2025-05-01 21:38:19,189 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-05-01 22:16:49,787 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-01 22:16:49,788 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-01 22:16:49,838 - nightly_job_runner - ERROR - Nightly job failed: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.

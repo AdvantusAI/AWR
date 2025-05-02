@@ -17,11 +17,12 @@ import math
 
 from sqlalchemy.orm import Session
 from warehouse_replenishment.logging_setup import get_logger
-from warehouse_replenishment.config import config
+from warehouse_replenishment.config import Config
 from warehouse_replenishment.db import session_scope
 from warehouse_replenishment.models import (
     Company, Item, Warehouse, SeasonalProfile, SeasonalProfileIndex,
-    DemandHistory, ItemForecast, ForecastMethod, SystemClassCode, BuyerClassCode
+    DemandHistory, ItemForecast, ForecastMethod, SystemClassCode, BuyerClassCode,
+    Vendor, HistoryException
 )
 from warehouse_replenishment.services.forecast_service import ForecastService
 from warehouse_replenishment.services.history_manager import HistoryManager
@@ -35,6 +36,7 @@ from warehouse_replenishment.core.demand_forecast import calculate_composite_lin
 from warehouse_replenishment.core.safety_stock import empirical_safety_stock_adjustment
 from warehouse_replenishment.exceptions import BatchProcessError, ForecastError
 from warehouse_replenishment.logging_setup import logger
+from warehouse_replenishment.core import forecast_lead_time, calculate_variance
 
 # Set up logging
 logging.basicConfig(
@@ -143,15 +145,25 @@ def update_seasonal_profiles(
             # Generate seasonal indices
             new_indices = generate_seasonal_indices(composite_line)
             
+            # Convert numpy values to Python floats
+            converted_indices = []
+            for index_value in new_indices:
+                if hasattr(index_value, 'item'):
+                    converted_indices.append(float(index_value.item()))
+                elif isinstance(index_value, np.float64):
+                    converted_indices.append(float(index_value))
+                else:
+                    converted_indices.append(float(index_value))
+            
             # Update profile indices
-            update_success = update_profile_indices(profile, new_indices, session)
+            update_success = update_profile_indices(profile, converted_indices, session)
             
             if update_success:
                 results['updated_profiles'] += 1
                 results['profile_details'][profile_id] = {
                     'items_count': len(profile_items),
                     'composite_line': composite_line,
-                    'seasonal_indices': new_indices,
+                    'seasonal_indices': converted_indices,
                     'updated': True
                 }
             
@@ -849,7 +861,7 @@ def update_service_levels(
     return results
 
 def analyze_fill_rate_by_vendor(
-    warehouse_id: int,
+    warehouse_id: str,  # Changed from int to str
     session: Session,
     period_number: Optional[int] = None,
     period_year: Optional[int] = None
@@ -857,7 +869,7 @@ def analyze_fill_rate_by_vendor(
     """Analyze fill rate performance by vendor.
     
     Args:
-        warehouse_id: Warehouse ID to process
+        warehouse_id: Warehouse ID to process (as a string)
         session: Database session
         period_number: Period number (defaults to previous period)
         period_year: Period year (defaults to previous period)
@@ -1525,9 +1537,12 @@ def should_run_period_end() -> bool:
     today = date.today()
     return is_period_end_day(today, periodicity)
 
-def process_all_warehouses() -> Dict:
+def process_all_warehouses(warehouse_id: Optional[int] = None) -> Dict:
     """Process period-end for all warehouses.
     
+    Args:
+        warehouse_id: Optional warehouse ID to process. If None, process all warehouses.
+        
     Returns:
         Dictionary with processing results
     """
@@ -1546,13 +1561,16 @@ def process_all_warehouses() -> Dict:
     
     try:
         with session_scope() as session:
-            # Get all warehouses
-            warehouses = session.query(Warehouse).all()
+            # Get all warehouses or specific warehouse
+            if warehouse_id:
+                warehouses = session.query(Warehouse).filter(Warehouse.id == warehouse_id).all()
+            else:
+                warehouses = session.query(Warehouse).all()
             results['total_warehouses'] = len(warehouses)
             
             # Process each warehouse
             for warehouse in warehouses:
-                warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                warehouse_results = process_warehouse(warehouse.id, session)
                 
                 if warehouse_results.get('success', False):
                     results['processed_warehouses'] += 1
@@ -1673,7 +1691,7 @@ def process_warehouse(warehouse_id: Union[int, str], session: Optional[Session] 
         service_level_results = update_service_levels(warehouse_id, session)
         
         # Analyze fill rate by vendor
-        fill_rate_results = analyze_fill_rate_by_vendor(warehouse_id, session)
+        fill_rate_results = analyze_fill_rate_by_vendor(str(warehouse_id), session)
         
         # Update results
         results['service_level_updates'] = service_level_results
@@ -1971,89 +1989,33 @@ def email_period_end_report(
         return False
 
 
-def run_period_end_job(warehouse_id: Optional[int] = None):
+def run_period_end_job(warehouse_id: int = None):
     """Run the period-end job for all warehouses or a specific warehouse.
     
     Args:
-        warehouse_id: Optional warehouse ID to process only one warehouse
+        warehouse_id: Optional warehouse ID to process. If None, process all warehouses.
     """
-    if not should_run_period_end():
-        logger.info("Not end of period, skipping period-end processing")
-        return
-    
-    logger.info("Starting period-end processing")
-    start_time = datetime.now()
-    
     try:
-        if warehouse_id:
-            # Process single warehouse
-            with session_scope() as session:
-                results = process_warehouse(warehouse_id, session)
-                
-            # Generate and send report for single warehouse
-            report_html = generate_period_end_report(
-                {
-                    'total_warehouses': 1,
-                    'processed_warehouses': 1 if results.get('success', False) else 0,
-                    'total_items': results.get('total_items', 0),
-                    'processed_items': results.get('processed_items', 0),
-                    'history_exceptions': results.get('history_exceptions', 0),
-                    'errors': results.get('errors', 0),
-                    'duration': results.get('duration', ''),
-                    'warehouse_details': {warehouse_id: results}
-                },
-                session
-            )
-        else:
-            # Process all warehouses
-            results = process_all_warehouses()
-            
-            # Generate comprehensive report
-            with session_scope() as session:
-                report_html = generate_period_end_report(results, session)
+        # Load configuration
+        config = Config()
         
-        # Send email report if configured
-        if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
-            email_addresses = config.get('PERIOD_END', 'notification_email', fallback='').split(',')
-            email_addresses = [email.strip() for email in email_addresses if email.strip()]
-            
-            if email_addresses:
-                email_success = email_period_end_report(report_html, email_addresses)
-                logger.info(f"Email notification sent: {'Success' if email_success else 'Failed'}")
+        # Check if email notifications are enabled
+        enable_email = config.get_boolean('PERIOD_END', 'enable_email_notifications', default=False)
         
-        # Log final results
-        logger.info(f"Period-end processing completed in {datetime.now() - start_time}")
-        logger.info(f"Processed {results.get('processed_warehouses', 0)} warehouses")
-        logger.info(f"Total items processed: {results.get('processed_items', 0)}")
-        logger.info(f"History exceptions detected: {results.get('history_exceptions', 0)}")
-        if results.get('errors', 0) > 0:
-            logger.warning(f"Errors encountered: {results.get('errors', 0)}")
-    
+        # Get email recipients
+        email_recipients = config.get('PERIOD_END', 'email_recipients', default='').split(',')
+        email_recipients = [email.strip() for email in email_recipients if email.strip()]
+        
+        # Process warehouses
+        results = process_all_warehouses(warehouse_id)
+        
+        # Send email notification if enabled and recipients exist
+        if enable_email and email_recipients:
+            send_period_end_notification(results, email_recipients)
+            
     except Exception as e:
-        logger.error(f"Error during period-end processing: {str(e)}", exc_info=True)
-        
-        # Send error notification
-        error_report = f"""
-        <html>
-        <body>
-            <h1>Period-End Processing Error</h1>
-            <p>An error occurred during period-end processing:</p>
-            <p><strong>{str(e)}</strong></p>
-            <p>Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-        </body>
-        </html>
-        """
-        
-        if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
-            email_addresses = config.get('PERIOD_END', 'notification_email', fallback='').split(',')
-            email_addresses = [email.strip() for email in email_addresses if email.strip()]
-            
-            if email_addresses:
-                email_period_end_report(
-                    error_report, 
-                    email_addresses, 
-                    subject="Period-End Processing Error"
-                )
+        logger.error(f"Error during period-end processing: {str(e)}")
+        raise
 
 
 if __name__ == "__main__":

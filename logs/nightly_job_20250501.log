@@ -714,3 +714,84 @@
 2025-05-01 21:38:19,123 - batch - INFO - # Step 9: Running AI analysis
 2025-05-01 21:38:19,186 - warehouse_replenishment.services.ai_agent_service - INFO - Saved AI analysis to database with ID: 8
 2025-05-01 21:38:19,187 - batch - INFO - Nightly job completed successfully in 0:00:00.459353. AI Analysis Health: FAIR
+2025-05-01 22:16:49,789 - batch - INFO - Starting nightly job at 2025-05-01 22:16:49.788555
+2025-05-01 22:16:49,789 - batch - INFO - # Step 1: Update stock status
+2025-05-01 22:16:49,818 - batch - ERROR - Error during nightly job: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\clsregistry.py", line 516, in _resolve_name
+    rval = d[token]
+           ~^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_collections.py", line 345, in __missing__
+    self[key] = val = self.creator(key)
+                      ~~~~~~~~~~~~^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\clsregistry.py", line 484, in _access_cls
+    return self.fallback[key]
+           ~~~~~~~~~~~~~^^^^^
+KeyError: 'ForecastLeadTime'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 244, in run_nightly_job
+    results['processes']['update_stock_status'] = update_stock_status(warehouse_id)
+                                                  ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 41, in update_stock_status
+    results = item_service.update_item_stock_status(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\item_service.py", line 610, in update_item_stock_status
+    query = self.session.query(Item)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2955, in query
+    return self._query_cls(entities, self, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 289, in _set_entities
+    coercions.expect(
+    ~~~~~~~~~~~~~~~~^
+        roles.ColumnsClauseRole,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        post_inspect=True,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\coercions.py", line 388, in expect
+    insp._post_inspect
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 1257, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ~~~~~~~~~^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2724, in _post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2401, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 4214, in _configure_registries
+    _do_configure_registries(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 4255, in _do_configure_registries
+    mapper._post_configure_properties()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\mapper.py", line 2418, in _post_configure_properties
+    prop.init()
+    ~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\relationships.py", line 1656, in do_init
+    self._setup_entity()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\relationships.py", line 1868, in _setup_entity
+    self._clsregistry_resolve_name(argument)(),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\clsregistry.py", line 520, in _resolve_name
+    self._raise_for_name(name, err)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\clsregistry.py", line 501, in _raise_for_name
+    raise exc.InvalidRequestError(
+    ...<5 lines>...
+    ) from err
+sqlalchemy.exc.InvalidRequestError: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.
+2025-05-01 22:16:49,829 - warehouse_replenishment.services.ai_agent_service - ERROR - Error in nightly job analysis: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Item(item)]'. Original exception was: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.
+2025-05-01 22:16:49,837 - warehouse_replenishment.services.ai_agent_service - ERROR - Error saving AI analysis to database: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Item(item)]'. Original exception was: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.
+2025-05-01 22:16:49,837 - warehouse_replenishment.services.ai_agent_service - ERROR - Failed to save error analysis to database: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Item(item)]'. Original exception was: When initializing mapper Mapper[Item(item)], expression 'ForecastLeadTime' failed to locate a name ('ForecastLeadTime'). If this is a class name, consider adding this relationship() to the <class 'warehouse_replenishment.models.Item'> class after both dependent classes have been defined.

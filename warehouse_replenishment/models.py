@@ -1,9 +1,11 @@
 # warehouse_replenishment/models.py
 from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text, Enum, Index, JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
+import json
 
 Base = declarative_base()
 
@@ -171,6 +173,17 @@ class Vendor(Base):
     supv_build_option = Column(Integer, default=0)
     vendor_group_codes = Column(String(100))
     
+    # Buyer class settings
+    buyer_class_settings = Column(JSONB, default=json.dumps({
+        "alpha_factor": 10.0,
+        "service_level_goal": 95.0,
+        "lead_time_forecast_control": 1,
+        "enable_history_adjust": False,
+        "automatic_rebuild": 0,
+        "auto_approval_bracket": None,
+        "supv_build_option": 0
+    }))
+    
     # Order Control Factors
     deactivate_until = Column(Date)
     deactivation_reason = Column(String(255))
@@ -266,6 +279,7 @@ class Item(Base):
     lead_time_forecast = Column(Integer)
     lead_time_variance = Column(Float)
     lead_time_maintained = Column(Boolean, default=False)
+    forecast_lead_time = Column(Integer, default=7)  # Added forecast_lead_time with default of 7 days
     buying_multiple = Column(Float, default=1.0)
     minimum_quantity = Column(Float, default=1.0)
     purchase_price = Column(Float, default=0.0)
@@ -313,6 +327,7 @@ class Item(Base):
     item_forecast = relationship("ItemForecast", back_populates="item")
     order_items = relationship("OrderItem", back_populates="item")
     item_prices = relationship("ItemPrice", back_populates="item")
+   
 
     @property
     def buyer_class_enum(self) -> BuyerClassCode:

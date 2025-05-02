@@ -5,6 +5,7 @@ import uuid
 import sys
 import os
 from pathlib import Path
+import numpy as np
 
 # Add the parent directory to the path so we can import our modules
 parent_dir = str(Path(__file__).parent.parent.parent)
@@ -260,53 +261,56 @@ class ForecastService:
         indices: List[float],
         profile_id: str = None
     ) -> str:
-        """Create a new seasonal profile.
+        """Create a new seasonal profile with the given indices.
         
         Args:
             description: Profile description
-            periodicity: Profile periodicity
+            periodicity: Number of periods in the profile
             indices: List of seasonal indices
-            profile_id: Optional profile ID (generated if not provided)
+            profile_id: Optional profile ID (will generate if not provided)
             
         Returns:
-            Profile ID
+            Profile ID if successful, None otherwise
         """
-        # Generate profile ID if not provided
-        if profile_id is None:
-            profile_id = f"P{uuid.uuid4().hex[:8].upper()}"
-        
-        # Check if profile already exists
-        existing_profile = self.session.query(SeasonalProfile).filter(
-            SeasonalProfile.profile_id == profile_id
-        ).first()
-        
-        if existing_profile:
-            raise ForecastError(f"Profile with ID {profile_id} already exists")
-        
-        # Create new profile
-        profile = SeasonalProfile(
-            profile_id=profile_id,
-            description=description,
-            periodicity=periodicity
-        )
-        
-        self.session.add(profile)
-        
-        # Create indices
-        for i, index_value in enumerate(indices, 1):
-            index = SeasonalProfileIndex(
-                profile_id=profile_id,
-                period_number=i,
-                index_value=index_value
-            )
-            self.session.add(index)
-        
         try:
+            # Generate profile ID if not provided
+            if not profile_id:
+                profile_id = f"SP{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            
+            # Convert all numpy values to Python floats before creating objects
+            converted_indices = []
+            for index_value in indices:
+                if hasattr(index_value, 'item'):
+                    converted_indices.append(float(index_value.item()))
+                elif isinstance(index_value, np.float64):
+                    converted_indices.append(float(index_value))
+                else:
+                    converted_indices.append(float(index_value))
+            
+            # Create profile
+            profile = SeasonalProfile(
+                profile_id=profile_id,
+                description=description,
+                periodicity=periodicity
+            )
+            self.session.add(profile)
+            
+            # Create indices using converted values
+            for i, index_value in enumerate(converted_indices, 1):
+                index = SeasonalProfileIndex(
+                    profile_id=profile_id,
+                    period_number=i,
+                    index_value=index_value
+                )
+                self.session.add(index)
+            
             self.session.commit()
             return profile_id
+            
         except Exception as e:
             self.session.rollback()
-            raise ForecastError(f"Failed to create seasonal profile: {str(e)}")
+            logger.error(f"Error creating seasonal profile: {str(e)}")
+            return None
     
     def assign_profile_to_item(
         self,
@@ -926,7 +930,9 @@ class ForecastService:
                     results['tracking_signal_low'] += 1
                 
                 # Service level checks
-                if item.service_level_attained < item.service_level_goal:
+                if (item.service_level_attained is not None and 
+                    item.service_level_goal is not None and 
+                    item.service_level_attained < item.service_level_goal):
                     self._create_history_exception(
                         item.id, 'SERVICE_LEVEL_CHECK', 
                         latest_history['period_number'], 
