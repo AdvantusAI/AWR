@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Union
 from collections import defaultdict
 import numpy as np
 import math
+import json
 
 from sqlalchemy.orm import Session
 from warehouse_replenishment.logging_setup import get_logger
@@ -22,7 +23,7 @@ from warehouse_replenishment.db import session_scope
 from warehouse_replenishment.models import (
     Company, Item, Warehouse, SeasonalProfile, SeasonalProfileIndex,
     DemandHistory, ItemForecast, ForecastMethod, SystemClassCode, BuyerClassCode,
-    Vendor, HistoryException
+    Vendor, HistoryException, ParameterChange, TimeBasedParameter, TimeBasedParameterItem
 )
 from warehouse_replenishment.services.forecast_service import ForecastService
 from warehouse_replenishment.services.history_manager import HistoryManager
@@ -1111,412 +1112,184 @@ def generate_service_level_report(
     
     return report
 
-def adjust_forecasting_parameters(
-    warehouse_id: int,
-    session: Session,
-    period_number: Optional[int] = None,
-    period_year: Optional[int] = None
-) -> Dict:
-    """Adjust forecasting parameters based on actual period performance.
+def convert_parameter_changes_to_time_based(session: Session, item: Item, recommendations: Dict) -> None:
+    """Convert parameter change recommendations to time-based parameters.
     
     Args:
-        warehouse_id: Warehouse ID to process
         session: Database session
-        period_number: Period number (defaults to previous period)
-        period_year: Period year (defaults to previous period)
-        
-    Returns:
-        Dictionary with parameter adjustment results
+        item: Item to process
+        recommendations: Dictionary of parameter change recommendations
     """
-    # Get company settings
-    company = session.query(Company).first()
-    if not company:
-        raise Exception("Company settings not found")
+    # Get effective date (next period start)
+    effective_date = datetime.utcnow() + timedelta(days=7)
     
-    periodicity = company.forecasting_periodicity_default
+    # Process alpha factor changes
+    for adjustment in recommendations['alpha_factor_adjustments']:
+        param = TimeBasedParameter(
+            description=f"Alpha factor adjustment for item {item.id}",
+            parameter_type='ALPHA_FACTOR',
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            status='PENDING'
+        )
+        session.add(param)
+        
+        # Create parameter item record
+        param_item = TimeBasedParameterItem(
+            parameter_id=param.id,
+            item_id=item.id,
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            changes=json.dumps({
+                'alpha_factor': {
+                    'before': adjustment['current'],
+                    'after': adjustment['recommended'],
+                    'reason': adjustment['reason']
+                }
+            })
+        )
+        session.add(param_item)
     
-    # Use previous period if not specified
-    if period_number is None or period_year is None:
-        current_period, current_year = get_current_period(periodicity)
-        period_number, period_year = get_previous_period(current_period, current_year, periodicity)
+    # Process lead time changes
+    for adjustment in recommendations['lead_time_adjustments']:
+        param = TimeBasedParameter(
+            description=f"Lead time adjustment for item {item.id}",
+            parameter_type='LEAD_TIME',
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            status='PENDING'
+        )
+        session.add(param)
+        
+        # Create parameter item record
+        param_item = TimeBasedParameterItem(
+            parameter_id=param.id,
+            item_id=item.id,
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            changes=json.dumps({
+                'lead_time_forecast': {
+                    'before': adjustment['current'],
+                    'after': adjustment['recommended'],
+                    'reason': adjustment['reason']
+                }
+            })
+        )
+        session.add(param_item)
     
-    # Get all active items for the warehouse
-    items = session.query(Item).filter(
-        Item.warehouse_id == warehouse_id,
-        Item.buyer_class.in_(['R', 'W'])  # Regular and Watch items
-    ).all()
-    
-    results = {
-        'warehouse_id': warehouse_id,
-        'period_number': period_number,
-        'period_year': period_year,
-        'total_items': len(items),
-        'processed_items': 0,
+    # Process safety stock changes
+    for adjustment in recommendations['safety_stock_adjustments']:
+        param = TimeBasedParameter(
+            description=f"Safety stock adjustment for item {item.id}",
+            parameter_type='SAFETY_STOCK',
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            status='PENDING'
+        )
+        session.add(param)
+        
+        # Create parameter item record
+        param_item = TimeBasedParameterItem(
+            parameter_id=param.id,
+            item_id=item.id,
+            effective_date=effective_date,
+            expression=str(adjustment['recommended']),
+            changes=json.dumps({
+                'safety_stock_time_factor': {
+                    'before': adjustment['current'],
+                    'after': adjustment['recommended'],
+                    'reason': adjustment['reason']
+                }
+            })
+        )
+        session.add(param_item)
+
+def adjust_forecasting_parameters(session: Session, item: Item) -> Dict:
+    """Adjust forecasting parameters based on historical performance."""
+    recommendations = {
         'alpha_factor_adjustments': [],
         'lead_time_adjustments': [],
-        'safety_stock_adjustments': [],
-        'parameter_changes': {},
-        'recommendations': [],
-        'start_time': datetime.now(),
-        'success': True
+        'safety_stock_adjustments': []
     }
     
-    # Process each item
-    for item in items:
-        try:
-            # 1. Adjust Alpha Factor based on tracking signal performance
-            alpha_adjustment = adjust_alpha_factor(
-                item, session, period_number, period_year
-            )
-            
-            if alpha_adjustment:
-                results['alpha_factor_adjustments'].append(alpha_adjustment)
-            
-            # 2. Adjust Lead Time based on actual performance
-            lead_time_adjustment = adjust_lead_time(
-                item, session, period_number, period_year
-            )
-            
-            if lead_time_adjustment:
-                results['lead_time_adjustments'].append(lead_time_adjustment)
-            
-            # 3. Adjust Safety Stock Time Factor
-            safety_stock_adjustment = adjust_safety_stock_time_factor(
-                item, session, period_number, period_year
-            )
-            
-            if safety_stock_adjustment:
-                results['safety_stock_adjustments'].append(safety_stock_adjustment)
-            
-            results['processed_items'] += 1
-            
-        except Exception as e:
-            logger.error(f"Error adjusting parameters for item {item.id}: {str(e)}")
-            results['success'] = False
-    
-    # 4. Generate parameter change recommendations
-    results['recommendations'] = generate_parameter_recommendations(
-        results['alpha_factor_adjustments'],
-        results['lead_time_adjustments'],
-        results['safety_stock_adjustments']
-    )
-    
-    # 5. Create time-based parameters for systematic changes
-    create_parameter_changes(results, session)
-    
-    results['end_time'] = datetime.now()
-    results['duration'] = results['end_time'] - results['start_time']
-    
-    # Commit changes
-    if results['success']:
-        try:
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            logger.error(f"Error committing parameter adjustments: {str(e)}")
-            results['success'] = False
-    
-    return results
-
-def adjust_alpha_factor(
-    item: Item,
-    session: Session,
-    period_number: int,
-    period_year: int
-) -> Optional[Dict]:
-    """Adjust alpha factor based on tracking signal performance.
-    
-    Args:
-        item: Item to adjust
-        session: Database session
-        period_number: Period number
-        period_year: Period year
-        
-    Returns:
-        Adjustment details or None if no adjustment needed
-    """
-    # Get historical tracking signal data
+    # Get historical data
     history = session.query(DemandHistory).filter(
         DemandHistory.item_id == item.id
     ).order_by(
         DemandHistory.period_year.desc(),
         DemandHistory.period_number.desc()
-    ).limit(6).all()  # Last 6 periods
-    
-    if len(history) < 3:
-        return None  # Not enough data
-    
-    # Calculate tracking signal volatility
-    track_values = []
-    for h in history:
-        # Simulate track value (in real implementation, this would be stored)
-        if h.total_demand > 0:
-            forecast = item.demand_4weekly  # Placeholder
-            track = abs(h.total_demand - forecast) / forecast * 100
-            track_values.append(track)
-    
-    if not track_values:
-        return None
-    
-    # Current alpha factor from company settings
-    current_alpha = item.vendor.buyer_class_settings.get('alpha_factor', 10.0)
-    
-    # Calculate volatility
-    volatility = np.std(track_values)
-    
-    # Adjust alpha factor based on volatility
-    if volatility > 30:  # High volatility
-        new_alpha = min(current_alpha * 1.2, 20.0)  # Increase alpha, cap at 20
-    elif volatility < 10:  # Low volatility
-        new_alpha = max(current_alpha * 0.8, 5.0)  # Decrease alpha, floor at 5
-    else:
-        return None  # No change needed
-    
-    if abs(new_alpha - current_alpha) > 0.5:  # Significant change
-        return {
-            'item_id': item.item_id,
-            'current_alpha': current_alpha,
-            'recommended_alpha': new_alpha,
-            'volatility': volatility,
-            'reason': f"Tracking signal volatility: {volatility:.1f}%"
-        }
-    
-    return None
-
-def adjust_lead_time(
-    item: Item,
-    session: Session,
-    period_number: int,
-    period_year: int
-) -> Optional[Dict]:
-    """Adjust lead time based on actual performance.
-    
-    Args:
-        item: Item to adjust
-        session: Database session
-        period_number: Period number
-        period_year: Period year
-        
-    Returns:
-        Adjustment details or None if no adjustment needed
-    """
-    # Get recent order history with actual receipt dates
-    # This is simplified - in real implementation, we'd track actual lead times
-    
-    # Simulate lead time history
-    lead_time_history = []
-    
-    # For simplification, let's say we have some historical data
-    # In real implementation, this would come from order tracking
-    historical_lead_times = [
-        item.lead_time_forecast * (1 + np.random.normal(0, 0.1))
-        for _ in range(10)
-    ]
-    
-    # Calculate actual vs forecasted lead times
-    current_forecast = item.lead_time_forecast or 7
-    actual_lead_times = [lt for lt in historical_lead_times if lt > 0]
-    
-    if len(actual_lead_times) < 3:
-        return None
-    
-    # Forecast new lead time
-    forecasted_lead_time = forecast_lead_time(
-        historical_lead_times=actual_lead_times,
-        current_lead_time=current_forecast
-    )
-    
-    # Calculate variance
-    variance = calculate_variance(actual_lead_times)
-    
-    # Determine if adjustment is needed
-    if abs(forecasted_lead_time - current_forecast) > 1:  # More than 1 day difference
-        return {
-            'item_id': item.item_id,
-            'current_lead_time': current_forecast,
-            'recommended_lead_time': int(round(forecasted_lead_time)),
-            'variance': variance,
-            'actual_average': np.mean(actual_lead_times),
-            'reason': f"Actual average lead time: {np.mean(actual_lead_times):.1f} days"
-        }
-    
-    return None
-
-def adjust_safety_stock_time_factor(
-    item: Item,
-    session: Session,
-    period_number: int,
-    period_year: int
-) -> Optional[Dict]:
-    """Adjust safety stock time factor based on service level performance.
-    
-    Args:
-        item: Item to adjust
-        session: Database session
-        period_number: Period number
-        period_year: Period year
-        
-    Returns:
-        Adjustment details or None if no adjustment needed
-    """
-    # Get service level performance
-    history = session.query(DemandHistory).filter(
-        DemandHistory.item_id == item.id,
-        DemandHistory.period_number == period_number,
-        DemandHistory.period_year == period_year
-    ).first()
+    ).limit(52).all()
     
     if not history:
-        return None
+        return recommendations
     
-    total_demand = history.shipped + history.lost_sales
-    if total_demand == 0:
-        return None
+    # Calculate forecast accuracy metrics
+    forecast_errors = []
+    for h in history:
+        if h.forecast_quantity and h.actual_quantity:
+            error = abs(h.forecast_quantity - h.actual_quantity) / h.actual_quantity
+            forecast_errors.append(error)
     
-    service_level_attained = (history.shipped / total_demand) * 100
-    service_level_goal = item.service_level_goal or 95.0
+    if not forecast_errors:
+        return recommendations
     
-    # Adjust safety stock based on service level gap
-    current_sstf = item.sstf or 0
+    # Calculate mean absolute percentage error (MAPE)
+    mape = sum(forecast_errors) / len(forecast_errors)
     
-    if current_sstf > 0 and item.madp is not None:
-        adjusted_sstf = empirical_safety_stock_adjustment(
-            current_safety_stock=current_sstf,
-            service_level_goal=service_level_goal,
-            service_level_attained=service_level_attained,
-            max_adjustment_pct=10.0
-        )
-        
-        if abs(adjusted_sstf - current_sstf) > 0.1:  # Significant change
-            return {
-                'item_id': item.item_id,
-                'current_sstf': current_sstf,
-                'recommended_sstf': adjusted_sstf,
-                'service_level_goal': service_level_goal,
-                'service_level_attained': service_level_attained,
-                'gap': service_level_goal - service_level_attained,
-                'reason': f"Service level gap: {service_level_goal - service_level_attained:.1f}%"
-            }
-    
-    return None
-
-def generate_parameter_recommendations(
-    alpha_adjustments: List[Dict],
-    lead_time_adjustments: List[Dict],
-    safety_stock_adjustments: List[Dict]
-) -> List[Dict]:
-    """Generate parameter change recommendations.
-    
-    Args:
-        alpha_adjustments: List of alpha factor adjustments
-        lead_time_adjustments: List of lead time adjustments
-        safety_stock_adjustments: List of safety stock adjustments
-        
-    Returns:
-        List of recommendations
-    """
-    recommendations = []
-    
-    # Alpha factor adjustments
-    if alpha_adjustments:
-        alpha_summary = {
-            'total_adjustments': len(alpha_adjustments),
-            'average_change': np.mean([
-                adj['recommended_alpha'] - adj['current_alpha']
-                for adj in alpha_adjustments
-            ]),
-            'items_requiring_increase': len([
-                adj for adj in alpha_adjustments
-                if adj['recommended_alpha'] > adj['current_alpha']
-            ]),
-            'items_requiring_decrease': len([
-                adj for adj in alpha_adjustments
-                if adj['recommended_alpha'] < adj['current_alpha']
-            ])
-        }
-        
-        recommendations.append({
-            'type': 'ALPHA_FACTOR',
-            'summary': alpha_summary,
-            'details': alpha_adjustments[:10]  # Top 10 adjustments
+    # Adjust alpha factor based on forecast accuracy
+    current_alpha = item.vendor.buyer_class_settings.get('alpha_factor', 10.0)
+    if mape > 0.2:  # High forecast error
+        recommended_alpha = min(current_alpha * 1.2, 20.0)
+        recommendations['alpha_factor_adjustments'].append({
+            'current': current_alpha,
+            'recommended': recommended_alpha,
+            'reason': f'High forecast error (MAPE: {mape:.2%})'
+        })
+    elif mape < 0.1:  # Low forecast error
+        recommended_alpha = max(current_alpha * 0.8, 5.0)
+        recommendations['alpha_factor_adjustments'].append({
+            'current': current_alpha,
+            'recommended': recommended_alpha,
+            'reason': f'Low forecast error (MAPE: {mape:.2%})'
         })
     
-    # Lead time adjustments
-    if lead_time_adjustments:
-        lead_time_summary = {
-            'total_adjustments': len(lead_time_adjustments),
-            'average_change': np.mean([
-                adj['recommended_lead_time'] - adj['current_lead_time']
-                for adj in lead_time_adjustments
-            ]),
-            'items_requiring_increase': len([
-                adj for adj in lead_time_adjustments
-                if adj['recommended_lead_time'] > adj['current_lead_time']
-            ]),
-            'items_requiring_decrease': len([
-                adj for adj in lead_time_adjustments
-                if adj['recommended_lead_time'] < adj['current_lead_time']
-            ])
-        }
-        
-        recommendations.append({
-            'type': 'LEAD_TIME',
-            'summary': lead_time_summary,
-            'details': lead_time_adjustments[:10]  # Top 10 adjustments
-        })
+    # Adjust lead time based on historical performance
+    current_lead_time = item.forecast_lead_time
+    actual_lead_times = [h.actual_lead_time for h in history if h.actual_lead_time]
+    if actual_lead_times:
+        avg_lead_time = sum(actual_lead_times) / len(actual_lead_times)
+        if abs(avg_lead_time - current_lead_time) > 2:  # Significant difference
+            recommendations['lead_time_adjustments'].append({
+                'current': current_lead_time,
+                'recommended': round(avg_lead_time),
+                'reason': f'Historical average lead time: {avg_lead_time:.1f} days'
+            })
     
-    # Safety stock adjustments
-    if safety_stock_adjustments:
-        safety_stock_summary = {
-            'total_adjustments': len(safety_stock_adjustments),
-            'average_change': np.mean([
-                adj['recommended_sstf'] - adj['current_sstf']
-                for adj in safety_stock_adjustments
-            ]),
-            'items_requiring_increase': len([
-                adj for adj in safety_stock_adjustments
-                if adj['recommended_sstf'] > adj['current_sstf']
-            ]),
-            'items_requiring_decrease': len([
-                adj for adj in safety_stock_adjustments
-                if adj['recommended_sstf'] < adj['current_sstf']
-            ])
-        }
-        
-        recommendations.append({
-            'type': 'SAFETY_STOCK',
-            'summary': safety_stock_summary,
-            'details': safety_stock_adjustments[:10]  # Top 10 adjustments
-        })
+    # Adjust safety stock based on demand variability
+    demand_values = [h.actual_quantity for h in history if h.actual_quantity]
+    if len(demand_values) >= 4:  # Need at least 4 points for meaningful variance
+        variance = calculate_variance(demand_values)
+        current_sstf = item.safety_stock_time_factor
+        if variance > 1000:  # High demand variability
+            recommended_sstf = min(current_sstf * 1.2, 2.0)
+            recommendations['safety_stock_adjustments'].append({
+                'current': current_sstf,
+                'recommended': recommended_sstf,
+                'reason': f'High demand variability (variance: {variance:.2f})'
+            })
+        elif variance < 100:  # Low demand variability
+            recommended_sstf = max(current_sstf * 0.8, 0.5)
+            recommendations['safety_stock_adjustments'].append({
+                'current': current_sstf,
+                'recommended': recommended_sstf,
+                'reason': f'Low demand variability (variance: {variance:.2f})'
+            })
+    
+    # Convert recommendations to time-based parameters
+    if any(recommendations.values()):
+        convert_parameter_changes_to_time_based(session, item, recommendations)
     
     return recommendations
-
-def create_parameter_changes(results: Dict, session: Session) -> None:
-    """Create time-based parameter changes for systematic adjustments.
-    
-    Args:
-        results: Parameter adjustment results
-        session: Database session
-    """
-    # This would create time-based parameter changes in the database
-    # For now, we'll log the changes that would be created
-    
-    logger.info("Parameter changes that would be created:")
-    
-    # Alpha factor changes
-    for adj in results.get('alpha_factor_adjustments', []):
-        logger.info(f"  Alpha Factor - Item {adj['item_id']}: "
-                   f"{adj['current_alpha']} -> {adj['recommended_alpha']}")
-    
-    # Lead time changes
-    for adj in results.get('lead_time_adjustments', []):
-        logger.info(f"  Lead Time - Item {adj['item_id']}: "
-                   f"{adj['current_lead_time']} -> {adj['recommended_lead_time']}")
-    
-    # Safety stock changes
-    for adj in results.get('safety_stock_adjustments', []):
-        logger.info(f"  Safety Stock - Item {adj['item_id']}: "
-                   f"{adj['current_sstf']} -> {adj['recommended_sstf']}")
 
 def should_run_period_end() -> bool:
     """Check if period-end processing should run today.
@@ -1698,7 +1471,7 @@ def process_warehouse(warehouse_id: Union[int, str], session: Optional[Session] 
         results['fill_rate_analysis'] = fill_rate_results
         
         # Adjust forecasting parameters
-        parameter_results = adjust_forecasting_parameters(warehouse_id, session)
+        parameter_results = adjust_forecasting_parameters(session, session.query(Item).filter(Item.warehouse_id == warehouse_id).first())
         
         # Update results
         results['parameter_adjustments'] = parameter_results

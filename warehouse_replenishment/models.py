@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
 import json
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -327,6 +328,7 @@ class Item(Base):
     item_forecast = relationship("ItemForecast", back_populates="item")
     order_items = relationship("OrderItem", back_populates="item")
     item_prices = relationship("ItemPrice", back_populates="item")
+    parameter_changes = relationship("ParameterChange", back_populates="item")
    
 
     @property
@@ -352,6 +354,7 @@ class DemandHistory(Base):
     promotional_demand = Column(Float, default=0.0)
     total_demand = Column(Float, default=0.0)
     
+    forecast_quantity = Column(Float, default=0.0)
     is_ignored = Column(Boolean, default=False)
     is_adjusted = Column(Boolean, default=False)
     out_of_stock_days = Column(Integer, default=0)
@@ -747,3 +750,25 @@ class AIAnalysisMetric(Base):
         Index('idx_metric_name', 'metric_name'),
         Index('idx_metric_category', 'metric_category'),
     )
+
+class ParameterChange(Base):
+    """Stores parameter change recommendations for items."""
+    __tablename__ = 'parameter_changes'
+
+    id = Column(Integer, primary_key=True)
+    item_id = Column(Integer, ForeignKey('item.id'), nullable=False)
+    parameter_type = Column(String(20), nullable=False)  # 'ALPHA_FACTOR', 'LEAD_TIME', 'SAFETY_STOCK'
+    current_value = Column(Float, nullable=False)
+    recommended_value = Column(Float, nullable=False)
+    change_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    effective_date = Column(DateTime, nullable=False)
+    status = Column(String(20), default='PENDING', nullable=False)  # 'PENDING', 'APPROVED', 'REJECTED'
+    reason = Column(String(500))
+    approved_by = Column(String(100))
+    approved_date = Column(DateTime)
+    
+    # Relationships
+    item = relationship("Item", back_populates="parameter_changes")
+
+    def __repr__(self):
+        return f"<ParameterChange(id={self.id}, item_id={self.item_id}, type={self.parameter_type}, status={self.status})>"

@@ -190,6 +190,10 @@ class TimeBasedParameterService:
                 self._process_buyer_class_parameter(parameter, effective_date, results)
             elif parameter.parameter_type == 'PRICE_CHANGE':
                 self._process_price_change_parameter(parameter, effective_date, results)
+            elif parameter.parameter_type == 'ALPHA_FACTOR':
+                self._process_alpha_factor_parameter(parameter, effective_date, results)
+            elif parameter.parameter_type == 'SAFETY_STOCK':
+                self._process_safety_stock_parameter(parameter, effective_date, results)
             else:
                 # Unknown parameter type
                 results['error'] = f"Unknown parameter type: {parameter.parameter_type}"
@@ -676,6 +680,188 @@ class TimeBasedParameterService:
                 
             except Exception as e:
                 logger.error(f"Error updating price for item {item.id}: {str(e)}")
+                
+                # Update or create error record
+                if param_item:
+                    param_item.error_message = str(e)
+                else:
+                    param_item = TimeBasedParameterItem(
+                        parameter_id=parameter.id,
+                        item_id=item.id,
+                        effective_date=effective_date,
+                        expression=parameter.expression,
+                        error_message=str(e)
+                    )
+                    self.session.add(param_item)
+                
+                results['errors'] += 1
+
+    def _process_alpha_factor_parameter(
+        self,
+        parameter: TimeBasedParameter,
+        effective_date: date,
+        results: Dict
+    ) -> None:
+        """Process an alpha factor parameter.
+        
+        Args:
+            parameter: Parameter to process
+            effective_date: Effective date
+            results: Results dictionary to update
+        """
+        # Get affected items
+        items = self.get_items_for_parameter(parameter)
+        results['affected_items'] = len(items)
+        
+        # Process each item
+        for item in items:
+            try:
+                # Check if this item is already in TimeBasedParameterItem
+                param_item = self.session.query(TimeBasedParameterItem).filter(
+                    TimeBasedParameterItem.parameter_id == parameter.id,
+                    TimeBasedParameterItem.item_id == item.id
+                ).first()
+                
+                if not param_item:
+                    # Create parameter item record
+                    param_item = TimeBasedParameterItem(
+                        parameter_id=parameter.id,
+                        item_id=item.id,
+                        effective_date=effective_date,
+                        expression=parameter.expression
+                    )
+                    self.session.add(param_item)
+                
+                # Store original values for reference
+                original_alpha = item.vendor.buyer_class_settings.get('alpha_factor', 10.0)
+                
+                # Evaluate the expression
+                try:
+                    new_alpha = float(parameter.expression)
+                except ValueError:
+                    # Try evaluating as an expression
+                    new_alpha = evaluate_expression(parameter.expression, item)
+                
+                # Ensure alpha is in valid range
+                new_alpha = max(5.0, min(20.0, new_alpha))
+                
+                # Update alpha factor in buyer class settings
+                if 'alpha_factor' not in item.vendor.buyer_class_settings:
+                    item.vendor.buyer_class_settings['alpha_factor'] = new_alpha
+                else:
+                    item.vendor.buyer_class_settings['alpha_factor'] = new_alpha
+                
+                # Record the change in the parameter item
+                param_item.changes = json.dumps({
+                    'alpha_factor': {
+                        'before': original_alpha,
+                        'after': new_alpha
+                    }
+                })
+                
+                results['processed_items'] += 1
+                
+                logger.info(f"Updated alpha factor for item {item.id}: "
+                          f"{original_alpha} → {new_alpha}")
+                
+            except Exception as e:
+                logger.error(f"Error updating alpha factor for item {item.id}: {str(e)}")
+                
+                # Update or create error record
+                if param_item:
+                    param_item.error_message = str(e)
+                else:
+                    param_item = TimeBasedParameterItem(
+                        parameter_id=parameter.id,
+                        item_id=item.id,
+                        effective_date=effective_date,
+                        expression=parameter.expression,
+                        error_message=str(e)
+                    )
+                    self.session.add(param_item)
+                
+                results['errors'] += 1
+
+    def _process_safety_stock_parameter(
+        self,
+        parameter: TimeBasedParameter,
+        effective_date: date,
+        results: Dict
+    ) -> None:
+        """Process a safety stock parameter.
+        
+        Args:
+            parameter: Parameter to process
+            effective_date: Effective date
+            results: Results dictionary to update
+        """
+        # Get affected items
+        items = self.get_items_for_parameter(parameter)
+        results['affected_items'] = len(items)
+        
+        # Process each item
+        for item in items:
+            try:
+                # Check if this item is already in TimeBasedParameterItem
+                param_item = self.session.query(TimeBasedParameterItem).filter(
+                    TimeBasedParameterItem.parameter_id == parameter.id,
+                    TimeBasedParameterItem.item_id == item.id
+                ).first()
+                
+                if not param_item:
+                    # Create parameter item record
+                    param_item = TimeBasedParameterItem(
+                        parameter_id=parameter.id,
+                        item_id=item.id,
+                        effective_date=effective_date,
+                        expression=parameter.expression
+                    )
+                    self.session.add(param_item)
+                
+                # Store original values for reference
+                original_sstf = item.safety_stock_time_factor
+                
+                # Evaluate the expression
+                try:
+                    new_sstf = float(parameter.expression)
+                except ValueError:
+                    # Try evaluating as an expression
+                    new_sstf = evaluate_expression(parameter.expression, item)
+                
+                # Ensure safety stock time factor is in valid range
+                new_sstf = max(0.5, min(2.0, new_sstf))
+                
+                # Update safety stock time factor
+                item.safety_stock_time_factor = new_sstf
+                
+                # Record the change in the parameter item
+                param_item.changes = json.dumps({
+                    'safety_stock_time_factor': {
+                        'before': original_sstf,
+                        'after': new_sstf
+                    }
+                })
+                
+                # Recalculate safety stock and order points
+                try:
+                    from warehouse_replenishment.services.safety_stock_service import SafetyStockService
+                    ss_service = SafetyStockService(self.session)
+                    ss_service.update_safety_stock_for_item(
+                        item.id, 
+                        update_sstf=True,
+                        update_order_points=True
+                    )
+                except ImportError:
+                    # Safety stock service not available, continue without updating
+                    pass
+                
+                results['processed_items'] += 1
+                
+                logger.info(f"Updated safety stock time factor for item {item.id}: "
+                          f"{original_sstf} → {new_sstf}")
+                
+            except Exception as e:
+                logger.error(f"Error updating safety stock time factor for item {item.id}: {str(e)}")
                 
                 # Update or create error record
                 if param_item:
