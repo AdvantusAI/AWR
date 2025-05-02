@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from contextlib import contextmanager
 import sys
 from pathlib import Path
+import urllib.parse
 
 # Add parent directory to path for imports
 parent_dir = str(Path(__file__).parent.parent)
@@ -44,10 +45,38 @@ class Database:
                               If not provided, will use configuration.
         """
         if connection_string is None:
-            connection_string = config.get_db_url()
+            # Get database configuration from settings.ini
+            engine = config.get('DATABASE', 'engine', 'postgresql')
+            username = config.get('DATABASE', 'username', 'postgres')
+            password = config.get('DATABASE', 'password', 'Admin0606')
+            host = config.get('DATABASE', 'host', 'localhost')
+            port = config.get('DATABASE', 'port', '5433')
+            database = config.get('DATABASE', 'database', 'm8_aws')
+            
+            # Get connection pool settings
+            pool_size = config.get_int('DATABASE', 'pool_size', 10)
+            max_overflow = config.get_int('DATABASE', 'max_overflow', 20)
+            pool_timeout = config.get_int('DATABASE', 'pool_timeout', 30)
+            pool_recycle = config.get_int('DATABASE', 'pool_recycle', 1800)
+            
+            # URL encode the password to handle special characters
+            password = urllib.parse.quote_plus(password)
+            
+            # Construct the connection string
+            connection_string = f"{engine}://{username}:{password}@{host}:{port}/{database}"
         
         echo = config.get_boolean('DATABASE', 'echo', False)
-        self._engine = create_engine(connection_string, echo=echo)
+        
+        # Create engine with connection pooling
+        self._engine = create_engine(
+            connection_string,
+            echo=echo,
+            pool_size=pool_size,
+            max_overflow=max_overflow,
+            pool_timeout=pool_timeout,
+            pool_recycle=pool_recycle
+        )
+        
         self._session_factory = sessionmaker(bind=self._engine)
         self._session = scoped_session(self._session_factory)
     

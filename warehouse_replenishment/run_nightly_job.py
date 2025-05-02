@@ -15,7 +15,7 @@ if parent_dir not in sys.path:
 
 from warehouse_replenishment.batch.nightly_job import run_nightly_job
 from warehouse_replenishment.logging_setup import get_logger
-from warehouse_replenishment.database import session_scope
+from warehouse_replenishment.db import session_scope
 
 def main():
     """Run the nightly job."""
@@ -30,8 +30,12 @@ def main():
     log_level = logging.DEBUG if args.verbose else logging.INFO
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     
+    # Create logs directory if it doesn't exist
+    logs_dir = Path(parent_dir) / 'logs'
+    logs_dir.mkdir(exist_ok=True)
+    
     # File handler
-    log_file = Path(parent_dir) / 'logs' / f'nightly_job_{datetime.now().strftime("%Y%m%d")}.log'
+    log_file = logs_dir / f'nightly_job_{datetime.now().strftime("%Y%m%d")}.log'
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(formatter)
     

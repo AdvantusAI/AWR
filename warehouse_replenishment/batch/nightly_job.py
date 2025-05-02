@@ -1,4 +1,11 @@
 # warehouse_replenishment/batch/nightly_job.py
+import os
+import sys
+
+# Add the root directory to the Python path
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
 import logging
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional

@@ -374,7 +374,7 @@ def run_period_end_reforecasting(
                     # Get latest history
                     history = forecast_service.get_item_demand_history(item.id, periods=1)
                     if not history:
-                        logger.warning(f"No history data for item {item.item_id}")
+                        logger.info(f"No history data for item {item.item_id}")
                         continue
                     
                     latest_history = history[0]

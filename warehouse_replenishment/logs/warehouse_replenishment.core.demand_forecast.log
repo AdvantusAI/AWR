@@ -1,0 +1,120 @@
+2025-05-01 21:38:09,208 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.604805945194826, actual=8.604805945194826, madp=22.230618134038973, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,208 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=965.0555813708672, lower_bound=-565.2656593102085
+2025-05-01 21:38:09,212 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.405284793671319, actual=15.163457677548758, madp=19.615186437158773, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,212 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1427.217019334827, lower_bound=-833.2817559310222
+2025-05-01 21:38:09,215 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.484680163970971, actual=5.057143168018708, madp=5.56474389558488, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,215 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=158.08888247243567, lower_bound=-86.07784122110786
+2025-05-01 21:38:09,226 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=9.529882937207224, actual=1.4193055821837839, madp=81.40051613390278, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,227 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=3888.2168318589147, lower_bound=-2317.6822864158175
+2025-05-01 21:38:09,230 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=31.378291761696197, actual=33.02978080178547, madp=20.766282369080844, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,230 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=3289.4306266756284, lower_bound=-1923.4531091866631
+2025-05-01 21:38:09,233 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=9.529882937207224, actual=1.3843186586854375, madp=81.85521337743299, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,234 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=3909.882889372483, lower_bound=-2330.6819209239584
+2025-05-01 21:38:09,238 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=13.912701679490974, actual=14.64494913630629, madp=22.734103485621496, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,238 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1595.3767004101298, lower_bound=-934.9656975588925
+2025-05-01 21:38:09,242 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=19.05976587441445, actual=3.0347003961645367, madp=80.37329589875687, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,242 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=7678.540777801119, lower_bound=-4576.628841281608
+2025-05-01 21:38:09,246 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=21.787594931251505, actual=21.787594931251505, madp=13.326788206272644, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,246 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1473.5809107954924, lower_bound=-849.288394587293
+2025-05-01 21:38:09,249 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.313952954951249, actual=5.313952954951249, madp=21.619363461207296, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,249 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=579.7353546991892, lower_bound=-339.33888809159146
+2025-05-01 21:38:09,252 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=39.4020265867453, actual=41.4758174597319, madp=11.729904297656333, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,252 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=2350.3120315679093, lower_bound=-1347.143976401953
+2025-05-01 21:38:09,255 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=10.738685683601929, actual=10.738685683601929, madp=27.746102426726573, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,255 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1500.5220502118088, lower_bound=-883.1313330333223
+2025-05-01 21:38:09,258 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.121561319180389, actual=8.121561319180389, madp=6.313090769229424, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,258 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=264.48233029842265, lower_bound=-145.69490006836497
+2025-05-01 21:38:09,262 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=3.0, actual=2.05524754445628, madp=14.410888601689406, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,262 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=219.16332902534106, lower_bound=-126.69799741520464
+2025-05-01 21:38:09,265 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=126.9995060703796, actual=133.6836906003996, madp=29.744054067337878, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,265 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=19014.400381483258, lower_bound=-11205.441019177346
+2025-05-01 21:38:09,268 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=6.0, actual=4.348486427409117, madp=13.595864161710164, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,268 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=413.87592485130494, lower_bound=-238.72555491078293
+2025-05-01 21:38:09,271 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.656487708015529, madp=10.036775806659747, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,272 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=102.36775806659747, lower_bound=-58.220654839958485
+2025-05-01 21:38:09,274 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.567998916468705, actual=11.726557133768392, madp=14.430588071917299, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,274 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1065.6919558949558, lower_bound=-616.1063752706236
+2025-05-01 21:38:09,277 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.5222970947549166, madp=16.155797416326397, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,277 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=163.55797416326396, lower_bound=-94.93478449795839
+2025-05-01 21:38:09,280 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.5348452279935914, madp=11.01312378686687, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,281 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=112.1312378686687, lower_bound=-64.07874272120122
+2025-05-01 21:38:09,283 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=22.333135457263285, actual=18.171993534527278, madp=13.250030689801234, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,284 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1501.9067864983963, lower_bound=-865.4110551674166
+2025-05-01 21:38:09,286 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=24.934722235492163, actual=26.247076037360173, madp=35.072730519506784, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,286 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=4397.5786899563445, lower_bound=-2598.6516583970188
+2025-05-01 21:38:09,289 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.454593389946417, actual=7.349842393208654, madp=6.798980869045695, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,289 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=295.86768695897587, lower_bound=-163.99326275147124
+2025-05-01 21:38:09,291 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=7.231384573972689, actual=6.500460315074495, madp=9.444765807608139, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,291 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=348.7250534035837, lower_bound=-197.66481672379393
+2025-05-01 21:38:09,294 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=1.1622689067510048, actual=4.2962904241230895, madp=100.0, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,294 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=582.2967222822534, lower_bound=-347.51840311855045
+2025-05-01 21:38:09,297 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=265.68466017882093, actual=279.6680633461273, madp=14.924343987871191, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,297 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=20091.530964225753, lower_bound=-11629.82312224934
+2025-05-01 21:38:09,300 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=38.33141003613673, actual=40.348852669617614, madp=36.85206627175536, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,300 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=7101.289724743833, lower_bound=-4199.443578788481
+2025-05-01 21:38:09,303 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.819101085919476, actual=6.125369564125764, madp=20.128861433516512, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,303 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=591.4784982164124, lower_bound=-345.5765371923763
+2025-05-01 21:38:09,306 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.294824405810832, actual=2.2541956177350215, madp=81.61255120259763, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,306 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=5847.480268162704, lower_bound=-3485.616441848326
+2025-05-01 21:38:09,309 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.294824405810832, actual=2.3513681453446704, madp=80.99794011798083, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:09,310 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=5803.551480500394, lower_bound=-3459.2591692509395
+2025-05-01 21:38:23,720 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.567998921696146, actual=11.726557133768392, madp=14.430588058618971, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,720 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1065.6919553087084, lower_bound=-616.1063749105112
+2025-05-01 21:38:23,722 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.604805945194826, actual=8.604805945194826, madp=22.230618134038973, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,722 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=965.0555813708672, lower_bound=-565.2656593102085
+2025-05-01 21:38:23,727 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=14.405284793671319, actual=15.163457677548758, madp=19.615186437158773, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,727 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1427.217019334827, lower_bound=-833.2817559310222
+2025-05-01 21:38:23,730 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=10.738685683601929, actual=10.738685683601929, madp=27.746102426726573, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,730 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1500.5220502118088, lower_bound=-883.1313330333223
+2025-05-01 21:38:23,732 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.121561319180389, actual=8.121561319180389, madp=6.313090769229424, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,732 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=264.48233029842265, lower_bound=-145.69490006836497
+2025-05-01 21:38:23,735 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=3.0, actual=2.05524754445628, madp=14.410888601689406, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,735 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=219.16332902534106, lower_bound=-126.69799741520464
+2025-05-01 21:38:23,737 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=126.9995060703796, actual=133.6836906003996, madp=29.744054067337878, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,737 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=19014.400381483258, lower_bound=-11205.441019177346
+2025-05-01 21:38:23,740 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=6.0, actual=4.348486427409117, madp=13.595864161710164, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,740 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=413.87592485130494, lower_bound=-238.72555491078293
+2025-05-01 21:38:23,742 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.656487708015529, madp=10.036775806659747, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,742 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=102.36775806659747, lower_bound=-58.220654839958485
+2025-05-01 21:38:23,745 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.5222970947549166, madp=16.155797416326397, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,745 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=163.55797416326396, lower_bound=-94.93478449795839
+2025-05-01 21:38:23,747 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=2.0, actual=1.5348452279935914, madp=11.01312378686687, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,747 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=112.1312378686687, lower_bound=-64.07874272120122
+2025-05-01 21:38:23,750 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=24.934722235492163, actual=26.247076037360173, madp=35.072730519506784, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,750 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=4397.5786899563445, lower_bound=-2598.6516583970188
+2025-05-01 21:38:23,752 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=22.333135428000613, actual=18.171993534527278, madp=13.250030736042634, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,752 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1501.9067896940546, lower_bound=-865.4110571316318
+2025-05-01 21:38:23,754 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=8.393426003078776, actual=7.349842393208654, madp=6.982721507965271, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,754 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=301.43820738914457, lower_bound=-167.43344282856066
+2025-05-01 21:38:23,756 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=7.231384573972767, actual=6.500460315074495, madp=9.444765807607482, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,756 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=348.7250534035637, lower_bound=-197.6648167237818
+2025-05-01 21:38:23,758 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=10.006377084067585, actual=1.3843186586854375, madp=82.71925083565046, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,758 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=4148.606456949523, lower_bound=-2473.153670835206
+2025-05-01 21:38:23,760 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.635483672702372, actual=5.057143168018708, madp=4.79995386704, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,760 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=140.88579190984504, lower_bound=-75.51470126958323
+2025-05-01 21:38:23,762 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=20.01275416813517, actual=3.0347003961645367, madp=81.30790085595892, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,762 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=8155.9879129552, lower_bound=-4861.572341104104
+2025-05-01 21:38:23,764 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=31.378291761696197, actual=33.02978080178547, madp=20.766282369080844, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,764 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=3289.4306266756284, lower_bound=-1923.4531091866631
+2025-05-01 21:38:23,767 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=10.006377084067585, actual=1.4193055821837839, madp=82.28620584181218, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,767 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=4126.940399435955, lower_bound=-2460.154036327065
+2025-05-01 21:38:23,770 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=13.912701679490974, actual=14.64494913630629, madp=22.734103485621496, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,770 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1595.3767004101298, lower_bound=-934.9656975588925
+2025-05-01 21:38:23,772 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=21.787594931251505, actual=21.787594931251505, madp=13.326788206272644, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,772 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=1473.5809107954924, lower_bound=-849.288394587293
+2025-05-01 21:38:23,775 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.313952954951249, actual=5.313952954951249, madp=21.619363461207296, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,775 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=579.7353546991892, lower_bound=-339.33888809159146
+2025-05-01 21:38:23,778 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=39.4020265867453, actual=41.4758174597319, madp=11.729904297656333, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,778 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=2350.3120315679093, lower_bound=-1347.143976401953
+2025-05-01 21:38:23,780 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=265.68466017882093, actual=279.6680633461273, madp=14.924343987871191, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,780 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=20091.530964225753, lower_bound=-11629.82312224934
+2025-05-01 21:38:23,782 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=38.33141003613673, actual=40.348852669617614, madp=36.85206627175536, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,783 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=7101.289724743833, lower_bound=-4199.443578788481
+2025-05-01 21:38:23,786 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=5.819101085919476, actual=6.125369564125764, madp=20.128861433516512, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,786 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=591.4784982164124, lower_bound=-345.5765371923763
+2025-05-01 21:38:23,789 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=1.1041554614134546, actual=4.2962904241230895, madp=100.0, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,789 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=553.1818861681407, lower_bound=-330.1424829626229
+2025-05-01 21:38:23,791 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=15.009565626101374, actual=2.2541956177350215, madp=82.48814400247392, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,791 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=6205.5656195282645, lower_bound=-3699.3240667151968
+2025-05-01 21:38:23,794 - warehouse_replenishment.core.demand_forecast - INFO - detect_demand_spike called with forecast=15.009565626101374, actual=2.3513681453446704, madp=81.90280011236271, demand_filter_high=5.0, demand_filter_low=3.0
+2025-05-01 21:38:23,794 - warehouse_replenishment.core.demand_forecast - INFO - Calculated bounds: upper_bound=6161.636831865956, lower_bound=-3672.966794117812

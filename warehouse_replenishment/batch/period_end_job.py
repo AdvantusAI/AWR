@@ -1,7 +1,16 @@
 # warehouse_replenishment/batch/period_end_job.py
+import os
+import sys
+from pathlib import Path
+
+# Add the parent directory to the path so we can import our modules
+parent_dir = str(Path(__file__).parent.parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
 import logging
 from datetime import date, datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from collections import defaultdict
 import numpy as np
 import math
@@ -27,7 +36,12 @@ from warehouse_replenishment.core.safety_stock import empirical_safety_stock_adj
 from warehouse_replenishment.exceptions import BatchProcessError, ForecastError
 from warehouse_replenishment.logging_setup import logger
 
-logger = get_logger('period_end_job')
+# Set up logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 def update_seasonal_profiles(
     warehouse_id: int,
@@ -45,6 +59,7 @@ def update_seasonal_profiles(
         Dictionary with update results
     """
     # Get company settings
+    logger = logging.getLogger("update_seasonal_profiles")
     company = session.query(Company).first()
     if not company:
         raise Exception("Company settings not found")
@@ -1559,11 +1574,11 @@ def process_all_warehouses() -> Dict:
     
     return results
 
-def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> Dict:
+def process_warehouse(warehouse_id: Union[int, str], session: Optional[Session] = None) -> Dict:
     """Process period-end for a specific warehouse.
     
     Args:
-        warehouse_id: Warehouse ID
+        warehouse_id: Warehouse ID (can be either string ID like 'WH001' or integer ID)
         session: Optional database session
         
     Returns:
@@ -1588,18 +1603,38 @@ def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> D
         close_session = True
     
     try:
-        # Reforecast all items
+        logger.info("Starting pprocess_warehouse")
+        # If warehouse_id is a string, look up the integer ID
+        if isinstance(warehouse_id, str):
+            warehouse = session.query(Warehouse).filter(
+                Warehouse.warehouse_id == warehouse_id
+            ).first()
+            if not warehouse:
+                raise ValueError(f"Warehouse with ID {warehouse_id} not found")
+            warehouse_id = warehouse.id
+        
+        # Get company settings for periodicity
+        company = session.query(Company).first()
+        if not company:
+            raise Exception("Company settings not found")
+        periodicity = company.forecasting_periodicity_default
+        
+        
+        logger.info("# Reforecasting all items")
         reforecast_results = reforecast_items(warehouse_id, session)
         
         # Update results
+        logger.info("# Reforecasting all items: Updating results")
         results['total_items'] = reforecast_results.get('total_items', 0)
         results['processed_items'] = reforecast_results.get('processed', 0)
         results['errors'] += reforecast_results.get('errors', 0)
         
-        # Detect history exceptions
+        
+        logger.info("# Detect history exceptions")
         exception_results = detect_history_exceptions(warehouse_id, session)
         
-        # Update results
+        
+        
         results['history_exceptions'] = (
             exception_results.get('demand_filter_high', 0) +
             exception_results.get('demand_filter_low', 0) +
@@ -1608,9 +1643,13 @@ def process_warehouse(warehouse_id: int, session: Optional[Session] = None) -> D
             exception_results.get('service_level_check', 0) +
             exception_results.get('infinity_check', 0)
         )
+        
+        logger.info("# Detect history exceptions: result errors")
         results['errors'] += exception_results.get('errors', 0)
         
-        # Calculate forecast accuracy for completed period
+        
+        logger.info("# Calculate forecast accuracy for completed period")
+        
         current_period, current_year = get_current_period(periodicity)
         prev_period, prev_year = get_previous_period(current_period, current_year, periodicity)
         
@@ -1693,9 +1732,11 @@ def detect_history_exceptions(warehouse_id: int, session: Session) -> Dict:
     Returns:
         Dictionary with exception detection results
     """
+    logger.info("# Detect history exceptions: forecast_service")
     forecast_service = ForecastService(session)
     
     # Detect exceptions
+    logger.info("# Detect history exceptions: results")
     results = forecast_service.detect_history_exceptions(warehouse_id=warehouse_id)
     
     return results
@@ -1972,7 +2013,7 @@ def run_period_end_job(warehouse_id: Optional[int] = None):
                 report_html = generate_period_end_report(results, session)
         
         # Send email report if configured
-        if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+        if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
             email_addresses = config.get('PERIOD_END', 'notification_email', fallback='').split(',')
             email_addresses = [email.strip() for email in email_addresses if email.strip()]
             
@@ -2003,7 +2044,7 @@ def run_period_end_job(warehouse_id: Optional[int] = None):
         </html>
         """
         
-        if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+        if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
             email_addresses = config.get('PERIOD_END', 'notification_email', fallback='').split(',')
             email_addresses = [email.strip() for email in email_addresses if email.strip()]
             

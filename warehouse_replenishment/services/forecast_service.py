@@ -1,7 +1,6 @@
 # warehouse_replenishment/services/forecast_service.py
 from datetime import date, datetime, timedelta
 from typing import List, Dict, Tuple, Optional, Union, Any
-import logging
 import uuid
 import sys
 import os
@@ -37,11 +36,10 @@ from warehouse_replenishment.utils.date_utils import (
 )
 from warehouse_replenishment.exceptions import ForecastError
 from warehouse_replenishment.utils.math_utils import calculate_madp
+from warehouse_replenishment.logging_setup import get_logger
 
-from warehouse_replenishment.logging_setup import logger
-logger = logging.getLogger(__name__)
-
-
+# Set up logging
+logger = get_logger(__name__)
 
 class ForecastService:
     """Service for handling demand forecasting operations."""
@@ -791,6 +789,7 @@ class ForecastService:
         # Build query to get items
         query = self.session.query(Item)
         
+       
         # Apply filters
         if warehouse_id:
             query = query.filter(Item.warehouse_id == warehouse_id)
@@ -804,6 +803,7 @@ class ForecastService:
         # Only include active items (Regular or Watch)
         query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
         
+        logger.info(" # Apply filters")
         # Exclude items with frozen forecasts
         query = query.filter(
             (Item.freeze_until_date.is_(None)) | 
@@ -812,6 +812,7 @@ class ForecastService:
         
         items = query.all()
         
+        logger.info("# Get latest period")
         # Get latest period
         current_period, current_year = get_current_period(
             self.company_settings['forecasting_periodicity_default']
@@ -821,6 +822,7 @@ class ForecastService:
             self.company_settings['forecasting_periodicity_default']
         )
         
+        logger.info("# Process results1")
         # Process results
         results = {
             'total_items': len(items),
@@ -840,24 +842,39 @@ class ForecastService:
                 # Get latest history
                 history = self.get_item_demand_history(item.id, periods=1)
                 if not history:
+                    logger.info(f"No history found for item {item.id}")
                     continue
                 
                 latest_history = history[0]
+                logger.info(f"Processing item {item.id}: demand_4weekly={item.demand_4weekly}, madp={item.madp}, track={item.track}, total_demand={latest_history['total_demand']}")
                 
                 # Demand filter checks
-                demand_exception = detect_demand_spike(
-                    item.demand_4weekly,
-                    latest_history['total_demand'],
-                    item.madp,
-                    self.company_settings['demand_filter_high'],
-                    self.company_settings['demand_filter_low']
-                )
+                if item.demand_4weekly is not None and item.madp is not None:
+                    logger.info(f"Checking demand spike for item {item.id}")
+                    demand_exception = detect_demand_spike(
+                        item.demand_4weekly,
+                        latest_history['total_demand'],
+                        item.madp,
+                        self.company_settings['demand_filter_high'],
+                        self.company_settings['demand_filter_low']
+                    )
+                    logger.info(f"Demand spike result for item {item.id}: {demand_exception}")
+                else:
+                    logger.info(f"Skipping demand spike check for item {item.id} - missing values")
+                    demand_exception = None
                 
                 # Tracking signal checks
-                tracking_exception = detect_tracking_signal_exception(
-                    item.track,
-                    self.company_settings['tracking_signal_limit']
-                )
+                logger.info(f"# Tracking signal checks")
+                if item.track is not None:
+                    logger.info(f"Checking tracking signal for item {item.id}")
+                    tracking_exception = detect_tracking_signal_exception(
+                        item.track,
+                        self.company_settings['tracking_signal_limit']
+                    )
+                    logger.info(f"Tracking signal result for item {item.id}: {tracking_exception}")
+                else:
+                    logger.info(f"Skipping tracking signal check for item {item.id} - missing track value")
+                    tracking_exception = None
                 
                 # Create exceptions
                 if demand_exception == 'HIGH':

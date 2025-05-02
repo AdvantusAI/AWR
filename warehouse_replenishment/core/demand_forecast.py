@@ -12,7 +12,10 @@ parent_dir = str(Path(__file__).parent.parent.parent)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
+from warehouse_replenishment import get_logger
 from warehouse_replenishment.exceptions import ForecastError
+
+logger = get_logger(__name__)
 
 def calculate_forecast(
     history: List[float], 
@@ -383,67 +386,63 @@ def generate_seasonal_indices(
     
     return indices
 
-def detect_demand_spike(
-    forecast: float,
-    actual: float,
-    madp: float,
-    demand_filter_high: float,
-    demand_filter_low: float
-) -> Optional[str]:
-    """Detect demand spike based on filters.
+def detect_demand_spike(forecast: float, actual: float, madp: float, demand_filter_high: float, demand_filter_low: float) -> str:
+    """Detect if there is a demand spike.
     
     Args:
         forecast: Forecast value
         actual: Actual demand value
-        madp: MADP value as percentage
-        demand_filter_high: Demand filter high value
-        demand_filter_low: Demand filter low value
+        madp: Mean Absolute Deviation Percentage
+        demand_filter_high: High demand filter threshold
+        demand_filter_low: Low demand filter threshold
         
     Returns:
-        'HIGH', 'LOW', or None if no spike detected
+        'HIGH' if demand is too high, 'LOW' if too low, None if normal
     """
-    if forecast == 0:
-        if actual > 0:
-            return 'HIGH'
+    logger.info(f"detect_demand_spike called with forecast={forecast}, actual={actual}, madp={madp}, demand_filter_high={demand_filter_high}, demand_filter_low={demand_filter_low}")
+    
+    if forecast is None or actual is None or madp is None:
+        logger.debug("Returning None due to missing values")
         return None
-    
-    # Convert MADP to absolute deviation
-    mad = (madp / 100.0) * forecast
-    
+        
     # Calculate upper and lower bounds
-    upper_bound = forecast + (mad * demand_filter_high)
-    lower_bound = forecast - (mad * demand_filter_low)
+    upper_bound = forecast * (1 + madp * demand_filter_high)
+    lower_bound = forecast * (1 - madp * demand_filter_low)
     
-    # Check for spike
+    logger.info(f"Calculated bounds: upper_bound={upper_bound}, lower_bound={lower_bound}")
+    
     if actual > upper_bound:
+        logger.debug("Returning HIGH - actual exceeds upper bound")
         return 'HIGH'
-    elif actual < lower_bound and actual < forecast:
+    elif actual < lower_bound:
+        logger.debug("Returning LOW - actual below lower bound")
         return 'LOW'
-    
-    return None
+    else:
+        logger.debug("Returning None - actual within bounds")
+        return None
 
-def detect_tracking_signal_exception(
-    track: float,
-    tracking_signal_limit: float
-) -> Optional[str]:
-    """Detect tracking signal exception.
+def detect_tracking_signal_exception(track: float, tracking_signal_limit: float) -> str:
+    """Detect if there is a tracking signal exception.
     
     Args:
-        track: Tracking signal as percentage
+        track: Tracking signal value
         tracking_signal_limit: Tracking signal limit
         
     Returns:
-        'HIGH', 'LOW', or None if no exception detected
+        'HIGH' if tracking signal is too high, 'LOW' if too low, None if normal
     """
-    if track >= tracking_signal_limit:
-        # Determine direction
-        # In a real implementation, we would need to know the sign of the original
-        # sum of deviations to determine if it's HIGH or LOW
-        # For this implementation, we'll randomly assign HIGH or LOW
-        import random
-        return random.choice(['HIGH', 'LOW'])
+    logger.debug(f"detect_tracking_signal_exception called with track={track}, tracking_signal_limit={tracking_signal_limit}")
     
-    return None
+    if track is None or tracking_signal_limit is None:
+        logger.debug("Returning None due to missing values")
+        return None
+        
+    if abs(track) > tracking_signal_limit:
+        logger.debug(f"Returning {'HIGH' if track > 0 else 'LOW'} - track exceeds limit")
+        return 'HIGH' if track > 0 else 'LOW'
+    else:
+        logger.debug("Returning None - track within limits")
+        return None
 
 def adjust_history_value(
     history_value: float,

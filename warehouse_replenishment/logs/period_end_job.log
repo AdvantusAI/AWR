@@ -1,0 +1,1496 @@
+2025-05-01 18:12:59,949 - period_end_job - INFO - Not end of period, skipping period-end processing
+2025-05-01 18:16:52,830 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:16:52,966 - period_end_job - ERROR - Error processing warehouse WH001: type object 'Item' has no attribute 'freeze_until_date'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 743, in process_period_end_reforecasting
+    (Item.freeze_until_date.is_(None)) |
+     ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Item' has no attribute 'freeze_until_date'
+2025-05-01 18:16:52,970 - period_end_job - ERROR - Error processing warehouse WH002: type object 'Item' has no attribute 'freeze_until_date'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 743, in process_period_end_reforecasting
+    (Item.freeze_until_date.is_(None)) |
+     ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Item' has no attribute 'freeze_until_date'
+2025-05-01 18:16:52,972 - period_end_job - ERROR - Error processing warehouse WH003: type object 'Item' has no attribute 'freeze_until_date'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 743, in process_period_end_reforecasting
+    (Item.freeze_until_date.is_(None)) |
+     ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Item' has no attribute 'freeze_until_date'
+2025-05-01 18:16:52,978 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1982, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:24:07,625 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:24:07,791 - period_end_job - ERROR - Error processing warehouse WH001: (psycopg2.errors.InvalidTextRepresentation) la sintaxis de entrada no es válida para tipo integer: «WH001»
+LINE 3: WHERE item.warehouse_id = 'WH001' AND item.buyer_class IN ('...
+                                  ^
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH001', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: la sintaxis de entrada no es válida para tipo integer: «WH001»
+LINE 3: WHERE item.warehouse_id = 'WH001' AND item.buyer_class IN ('...
+                                  ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 747, in process_period_end_reforecasting
+    items = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.DataError: (psycopg2.errors.InvalidTextRepresentation) la sintaxis de entrada no es válida para tipo integer: «WH001»
+LINE 3: WHERE item.warehouse_id = 'WH001' AND item.buyer_class IN ('...
+                                  ^
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH001', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2025-05-01 18:24:07,807 - period_end_job - ERROR - Error processing warehouse WH002: (psycopg2.errors.InFailedSqlTransaction) transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH002', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 747, in process_period_end_reforecasting
+    items = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.InternalError: (psycopg2.errors.InFailedSqlTransaction) transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH002', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+2025-05-01 18:24:07,813 - period_end_job - ERROR - Error processing warehouse WH003: (psycopg2.errors.InFailedSqlTransaction) transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH003', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+Traceback (most recent call last):
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1599, in process_warehouse
+    reforecast_results = reforecast_items(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1689, in reforecast_items
+    results = forecast_service.process_period_end_reforecasting(warehouse_id=warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\services\forecast_service.py", line 747, in process_period_end_reforecasting
+    items = query.all()
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.InternalError: (psycopg2.errors.InFailedSqlTransaction) transacción abortada, las órdenes serán ignoradas hasta el fin de bloque de transacción
+
+[SQL: SELECT item.id AS item_id_1, item.item_id AS item_item_id, item.description AS item_description, item.vendor_id AS item_vendor_id, item.warehouse_id AS item_warehouse_id, item.service_level_goal AS item_service_level_goal, item.service_level_maintained AS item_service_level_maintained, item.lead_time_forecast AS item_lead_time_forecast, item.lead_time_variance AS item_lead_time_variance, item.lead_time_maintained AS item_lead_time_maintained, item.buying_multiple AS item_buying_multiple, item.minimum_quantity AS item_minimum_quantity, item.purchase_price AS item_purchase_price, item.sales_price AS item_sales_price, item.buyer_id AS item_buyer_id, item.buyer_class AS item_buyer_class, item.on_hand AS item_on_hand, item.on_order AS item_on_order, item.customer_back_order AS item_customer_back_order, item.reserved AS item_reserved, item.held_until AS item_held_until, item.quantity_held AS item_quantity_held, item.auxiliary_balance AS item_auxiliary_balance, item.sstf AS item_sstf, item.item_order_point_days AS item_item_order_point_days, item.item_order_point_units AS item_item_order_point_units, item.vendor_order_point_days AS item_vendor_order_point_days, item.order_up_to_level_days AS item_order_up_to_level_days, item.order_up_to_level_units AS item_order_up_to_level_units, item.item_cycle_days AS item_item_cycle_days, item.demand_weekly AS item_demand_weekly, item.demand_4weekly AS item_demand_4weekly, item.demand_monthly AS item_demand_monthly, item.demand_quarterly AS item_demand_quarterly, item.demand_yearly AS item_demand_yearly, item.madp AS item_madp, item.track AS item_track, item.service_level_attained AS item_service_level_attained, item.manual_ss AS item_manual_ss, item.manual_ss_type AS item_manual_ss_type, item.shelf_life_days AS item_shelf_life_days, item.freeze_until_date AS item_freeze_until_date, item.periods_with_zero_demand AS item_periods_with_zero_demand, item.units_per_case AS item_units_per_case, item.weight_per_unit AS item_weight_per_unit, item.volume_per_unit AS item_volume_per_unit 
+FROM item 
+WHERE item.warehouse_id = %(warehouse_id_1)s AND item.buyer_class IN (%(buyer_class_1_1)s, %(buyer_class_1_2)s) AND (item.freeze_until_date IS NULL OR item.freeze_until_date < CURRENT_DATE)]
+[parameters: {'warehouse_id_1': 'WH003', 'buyer_class_1_1': 'R', 'buyer_class_1_2': 'W'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+2025-05-01 18:24:07,823 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1982, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:28:14,433 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:28:14,639 - period_end_job - ERROR - Error processing warehouse 1: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:14,655 - period_end_job - ERROR - Error processing warehouse 2: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:14,671 - period_end_job - ERROR - Error processing warehouse 3: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:14,675 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1991, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:28:32,730 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:28:32,921 - period_end_job - ERROR - Error processing warehouse 1: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:32,936 - period_end_job - ERROR - Error processing warehouse 2: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:32,951 - period_end_job - ERROR - Error processing warehouse 3: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:28:32,955 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1991, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:31:02,989 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:31:03,295 - period_end_job - ERROR - Error processing warehouse 1: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:03,326 - period_end_job - ERROR - Error processing warehouse 2: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:03,357 - period_end_job - ERROR - Error processing warehouse 3: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:03,362 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1991, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:31:23,666 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:31:23,925 - period_end_job - ERROR - Error processing warehouse 1: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:23,953 - period_end_job - ERROR - Error processing warehouse 2: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:23,978 - period_end_job - ERROR - Error processing warehouse 3: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:31:23,981 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1991, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 18:32:37,011 - period_end_job - INFO - Starting period-end processing
+2025-05-01 18:32:37,294 - period_end_job - ERROR - Error processing warehouse 1: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:32:37,325 - period_end_job - ERROR - Error processing warehouse 2: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:32:37,354 - period_end_job - ERROR - Error processing warehouse 3: name 'periodicity' is not defined
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1630, in process_warehouse
+    current_period, current_year = get_current_period(periodicity)
+                                                      ^^^^^^^^^^^
+NameError: name 'periodicity' is not defined
+2025-05-01 18:32:37,358 - period_end_job - ERROR - Error during period-end processing: 'Config' object has no attribute 'get_bool'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1991, in run_period_end_job
+    if config.get_bool('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Config' object has no attribute 'get_bool'. Did you mean: 'get_boolean'?
+2025-05-01 19:28:40,222 - period_end_job - INFO - Starting period-end processing
+2025-05-01 19:28:40,629 - period_end_job - INFO - Forecast Accuracy Results for Warehouse 1:
+2025-05-01 19:28:40,629 - period_end_job - INFO -   Period: 4/2025
+2025-05-01 19:28:40,629 - period_end_job - INFO -   Accuracy Rate: 96.67%
+2025-05-01 19:28:40,630 - period_end_job - INFO -   MAPE: 7.42%
+2025-05-01 19:28:40,630 - period_end_job - INFO -   WAPE: 5.43%
+2025-05-01 19:28:40,630 - period_end_job - INFO -   Processed Items: 30
+2025-05-01 19:28:40,630 - period_end_job - INFO -   Error Distribution:
+2025-05-01 19:28:40,630 - period_end_job - INFO -     Within Tolerance: 29
+2025-05-01 19:28:40,631 - period_end_job - INFO -     Under Forecast: 1
+2025-05-01 19:28:40,631 - period_end_job - INFO -     Over Forecast: 0
+2025-05-01 19:28:40,631 - period_end_job - INFO -   Top Missed Forecasts:
+2025-05-01 19:28:40,631 - period_end_job - INFO -     - TC-0002: 20.7% error
+2025-05-01 19:28:40,659 - period_end_job - ERROR - Error updating profile SP001: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-01 19:28:40,659 - period_end_job - ERROR - Error updating profile SP003: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:28:40,660 - period_end_job - ERROR - Error processing warehouse 1: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1650, in process_warehouse
+    seasonal_results = update_seasonal_profiles(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 177, in update_seasonal_profiles
+    if item.demand_profile:
+       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:28:40,678 - period_end_job - ERROR - Error during period-end processing: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1547, in process_all_warehouses
+    warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:28:40,683 - period_end_job - ERROR - Error during period-end processing: Config.get_boolean() got an unexpected keyword argument 'fallback'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1997, in run_period_end_job
+    if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.get_boolean() got an unexpected keyword argument 'fallback'
+2025-05-01 19:30:02,819 - period_end_job - INFO - Starting period-end processing
+2025-05-01 19:30:03,262 - period_end_job - INFO - Forecast Accuracy Results for Warehouse 1:
+2025-05-01 19:30:03,262 - period_end_job - INFO -   Period: 4/2025
+2025-05-01 19:30:03,263 - period_end_job - INFO -   Accuracy Rate: 83.33%
+2025-05-01 19:30:03,263 - period_end_job - INFO -   MAPE: 8.26%
+2025-05-01 19:30:03,263 - period_end_job - INFO -   WAPE: 5.41%
+2025-05-01 19:30:03,263 - period_end_job - INFO -   Processed Items: 30
+2025-05-01 19:30:03,264 - period_end_job - INFO -   Error Distribution:
+2025-05-01 19:30:03,264 - period_end_job - INFO -     Within Tolerance: 25
+2025-05-01 19:30:03,264 - period_end_job - INFO -     Under Forecast: 1
+2025-05-01 19:30:03,264 - period_end_job - INFO -     Over Forecast: 4
+2025-05-01 19:30:03,264 - period_end_job - INFO -   Top Missed Forecasts:
+2025-05-01 19:30:03,264 - period_end_job - INFO -     - TC-0005: 24.0% error
+2025-05-01 19:30:03,264 - period_end_job - INFO -     - TC-0010: 23.1% error
+2025-05-01 19:30:03,265 - period_end_job - INFO -     - TC-0009: 22.8% error
+2025-05-01 19:30:03,265 - period_end_job - INFO -     - TC-0008: 20.7% error
+2025-05-01 19:30:03,265 - period_end_job - INFO -     - TC-0002: 20.4% error
+2025-05-01 19:30:03,296 - period_end_job - ERROR - Error updating profile SP001: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-01 19:30:03,297 - period_end_job - ERROR - Error updating profile SP003: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:03,298 - period_end_job - ERROR - Error processing warehouse 1: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1650, in process_warehouse
+    seasonal_results = update_seasonal_profiles(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 177, in update_seasonal_profiles
+    if item.demand_profile:
+       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:03,305 - period_end_job - ERROR - Error during period-end processing: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1547, in process_all_warehouses
+    warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__0': 1, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__1': 2, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__2': 3, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__3': 4, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__4': 5, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__5': 6, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__6': 7, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__7': 8, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__8': 9, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__9': 10, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__10': 11, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__11': 12, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0), 'period_number__12': 13}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:03,310 - period_end_job - ERROR - Error during period-end processing: Config.get_boolean() got an unexpected keyword argument 'fallback'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1997, in run_period_end_job
+    if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.get_boolean() got an unexpected keyword argument 'fallback'
+2025-05-01 19:30:10,928 - period_end_job - INFO - Starting period-end processing
+2025-05-01 19:30:11,227 - period_end_job - INFO - Forecast Accuracy Results for Warehouse 1:
+2025-05-01 19:30:11,228 - period_end_job - INFO -   Period: 4/2025
+2025-05-01 19:30:11,228 - period_end_job - INFO -   Accuracy Rate: 86.67%
+2025-05-01 19:30:11,228 - period_end_job - INFO -   MAPE: 9.07%
+2025-05-01 19:30:11,228 - period_end_job - INFO -   WAPE: 5.42%
+2025-05-01 19:30:11,228 - period_end_job - INFO -   Processed Items: 30
+2025-05-01 19:30:11,228 - period_end_job - INFO -   Error Distribution:
+2025-05-01 19:30:11,229 - period_end_job - INFO -     Within Tolerance: 26
+2025-05-01 19:30:11,229 - period_end_job - INFO -     Under Forecast: 0
+2025-05-01 19:30:11,229 - period_end_job - INFO -     Over Forecast: 4
+2025-05-01 19:30:11,229 - period_end_job - INFO -   Top Missed Forecasts:
+2025-05-01 19:30:11,229 - period_end_job - INFO -     - TC-0005: 30.2% error
+2025-05-01 19:30:11,230 - period_end_job - INFO -     - TC-0010: 29.2% error
+2025-05-01 19:30:11,230 - period_end_job - INFO -     - TC-0009: 28.9% error
+2025-05-01 19:30:11,230 - period_end_job - INFO -     - TC-0008: 26.7% error
+2025-05-01 19:30:11,267 - period_end_job - ERROR - Error updating profile SP001: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-01 19:30:11,268 - period_end_job - ERROR - Error updating profile SP003: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:11,269 - period_end_job - ERROR - Error processing warehouse 1: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1650, in process_warehouse
+    seasonal_results = update_seasonal_profiles(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 177, in update_seasonal_profiles
+    if item.demand_profile:
+       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:11,276 - period_end_job - ERROR - Error during period-end processing: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1547, in process_all_warehouses
+    warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__0': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__1': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__2': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__3': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__4': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__5': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__6': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0), 'profile_id__12': 'SP002'}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:11,281 - period_end_job - ERROR - Error during period-end processing: Config.get_boolean() got an unexpected keyword argument 'fallback'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1997, in run_period_end_job
+    if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.get_boolean() got an unexpected keyword argument 'fallback'
+2025-05-01 19:30:46,478 - period_end_job - INFO - Starting period-end processing
+2025-05-01 19:30:46,763 - period_end_job - INFO - Forecast Accuracy Results for Warehouse 1:
+2025-05-01 19:30:46,763 - period_end_job - INFO -   Period: 4/2025
+2025-05-01 19:30:46,763 - period_end_job - INFO -   Accuracy Rate: 83.33%
+2025-05-01 19:30:46,763 - period_end_job - INFO -   MAPE: 10.11%
+2025-05-01 19:30:46,763 - period_end_job - INFO -   WAPE: 5.50%
+2025-05-01 19:30:46,764 - period_end_job - INFO -   Processed Items: 30
+2025-05-01 19:30:46,764 - period_end_job - INFO -   Error Distribution:
+2025-05-01 19:30:46,764 - period_end_job - INFO -     Within Tolerance: 25
+2025-05-01 19:30:46,764 - period_end_job - INFO -     Under Forecast: 0
+2025-05-01 19:30:46,764 - period_end_job - INFO -     Over Forecast: 5
+2025-05-01 19:30:46,764 - period_end_job - INFO -   Top Missed Forecasts:
+2025-05-01 19:30:46,765 - period_end_job - INFO -     - TC-0005: 36.7% error
+2025-05-01 19:30:46,765 - period_end_job - INFO -     - TC-0010: 35.7% error
+2025-05-01 19:30:46,765 - period_end_job - INFO -     - TC-0009: 35.3% error
+2025-05-01 19:30:46,765 - period_end_job - INFO -     - TC-0008: 33.1% error
+2025-05-01 19:30:46,765 - period_end_job - INFO -     - TC-0007: 25.6% error
+2025-05-01 19:30:46,791 - period_end_job - ERROR - Error updating profile SP001: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-01 19:30:46,792 - period_end_job - ERROR - Error updating profile SP003: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:46,793 - period_end_job - ERROR - Error processing warehouse 1: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1650, in process_warehouse
+    seasonal_results = update_seasonal_profiles(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 177, in update_seasonal_profiles
+    if item.demand_profile:
+       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:46,800 - period_end_job - ERROR - Error during period-end processing: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1547, in process_all_warehouses
+    warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'profile_id__0': 'SP002', 'period_number__0': 1, 'index_value__0': np.float64(0.0), 'profile_id__1': 'SP002', 'period_number__1': 2, 'index_value__1': np.float64(0.6645793811837182), 'profile_id__2': 'SP002', 'period_number__2': 3, 'index_value__2': np.float64(3.832831425178639), 'profile_id__3': 'SP002', 'period_number__3': 4, 'index_value__3': np.float64(4.6320235920669415), 'profile_id__4': 'SP002', 'period_number__4': 5, 'index_value__4': np.float64(3.316605962409041), 'profile_id__5': 'SP002', 'period_number__5': 6, 'index_value__5': np.float64(0.5539596391616616), 'profile_id__6': 'SP002', 'period_number__6': 7, 'index_value__6': np.float64(0.0), 'profile_id__7': 'SP002', 'period_number__7': 8, 'index_value__7': np.float64(0.0), 'profile_id__8': 'SP002', 'period_number__8': 9, 'index_value__8': np.float64(0.0), 'profile_id__9': 'SP002', 'period_number__9': 10, 'index_value__9': np.float64(0.0), 'profile_id__10': 'SP002', 'period_number__10': 11, 'index_value__10': np.float64(0.0), 'profile_id__11': 'SP002', 'period_number__11': 12, 'index_value__11': np.float64(0.0), 'profile_id__12': 'SP002', 'period_number__12': 13, 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:30:46,806 - period_end_job - ERROR - Error during period-end processing: Config.get_boolean() got an unexpected keyword argument 'fallback'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1997, in run_period_end_job
+    if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.get_boolean() got an unexpected keyword argument 'fallback'
+2025-05-01 19:31:36,850 - period_end_job - INFO - Starting period-end processing
+2025-05-01 19:31:37,142 - period_end_job - INFO - Forecast Accuracy Results for Warehouse 1:
+2025-05-01 19:31:37,142 - period_end_job - INFO -   Period: 4/2025
+2025-05-01 19:31:37,142 - period_end_job - INFO -   Accuracy Rate: 83.33%
+2025-05-01 19:31:37,143 - period_end_job - INFO -   MAPE: 11.04%
+2025-05-01 19:31:37,143 - period_end_job - INFO -   WAPE: 5.54%
+2025-05-01 19:31:37,143 - period_end_job - INFO -   Processed Items: 30
+2025-05-01 19:31:37,143 - period_end_job - INFO -   Error Distribution:
+2025-05-01 19:31:37,143 - period_end_job - INFO -     Within Tolerance: 25
+2025-05-01 19:31:37,143 - period_end_job - INFO -     Under Forecast: 0
+2025-05-01 19:31:37,144 - period_end_job - INFO -     Over Forecast: 5
+2025-05-01 19:31:37,144 - period_end_job - INFO -   Top Missed Forecasts:
+2025-05-01 19:31:37,144 - period_end_job - INFO -     - TC-0005: 43.5% error
+2025-05-01 19:31:37,144 - period_end_job - INFO -     - TC-0010: 42.5% error
+2025-05-01 19:31:37,144 - period_end_job - INFO -     - TC-0009: 42.1% error
+2025-05-01 19:31:37,144 - period_end_job - INFO -     - TC-0008: 39.7% error
+2025-05-01 19:31:37,144 - period_end_job - INFO -     - TC-0007: 31.9% error
+2025-05-01 19:31:37,170 - period_end_job - ERROR - Error updating profile SP001: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-01 19:31:37,171 - period_end_job - ERROR - Error updating profile SP003: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:31:37,172 - period_end_job - ERROR - Error processing warehouse 1: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1650, in process_warehouse
+    seasonal_results = update_seasonal_profiles(warehouse_id, session)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 177, in update_seasonal_profiles
+    if item.demand_profile:
+       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:31:37,178 - period_end_job - ERROR - Error during period-end processing: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1547, in process_all_warehouses
+    warehouse_results = process_warehouse(warehouse.warehouse_id, session)
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\attributes.py", line 1116, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state.py", line 803, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 1670, in load_scalar_attributes
+    result = load_on_ident(
+        session,
+    ...<4 lines>...
+        no_autoflush=no_autoflush,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 509, in load_on_ident
+    return load_on_pk_identity(
+        session,
+    ...<11 lines>...
+        is_user_refresh=is_user_refresh,
+    )
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 694, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 103, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vhvaz\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 973, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.InvalidSchemaName) no existe el esquema «np»
+LINE 1: ... p1::INTEGER, p2::FLOAT FROM (VALUES ('SP002', 1, np.float64...
+                                                             ^
+
+[SQL: INSERT INTO seasonal_profile_index (profile_id, period_number, index_value) SELECT p0::VARCHAR, p1::INTEGER, p2::FLOAT FROM (VALUES (%(profile_id__0)s, %(period_number__0)s, %(index_value__0)s, 0), (%(profile_id__1)s, %(period_number__1)s, %(index_va ... 780 characters truncated ... ounter) ORDER BY sen_counter RETURNING seasonal_profile_index.id, seasonal_profile_index.id AS id__1]
+[parameters: {'period_number__0': 1, 'profile_id__0': 'SP002', 'index_value__0': np.float64(0.0), 'period_number__1': 2, 'profile_id__1': 'SP002', 'index_value__1': np.float64(0.6645793811837182), 'period_number__2': 3, 'profile_id__2': 'SP002', 'index_value__2': np.float64(3.832831425178639), 'period_number__3': 4, 'profile_id__3': 'SP002', 'index_value__3': np.float64(4.6320235920669415), 'period_number__4': 5, 'profile_id__4': 'SP002', 'index_value__4': np.float64(3.316605962409041), 'period_number__5': 6, 'profile_id__5': 'SP002', 'index_value__5': np.float64(0.5539596391616616), 'period_number__6': 7, 'profile_id__6': 'SP002', 'index_value__6': np.float64(0.0), 'period_number__7': 8, 'profile_id__7': 'SP002', 'index_value__7': np.float64(0.0), 'period_number__8': 9, 'profile_id__8': 'SP002', 'index_value__8': np.float64(0.0), 'period_number__9': 10, 'profile_id__9': 'SP002', 'index_value__9': np.float64(0.0), 'period_number__10': 11, 'profile_id__10': 'SP002', 'index_value__10': np.float64(0.0), 'period_number__11': 12, 'profile_id__11': 'SP002', 'index_value__11': np.float64(0.0), 'period_number__12': 13, 'profile_id__12': 'SP002', 'index_value__12': np.float64(0.0)}]
+(Background on this error at: https://sqlalche.me/e/20/f405) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-01 19:31:37,181 - period_end_job - ERROR - Error during period-end processing: Config.get_boolean() got an unexpected keyword argument 'fallback'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\period_end_job.py", line 1997, in run_period_end_job
+    if config.get_boolean('PERIOD_END', 'enable_email_notifications', fallback=False):
+       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.get_boolean() got an unexpected keyword argument 'fallback'
