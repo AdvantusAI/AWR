@@ -144,6 +144,7 @@ class Warehouse(Base):
     company = relationship("Company", back_populates="warehouses")
     vendors = relationship("Vendor", back_populates="warehouse")
     items = relationship("Item", back_populates="warehouse")
+    inventory = relationship("Inventory", back_populates="warehouse")
 
 class Vendor(Base):
     __tablename__ = 'vendor'
@@ -329,6 +330,7 @@ class Item(Base):
     order_items = relationship("OrderItem", back_populates="item")
     item_prices = relationship("ItemPrice", back_populates="item")
     parameter_changes = relationship("ParameterChange", back_populates="item")
+    inventory = relationship("Inventory", back_populates="item")
    
 
     @property
@@ -772,3 +774,28 @@ class ParameterChange(Base):
 
     def __repr__(self):
         return f"<ParameterChange(id={self.id}, item_id={self.item_id}, type={self.parameter_type}, status={self.status})>"
+
+class Inventory(Base):
+    """Tracks current inventory levels and stock status."""
+    __tablename__ = 'inventory'
+    
+    id = Column(Integer, primary_key=True)
+    item_id = Column(Integer, ForeignKey('item.id'), nullable=False)
+    warehouse_id = Column(Integer, ForeignKey('warehouse.id'), nullable=False)
+    location_id = Column(String(50))  # Physical location in warehouse
+    quantity = Column(Float, default=0.0)
+    allocated_quantity = Column(Float, default=0.0)  # Reserved for orders
+    available_quantity = Column(Float, default=0.0)  # Available for new orders
+    last_count_date = Column(DateTime)
+    last_receipt_date = Column(DateTime)
+    last_issue_date = Column(DateTime)
+    status = Column(String(20), default='ACTIVE')  # ACTIVE, HOLD, QUARANTINE
+    notes = Column(Text)
+    
+    # Relationships
+    item = relationship("Item", back_populates="inventory")
+    warehouse = relationship("Warehouse", back_populates="inventory")
+    
+    __table_args__ = (
+        Index('idx_inventory_item_warehouse', 'item_id', 'warehouse_id'),
+    )

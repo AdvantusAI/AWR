@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 from warehouse_replenishment.models import (
     Item, DemandHistory, Company, Vendor, SeasonalProfile, 
     SeasonalProfileIndex, HistoryException, Warehouse,
-    BuyerClassCode, SystemClassCode, ForecastMethod
+    BuyerClassCode, SystemClassCode, ForecastMethod, Inventory
 )
 from warehouse_replenishment.core.demand_forecast import (
     calculate_lost_sales as core_calculate_lost_sales, 
@@ -624,20 +624,71 @@ class ItemService:
         results = {
             'total_items': len(items),
             'updated_items': 0,
-            'errors': 0
+            'errors': 0,
+            'details': []
         }
         
         # Process each item
         for item in items:
             try:
-                # In a real implementation, this would update stock status from a host system
-                # For this example, we'll just recalculate safety stock
-                self._recalculate_safety_stock(item)
+                # Fetch current inventory status
+                inventory = self.session.query(Inventory).filter(
+                    Inventory.item_id == item.id,
+                    Inventory.warehouse_id == item.warehouse_id
+                ).first()
+                
+                if inventory:
+                    # Update item's stock status based on inventory
+                    item.on_hand = inventory.quantity
+                    item.reserved = inventory.allocated_quantity
+                    
+                    # Calculate available quantity
+                    available = inventory.available_quantity
+                    if available is None:
+                        available = inventory.quantity - inventory.allocated_quantity
+                    
+                    # Update back orders if available quantity is negative
+                    if available < 0:
+                        item.customer_back_order = abs(available)
+                    else:
+                        item.customer_back_order = 0.0
+                    
+                    # Update last receipt/issue dates
+                    if inventory.last_receipt_date:
+                        item.last_receipt_date = inventory.last_receipt_date
+                    if inventory.last_issue_date:
+                        item.last_issue_date = inventory.last_issue_date
+                    
+                    # Recalculate safety stock based on new inventory levels
+                    self._recalculate_safety_stock(item)
+                    
+                    results['details'].append({
+                        'item_id': item.id,
+                        'item_code': item.item_id,
+                        'on_hand': item.on_hand,
+                        'reserved': item.reserved,
+                        'back_orders': item.customer_back_order,
+                        'status': 'UPDATED'
+                    })
+                else:
+                    # No inventory record found
+                    results['details'].append({
+                        'item_id': item.id,
+                        'item_code': item.item_id,
+                        'status': 'NO_INVENTORY_RECORD'
+                    })
+                
                 results['updated_items'] += 1
                 
             except Exception as e:
                 logger.error(f"Error updating stock status for item {item.id}: {str(e)}")
                 results['errors'] += 1
+                results['details'].append({
+                    'item_id': item.id,
+                    'item_code': item.item_id,
+                    'status': 'ERROR',
+                    'error': str(e)
+                })
         
         try:
             self.session.commit()
