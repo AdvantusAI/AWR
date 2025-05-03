@@ -16,7 +16,6 @@ def service_level_to_z(service_level_goal):
     """
     return norm.ppf(service_level_goal)
 
-
 def calculate_safety_stock(
     service_level_goal: float,
     demand_std: float,
@@ -24,17 +23,12 @@ def calculate_safety_stock(
     lead_time_std: float,
     avg_daily_demand: float
 ) -> float:
-    z = service_level_to_z(service_level_goal)
-    return z * np.sqrt(
-        (avg_lead_time * (demand_std ** 2)) +
-        ((avg_daily_demand ** 2) * (lead_time_std ** 2))
-    )
     """
     Calculate safety stock using the standard formula for independent demand and lead time variability:
     Safety Stock = Z * sqrt( (avg_lead_time * demand_std^2) + (avg_daily_demand^2 * lead_time_std^2) )
 
     Args:
-        service_level: Desired service level (as a Z-score, e.g., 1.65 for 95%).
+        service_level_goal: Desired service level (e.g., 0.95 for 95%).
         demand_std: Standard deviation of demand per day.
         avg_lead_time: Average lead time in days.
         lead_time_std: Standard deviation of lead time in days.
@@ -43,8 +37,11 @@ def calculate_safety_stock(
     Returns:
         Calculated safety stock (float).
     """
+    # Convert service level to Z-score
+    z = service_level_to_z(service_level_goal)
+    
     # Formula for safety stock when both demand and lead time are variable and independent
-    safety_stock = service_level * np.sqrt(
+    safety_stock = z * np.sqrt(
         (avg_lead_time * (demand_std ** 2)) +
         ((avg_daily_demand ** 2) * (lead_time_std ** 2))
     )
@@ -65,7 +62,6 @@ def get_effective_safety_stock(sku, safety_stock, is_promotion_active=False):
         return safety_stock
     
     
-    
 def calculate_soq(
     forecasted_daily_demand: float,
     lead_time_days: float,
@@ -81,7 +77,8 @@ def calculate_soq(
     vendor_min: int = None,
     vendor_max: int = None,
     presentation_stock: int = None,
-    event_minimum: int = None
+    event_minimum: int = None,
+    is_promotion_active: bool = False
 ) -> int:
     """
     Calculate Suggested Order Quantity (SOQ) for a SKU at a location.
@@ -102,6 +99,7 @@ def calculate_soq(
         vendor_max: Vendor-level maximum order quantity (None if not applicable).
         presentation_stock: If greater than safety stock, use in place of safety stock.
         event_minimum: For events/promo periods, use in place of presentation stock.
+        is_promotion_active: Boolean indicating if a promotion is active for the SKU.
 
     Returns:
         SOQ (Suggested Order Quantity), rounded up to the nearest buying multiple and subject to business constraints.
@@ -109,7 +107,7 @@ def calculate_soq(
 
     # 1. Use event minimum or presentation stock if applicable
     effective_safety_stock = safety_stock
-    if event_minimum is not None:
+    if is_promotion_active and event_minimum is not None:
         effective_safety_stock = max(safety_stock, event_minimum)
     elif presentation_stock is not None:
         effective_safety_stock = max(safety_stock, presentation_stock)
@@ -127,7 +125,7 @@ def calculate_soq(
 
     # 5. Round up to nearest buying multiple
     if soq > 0:
-        soq = int(-(-soq // buying_multiple) * buying_multiple)  # Ceiling division
+        soq = int(np.ceil(soq / buying_multiple) * buying_multiple)  # Ceiling division
     else:
         soq = 0
 
