@@ -297,13 +297,13 @@ def calculate_sku_order_cycle(session, sku_id, store_id):
         
         if not sku:
             logger.error(f"SKU {sku_id} not found in store {store_id}")
-            return 0
+            return None
         
         # Get forecast data
         forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
         if not forecast_data:
             logger.error(f"Forecast data not found for SKU {sku_id}")
-            return 0
+            return None
         
         # Get acquisition costs
         header_cost = getattr(sku.source, 'header_cost', ASR_CONFIG.get('default_header_cost', 25.0))
@@ -351,125 +351,6 @@ def calculate_sku_order_cycle(session, sku_id, store_id):
     
     except Exception as e:
         logger.error(f"Error calculating SKU order cycle: {e}")
-        return 0return None
-        
-        # Get active SKUs for this source
-        skus = session.query(SKU).filter(
-            and_(
-                SKU.source_id == source.id,
-                SKU.store_id == store_id,
-                SKU.buyer_class.in_(['R', 'W'])
-            )
-        ).all()
-        
-        if not skus:
-            logger.error(f"No active SKUs found for source {source_id}")
-            return None
-        
-        # Get source brackets
-        brackets = source.brackets
-        
-        # Get acquisition costs
-        header_cost = getattr(source, 'header_cost', ASR_CONFIG.get('default_header_cost', 25.0))
-        line_cost = getattr(source, 'line_cost', ASR_CONFIG.get('default_line_cost', 1.0))
-        
-        # Get carrying cost rate
-        carrying_cost_rate = ASR_CONFIG.get('carrying_cost_rate', 0.40)  # 40%
-        
-        # Calculate daily demand values for all SKUs
-        daily_demand_values = {}
-        total_annual_demand_value = 0.0
-        safety_stock_value = 0.0
-        
-        for sku in skus:
-            # Get forecast data
-            forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
-            if not forecast_data:
-                continue
-            
-            # Calculate daily demand in units
-            daily_demand_units = forecast_data.weekly_forecast / 7.0
-            
-            # Calculate daily demand in dollars
-            daily_demand_value = daily_demand_units * sku.purchase_price
-            
-            # Store for later use
-            daily_demand_values[sku.id] = daily_demand_value
-            
-            # Add to total annual demand value
-            total_annual_demand_value += daily_demand_value * 365.0
-            
-            # Add safety stock value (this is a simplification)
-            # In a real implementation, you would calculate safety stock properly
-            safety_stock_days = 3.0  # Example value
-            safety_stock_value += safety_stock_days * daily_demand_value
-        
-        # Test different order cycles
-        # Start with a range of order cycles (e.g., 1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84 days)
-        test_cycles = [1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84]
-        
-        results = []
-        
-        for cycle in test_cycles:
-            # Calculate order value
-            order_values = calculate_order_value(skus, cycle, daily_demand_values)
-            
-            # Determine applicable bracket
-            bracket_number, discount_percentage = determine_bracket_for_order(
-                brackets, order_values['amount'], 1  # Assuming Amount (1) is the unit code
-            )
-            
-            # Calculate average inventory
-            average_inventory = calculate_average_inventory(
-                total_annual_demand_value, cycle, safety_stock_value
-            )
-            
-            # Calculate annual acquisition cost
-            annual_acquisition_cost = calculate_annual_acquisition_cost(
-                header_cost, line_cost, len(skus), cycle
-            )
-            
-            # Calculate annual carrying cost
-            annual_carrying_cost = calculate_annual_carrying_cost(
-                average_inventory, carrying_cost_rate, discount_percentage
-            )
-            
-            # Calculate total annual cost
-            total_annual_cost = annual_acquisition_cost + annual_carrying_cost
-            
-            # Calculate savings from discount
-            annual_discount_savings = (total_annual_demand_value * discount_percentage) / 100.0
-            
-            # Calculate profit impact
-            profit_impact = annual_discount_savings - total_annual_cost
-            
-            # Store results
-            results.append({
-                'order_cycle': cycle,
-                'bracket': bracket_number,
-                'discount_percentage': discount_percentage,
-                'order_amount': order_values['amount'],
-                'order_eaches': order_values['eaches'],
-                'order_weight': order_values['weight'],
-                'order_volume': order_values['volume'],
-                'annual_acquisition_cost': annual_acquisition_cost,
-                'annual_carrying_cost': annual_carrying_cost,
-                'total_annual_cost': total_annual_cost,
-                'annual_discount_savings': annual_discount_savings,
-                'profit_impact': profit_impact
-            })
-        
-        # Find the most profitable order cycle
-        most_profitable = max(results, key=lambda r: r['profit_impact'])
-        
-        # Return results sorted by profit impact
-        return {
-            'results': sorted(results, key=lambda r: r['profit_impact'], reverse=True),
-            'most_profitable': most_profitable
-        }
-    
-    except Exception as e:
-        logger.error(f"Error running Order Policy Analysis: {e}")
         return None
 
 def accept_opa_result(session, source_id, order_cycle, bracket):
@@ -602,3 +483,123 @@ def calculate_days_to_meet_bracket(session, source_id, store_id, bracket):
         
         if not source:
             logger.error(f"Source {source_id} not found")
+            return None
+        
+        # Get active SKUs for this source
+        skus = session.query(SKU).filter(
+            and_(
+                SKU.source_id == source.id,
+                SKU.store_id == store_id,
+                SKU.buyer_class.in_(['R', 'W'])
+            )
+        ).all()
+        
+        if not skus:
+            logger.error(f"No active SKUs found for source {source_id}")
+            return None
+        
+        # Get source brackets
+        brackets = source.brackets
+        
+        # Get acquisition costs
+        header_cost = getattr(source, 'header_cost', ASR_CONFIG.get('default_header_cost', 25.0))
+        line_cost = getattr(source, 'line_cost', ASR_CONFIG.get('default_line_cost', 1.0))
+        
+        # Get carrying cost rate
+        carrying_cost_rate = ASR_CONFIG.get('carrying_cost_rate', 0.40)  # 40%
+        
+        # Calculate daily demand values for all SKUs
+        daily_demand_values = {}
+        total_annual_demand_value = 0.0
+        safety_stock_value = 0.0
+        
+        for sku in skus:
+            # Get forecast data
+            forecast_data = sku.forecast_data if hasattr(sku, 'forecast_data') else None
+            if not forecast_data:
+                continue
+            
+            # Calculate daily demand in units
+            daily_demand_units = forecast_data.weekly_forecast / 7.0
+            
+            # Calculate daily demand in dollars
+            daily_demand_value = daily_demand_units * sku.purchase_price
+            
+            # Store for later use
+            daily_demand_values[sku.id] = daily_demand_value
+            
+            # Add to total annual demand value
+            total_annual_demand_value += daily_demand_value * 365.0
+            
+            # Add safety stock value (this is a simplification)
+            # In a real implementation, you would calculate safety stock properly
+            safety_stock_days = 3.0  # Example value
+            safety_stock_value += safety_stock_days * daily_demand_value
+        
+        # Test different order cycles
+        # Start with a range of order cycles (e.g., 1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84 days)
+        test_cycles = [1, 3, 7, 14, 21, 28, 35, 42, 56, 70, 84]
+        
+        results = []
+        
+        for cycle in test_cycles:
+            # Calculate order value
+            order_values = calculate_order_value(skus, cycle, daily_demand_values)
+            
+            # Determine applicable bracket
+            bracket_number, discount_percentage = determine_bracket_for_order(
+                brackets, order_values['amount'], 1  # Assuming Amount (1) is the unit code
+            )
+            
+            # Calculate average inventory
+            average_inventory = calculate_average_inventory(
+                total_annual_demand_value, cycle, safety_stock_value
+            )
+            
+            # Calculate annual acquisition cost
+            annual_acquisition_cost = calculate_annual_acquisition_cost(
+                header_cost, line_cost, len(skus), cycle
+            )
+            
+            # Calculate annual carrying cost
+            annual_carrying_cost = calculate_annual_carrying_cost(
+                average_inventory, carrying_cost_rate, discount_percentage
+            )
+            
+            # Calculate total annual cost
+            total_annual_cost = annual_acquisition_cost + annual_carrying_cost
+            
+            # Calculate savings from discount
+            annual_discount_savings = (total_annual_demand_value * discount_percentage) / 100.0
+            
+            # Calculate profit impact
+            profit_impact = annual_discount_savings - total_annual_cost
+            
+            # Store results
+            results.append({
+                'order_cycle': cycle,
+                'bracket': bracket_number,
+                'discount_percentage': discount_percentage,
+                'order_amount': order_values['amount'],
+                'order_eaches': order_values['eaches'],
+                'order_weight': order_values['weight'],
+                'order_volume': order_values['volume'],
+                'annual_acquisition_cost': annual_acquisition_cost,
+                'annual_carrying_cost': annual_carrying_cost,
+                'total_annual_cost': total_annual_cost,
+                'annual_discount_savings': annual_discount_savings,
+                'profit_impact': profit_impact
+            })
+        
+        # Find the most profitable order cycle
+        most_profitable = max(results, key=lambda r: r['profit_impact'])
+        
+        # Return results sorted by profit impact
+        return {
+            'results': sorted(results, key=lambda r: r['profit_impact'], reverse=True),
+            'most_profitable': most_profitable
+        }
+    
+    except Exception as e:
+        logger.error(f"Error running Order Policy Analysis: {e}")
+        return None

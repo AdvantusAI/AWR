@@ -4,6 +4,7 @@ Source models for the ASR system.
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.schema import UniqueConstraint
 
 from .base import BaseModel
 
@@ -98,7 +99,7 @@ class SourceBracket(BaseModel):
     
     __table_args__ = (
         # Composite unique constraint
-        {"uniqueConstraints": {"source_bracket_unique": {"columns": ['source_id', 'bracket_number']}}},
+        UniqueConstraint('source_id', 'bracket_number', name='source_bracket_unique'),
     )
     
     def __repr__(self):
