@@ -5658,3 +5658,750 @@
 2025-05-01 23:36:45,230 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
 2025-05-01 23:36:45,231 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 38
 2025-05-01 23:36:45,231 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 38: HIGH
+2025-05-04 13:13:32,236 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:32,239 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:32,239 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:32,241 - warehouse_replenishment.services.forecast_service - INFO - Processing item 2: demand_4weekly=133.6836906003996, madp=23.256851363970974, track=100.0, total_demand=133.6836906003996
+2025-05-04 13:13:32,241 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 2
+2025-05-04 13:13:32,243 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 2: None
+2025-05-04 13:13:32,243 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,243 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 2
+2025-05-04 13:13:32,243 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 2: HIGH
+2025-05-04 13:13:32,250 - warehouse_replenishment.services.forecast_service - INFO - Processing item 1: demand_4weekly=26.247076037360173, madp=28.319093993531435, track=100.0, total_demand=26.247076037360173
+2025-05-04 13:13:32,250 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 1
+2025-05-04 13:13:32,250 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 1: None
+2025-05-04 13:13:32,251 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,251 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 1
+2025-05-04 13:13:32,251 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 1: HIGH
+2025-05-04 13:13:32,252 - warehouse_replenishment.services.forecast_service - INFO - Processing item 8: demand_4weekly=15.163457677548758, madp=13.634427115300825, track=100.0, total_demand=15.163457677548758
+2025-05-04 13:13:32,252 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 8
+2025-05-04 13:13:32,252 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 8: None
+2025-05-04 13:13:32,253 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,253 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 8
+2025-05-04 13:13:32,253 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 8: HIGH
+2025-05-04 13:13:32,256 - warehouse_replenishment.services.forecast_service - INFO - Processing item 5: demand_4weekly=33.02978080178547, madp=14.7279682506268, track=100.0, total_demand=33.02978080178547
+2025-05-04 13:13:32,256 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 5
+2025-05-04 13:13:32,257 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 5: None
+2025-05-04 13:13:32,257 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,257 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 5
+2025-05-04 13:13:32,257 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 5: HIGH
+2025-05-04 13:13:32,258 - warehouse_replenishment.services.forecast_service - INFO - Processing item 10: demand_4weekly=14.64494913630629, madp=16.597398311340413, track=100.0, total_demand=14.64494913630629
+2025-05-04 13:13:32,259 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 10
+2025-05-04 13:13:32,260 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 10: None
+2025-05-04 13:13:32,260 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,260 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 10
+2025-05-04 13:13:32,260 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 10: HIGH
+2025-05-04 13:13:32,263 - warehouse_replenishment.services.forecast_service - INFO - Processing item 11: demand_4weekly=10.738685683601929, madp=27.746102426726573, track=100.0, total_demand=10.738685683601929
+2025-05-04 13:13:32,264 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 11
+2025-05-04 13:13:32,264 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 11: None
+2025-05-04 13:13:32,264 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,264 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 11
+2025-05-04 13:13:32,264 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 11: HIGH
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - Processing item 12: demand_4weekly=8.604805945194826, madp=22.230618134038973, track=100.0, total_demand=8.604805945194826
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 12
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 12: None
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 12
+2025-05-04 13:13:32,267 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 12: HIGH
+2025-05-04 13:13:32,269 - warehouse_replenishment.services.forecast_service - INFO - Processing item 14: demand_4weekly=3.0, madp=14.410888601689406, track=90.83770940715607, total_demand=2.05524754445628
+2025-05-04 13:13:32,269 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 14
+2025-05-04 13:13:32,270 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 14: None
+2025-05-04 13:13:32,270 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,270 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 14
+2025-05-04 13:13:32,270 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 14: HIGH
+2025-05-04 13:13:32,272 - warehouse_replenishment.services.forecast_service - INFO - Processing item 15: demand_4weekly=2.0, madp=16.155797416326397, track=100.0, total_demand=1.5222970947549166
+2025-05-04 13:13:32,272 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 15
+2025-05-04 13:13:32,272 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 15: None
+2025-05-04 13:13:32,272 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,272 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 15
+2025-05-04 13:13:32,274 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 15: HIGH
+2025-05-04 13:13:32,276 - warehouse_replenishment.services.forecast_service - INFO - Processing item 26: demand_4weekly=5.057143168018708, madp=7.022781530328119, track=100.0, total_demand=5.057143168018708
+2025-05-04 13:13:32,277 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 26
+2025-05-04 13:13:32,278 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 26: None
+2025-05-04 13:13:32,278 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,278 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 26
+2025-05-04 13:13:32,278 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 26: HIGH
+2025-05-04 13:13:32,280 - warehouse_replenishment.services.forecast_service - INFO - Processing item 24: demand_4weekly=7.349842393208654, madp=11.680223780365136, track=100.0, total_demand=7.349842393208654
+2025-05-04 13:13:32,280 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 24
+2025-05-04 13:13:32,282 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 24: None
+2025-05-04 13:13:32,282 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,282 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 24
+2025-05-04 13:13:32,282 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 24: HIGH
+2025-05-04 13:13:32,285 - warehouse_replenishment.services.forecast_service - INFO - Processing item 22: demand_4weekly=11.726557133768392, madp=19.85404175901466, track=100.0, total_demand=11.726557133768392
+2025-05-04 13:13:32,285 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 22
+2025-05-04 13:13:32,286 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 22: None
+2025-05-04 13:13:32,286 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,286 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 22
+2025-05-04 13:13:32,286 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 22: HIGH
+2025-05-04 13:13:32,290 - warehouse_replenishment.services.forecast_service - INFO - Processing item 21: demand_4weekly=6.500460315074495, madp=6.758689334778412, track=93.12856837226737, total_demand=6.500460315074495
+2025-05-04 13:13:32,290 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 21
+2025-05-04 13:13:32,291 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 21: None
+2025-05-04 13:13:32,291 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,291 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 21
+2025-05-04 13:13:32,291 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 21: HIGH
+2025-05-04 13:13:32,293 - warehouse_replenishment.services.forecast_service - INFO - Processing item 9: demand_4weekly=41.4758174597319, madp=6.143409082773504, track=100.0, total_demand=41.4758174597319
+2025-05-04 13:13:32,293 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 9
+2025-05-04 13:13:32,294 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 9: None
+2025-05-04 13:13:32,294 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,294 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 9
+2025-05-04 13:13:32,294 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 9: HIGH
+2025-05-04 13:13:32,297 - warehouse_replenishment.services.forecast_service - INFO - Processing item 23: demand_4weekly=18.171993534527278, madp=18.736847334714753, track=100.0, total_demand=18.171993534527278
+2025-05-04 13:13:32,297 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 23
+2025-05-04 13:13:32,299 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 23: None
+2025-05-04 13:13:32,299 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,299 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 23
+2025-05-04 13:13:32,299 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 23: HIGH
+2025-05-04 13:13:32,301 - warehouse_replenishment.services.forecast_service - INFO - Processing item 13: demand_4weekly=21.787594931251505, madp=13.326788206272644, track=100.0, total_demand=21.787594931251505
+2025-05-04 13:13:32,302 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 13
+2025-05-04 13:13:32,302 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 13: None
+2025-05-04 13:13:32,302 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,302 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 13
+2025-05-04 13:13:32,302 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 13: HIGH
+2025-05-04 13:13:32,305 - warehouse_replenishment.services.forecast_service - INFO - Processing item 17: demand_4weekly=6.0, madp=13.595864161710164, track=100.0, total_demand=4.348486427409117
+2025-05-04 13:13:32,305 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 17
+2025-05-04 13:13:32,306 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 17: None
+2025-05-04 13:13:32,306 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,306 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 17
+2025-05-04 13:13:32,306 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 17: HIGH
+2025-05-04 13:13:32,308 - warehouse_replenishment.services.forecast_service - INFO - Processing item 18: demand_4weekly=8.121561319180389, madp=6.313090769229424, track=100.0, total_demand=8.121561319180389
+2025-05-04 13:13:32,308 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 18
+2025-05-04 13:13:32,309 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 18: None
+2025-05-04 13:13:32,309 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,309 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 18
+2025-05-04 13:13:32,309 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 18: HIGH
+2025-05-04 13:13:32,312 - warehouse_replenishment.services.forecast_service - INFO - Processing item 19: demand_4weekly=2.0, madp=10.036775806659747, track=100.0, total_demand=1.656487708015529
+2025-05-04 13:13:32,312 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 19
+2025-05-04 13:13:32,313 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 19: None
+2025-05-04 13:13:32,313 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,313 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 19
+2025-05-04 13:13:32,314 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 19: HIGH
+2025-05-04 13:13:32,316 - warehouse_replenishment.services.forecast_service - INFO - Processing item 20: demand_4weekly=2.0, madp=11.01312378686687, track=100.0, total_demand=1.5348452279935914
+2025-05-04 13:13:32,316 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 20
+2025-05-04 13:13:32,318 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 20: None
+2025-05-04 13:13:32,318 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,318 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 20
+2025-05-04 13:13:32,318 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 20: HIGH
+2025-05-04 13:13:32,320 - warehouse_replenishment.services.forecast_service - INFO - Processing item 16: demand_4weekly=5.313952954951249, madp=21.619363461207296, track=100.0, total_demand=5.313952954951249
+2025-05-04 13:13:32,320 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 16
+2025-05-04 13:13:32,321 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 16: None
+2025-05-04 13:13:32,321 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,321 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 16
+2025-05-04 13:13:32,321 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 16: HIGH
+2025-05-04 13:13:32,323 - warehouse_replenishment.services.forecast_service - INFO - Processing item 7: demand_4weekly=6.125369564125764, madp=14.122418361840685, track=100.0, total_demand=6.125369564125764
+2025-05-04 13:13:32,323 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 7
+2025-05-04 13:13:32,324 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 7: None
+2025-05-04 13:13:32,324 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,324 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 7
+2025-05-04 13:13:32,324 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 7: HIGH
+2025-05-04 13:13:32,326 - warehouse_replenishment.services.forecast_service - INFO - Processing item 6: demand_4weekly=0.8993415242928924, madp=100.0, track=100.0, total_demand=4.2962904241230895
+2025-05-04 13:13:32,326 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 6
+2025-05-04 13:13:32,327 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 6: None
+2025-05-04 13:13:32,327 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,327 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 6
+2025-05-04 13:13:32,327 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 6: HIGH
+2025-05-04 13:13:32,330 - warehouse_replenishment.services.forecast_service - INFO - Processing item 27: demand_4weekly=24.32562777108186, madp=85.35425121442113, track=100.0, total_demand=3.0347003961645367
+2025-05-04 13:13:32,330 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 27
+2025-05-04 13:13:32,330 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 27: None
+2025-05-04 13:13:32,331 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,331 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 27
+2025-05-04 13:13:32,331 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 27: HIGH
+2025-05-04 13:13:32,333 - warehouse_replenishment.services.forecast_service - INFO - Processing item 28: demand_4weekly=12.16281388554093, madp=86.12077876962371, track=100.0, total_demand=1.4193055821837839
+2025-05-04 13:13:32,335 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 28
+2025-05-04 13:13:32,335 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 28: None
+2025-05-04 13:13:32,336 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,336 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 28
+2025-05-04 13:13:32,336 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 28: HIGH
+2025-05-04 13:13:32,338 - warehouse_replenishment.services.forecast_service - INFO - Processing item 4: demand_4weekly=40.348852669617614, madp=30.00946295816759, track=100.0, total_demand=40.348852669617614
+2025-05-04 13:13:32,338 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 4
+2025-05-04 13:13:32,338 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 4: None
+2025-05-04 13:13:32,339 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,339 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 4
+2025-05-04 13:13:32,339 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 4: HIGH
+2025-05-04 13:13:32,341 - warehouse_replenishment.services.forecast_service - INFO - Processing item 3: demand_4weekly=279.6680633461273, madp=9.178126788477622, track=100.0, total_demand=279.6680633461273
+2025-05-04 13:13:32,341 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 3
+2025-05-04 13:13:32,341 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 3: None
+2025-05-04 13:13:32,341 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,342 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 3
+2025-05-04 13:13:32,342 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 3: HIGH
+2025-05-04 13:13:32,345 - warehouse_replenishment.services.forecast_service - INFO - Processing item 29: demand_4weekly=12.16281388554093, madp=86.46008085355419, track=99.99999999999999, total_demand=1.3843186586854375
+2025-05-04 13:13:32,345 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 29
+2025-05-04 13:13:32,346 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 29: None
+2025-05-04 13:13:32,346 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,346 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 29
+2025-05-04 13:13:32,346 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 29: HIGH
+2025-05-04 13:13:32,349 - warehouse_replenishment.services.forecast_service - INFO - Processing item 25: demand_4weekly=18.244220828311388, madp=86.2790026025107, track=100.0, total_demand=2.2541956177350215
+2025-05-04 13:13:32,349 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 25
+2025-05-04 13:13:32,349 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 25: None
+2025-05-04 13:13:32,349 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,349 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 25
+2025-05-04 13:13:32,350 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 25: HIGH
+2025-05-04 13:13:32,352 - warehouse_replenishment.services.forecast_service - INFO - Processing item 30: demand_4weekly=18.244220828311388, madp=85.82037034822612, track=100.0, total_demand=2.3513681453446704
+2025-05-04 13:13:32,352 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 30
+2025-05-04 13:13:32,352 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 30: None
+2025-05-04 13:13:32,352 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,354 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 30
+2025-05-04 13:13:32,354 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 30: HIGH
+2025-05-04 13:13:32,463 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:32,465 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:32,466 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:32,468 - warehouse_replenishment.services.forecast_service - INFO - Processing item 32: demand_4weekly=2.0, madp=10.706765374240062, track=100.0, total_demand=1.6905341775581757
+2025-05-04 13:13:32,468 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 32
+2025-05-04 13:13:32,468 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 32: None
+2025-05-04 13:13:32,468 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,468 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 32
+2025-05-04 13:13:32,469 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 32: HIGH
+2025-05-04 13:13:32,472 - warehouse_replenishment.services.forecast_service - INFO - Processing item 31: demand_4weekly=6.0, madp=16.56651249795061, track=100.0, total_demand=3.97501121607785
+2025-05-04 13:13:32,472 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 31
+2025-05-04 13:13:32,473 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 31: None
+2025-05-04 13:13:32,473 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,473 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 31
+2025-05-04 13:13:32,473 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 31: HIGH
+2025-05-04 13:13:32,476 - warehouse_replenishment.services.forecast_service - INFO - Processing item 35: demand_4weekly=3.0, madp=11.05116441695418, track=83.75407392068946, total_demand=2.2612692025611616
+2025-05-04 13:13:32,476 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 35
+2025-05-04 13:13:32,476 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 35: None
+2025-05-04 13:13:32,477 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,477 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 35
+2025-05-04 13:13:32,477 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 35: HIGH
+2025-05-04 13:13:32,480 - warehouse_replenishment.services.forecast_service - INFO - Processing item 33: demand_4weekly=4.0, madp=12.679520879790404, track=100.0, total_demand=3.08227798615917
+2025-05-04 13:13:32,480 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 33
+2025-05-04 13:13:32,481 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 33: None
+2025-05-04 13:13:32,481 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,481 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 33
+2025-05-04 13:13:32,481 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 33: HIGH
+2025-05-04 13:13:32,484 - warehouse_replenishment.services.forecast_service - INFO - Processing item 34: demand_4weekly=5.419599186792833, madp=29.414741427321335, track=100.0, total_demand=5.419599186792833
+2025-05-04 13:13:32,484 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 34
+2025-05-04 13:13:32,485 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 34: None
+2025-05-04 13:13:32,485 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,485 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 34
+2025-05-04 13:13:32,485 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 34: HIGH
+2025-05-04 13:13:32,524 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:32,526 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:32,527 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:32,528 - warehouse_replenishment.services.forecast_service - INFO - Processing item 36: demand_4weekly=1.042418328398994e-06, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:32,528 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 36
+2025-05-04 13:13:32,528 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 36: None
+2025-05-04 13:13:32,530 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,530 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 36
+2025-05-04 13:13:32,530 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 36: HIGH
+2025-05-04 13:13:32,532 - warehouse_replenishment.services.forecast_service - INFO - Processing item 39: demand_4weekly=3.127254985196981e-07, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:32,532 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 39
+2025-05-04 13:13:32,532 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 39: None
+2025-05-04 13:13:32,533 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,533 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 39
+2025-05-04 13:13:32,533 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 39: HIGH
+2025-05-04 13:13:32,534 - warehouse_replenishment.services.forecast_service - INFO - Processing item 37: demand_4weekly=1.3030229104987427e-06, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:32,534 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 37
+2025-05-04 13:13:32,535 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 37: None
+2025-05-04 13:13:32,535 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,535 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 37
+2025-05-04 13:13:32,535 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 37: HIGH
+2025-05-04 13:13:32,538 - warehouse_replenishment.services.forecast_service - INFO - Processing item 38: demand_4weekly=3.909068731496227e-07, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:32,538 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 38
+2025-05-04 13:13:32,538 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 38: None
+2025-05-04 13:13:32,538 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,539 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 38
+2025-05-04 13:13:32,539 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 38: HIGH
+2025-05-04 13:13:32,541 - warehouse_replenishment.services.forecast_service - INFO - Processing item 40: demand_4weekly=1.3030229104987425e-07, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:32,541 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 40
+2025-05-04 13:13:32,541 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 40: None
+2025-05-04 13:13:32,542 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:32,542 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 40
+2025-05-04 13:13:32,542 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 40: HIGH
+2025-05-04 13:13:40,058 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:40,061 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:40,062 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:40,064 - warehouse_replenishment.services.forecast_service - INFO - Processing item 2: demand_4weekly=133.6836906003996, madp=23.256851363970974, track=100.0, total_demand=133.6836906003996
+2025-05-04 13:13:40,064 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 2
+2025-05-04 13:13:40,065 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 2: None
+2025-05-04 13:13:40,065 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,065 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 2
+2025-05-04 13:13:40,065 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 2: HIGH
+2025-05-04 13:13:40,070 - warehouse_replenishment.services.forecast_service - INFO - Processing item 1: demand_4weekly=26.247076037360173, madp=28.319093993531435, track=100.0, total_demand=26.247076037360173
+2025-05-04 13:13:40,070 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 1
+2025-05-04 13:13:40,071 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 1: None
+2025-05-04 13:13:40,071 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,071 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 1
+2025-05-04 13:13:40,071 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 1: HIGH
+2025-05-04 13:13:40,073 - warehouse_replenishment.services.forecast_service - INFO - Processing item 8: demand_4weekly=15.163457677548758, madp=13.634427115300825, track=100.0, total_demand=15.163457677548758
+2025-05-04 13:13:40,073 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 8
+2025-05-04 13:13:40,074 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 8: None
+2025-05-04 13:13:40,074 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,074 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 8
+2025-05-04 13:13:40,074 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 8: HIGH
+2025-05-04 13:13:40,077 - warehouse_replenishment.services.forecast_service - INFO - Processing item 5: demand_4weekly=33.02978080178547, madp=14.7279682506268, track=100.0, total_demand=33.02978080178547
+2025-05-04 13:13:40,077 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 5
+2025-05-04 13:13:40,078 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 5: None
+2025-05-04 13:13:40,078 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,078 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 5
+2025-05-04 13:13:40,078 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 5: HIGH
+2025-05-04 13:13:40,080 - warehouse_replenishment.services.forecast_service - INFO - Processing item 10: demand_4weekly=14.64494913630629, madp=16.597398311340413, track=100.0, total_demand=14.64494913630629
+2025-05-04 13:13:40,081 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 10
+2025-05-04 13:13:40,081 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 10: None
+2025-05-04 13:13:40,081 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,082 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 10
+2025-05-04 13:13:40,082 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 10: HIGH
+2025-05-04 13:13:40,086 - warehouse_replenishment.services.forecast_service - INFO - Processing item 11: demand_4weekly=10.738685683601929, madp=27.746102426726573, track=100.0, total_demand=10.738685683601929
+2025-05-04 13:13:40,087 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 11
+2025-05-04 13:13:40,087 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 11: None
+2025-05-04 13:13:40,087 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,087 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 11
+2025-05-04 13:13:40,087 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 11: HIGH
+2025-05-04 13:13:40,091 - warehouse_replenishment.services.forecast_service - INFO - Processing item 12: demand_4weekly=8.604805945194826, madp=22.230618134038973, track=100.0, total_demand=8.604805945194826
+2025-05-04 13:13:40,091 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 12
+2025-05-04 13:13:40,092 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 12: None
+2025-05-04 13:13:40,092 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,092 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 12
+2025-05-04 13:13:40,092 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 12: HIGH
+2025-05-04 13:13:40,096 - warehouse_replenishment.services.forecast_service - INFO - Processing item 14: demand_4weekly=3.0, madp=14.410888601689406, track=90.83770940715607, total_demand=2.05524754445628
+2025-05-04 13:13:40,096 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 14
+2025-05-04 13:13:40,096 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 14: None
+2025-05-04 13:13:40,097 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,097 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 14
+2025-05-04 13:13:40,097 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 14: HIGH
+2025-05-04 13:13:40,100 - warehouse_replenishment.services.forecast_service - INFO - Processing item 15: demand_4weekly=2.0, madp=16.155797416326397, track=100.0, total_demand=1.5222970947549166
+2025-05-04 13:13:40,100 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 15
+2025-05-04 13:13:40,101 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 15: None
+2025-05-04 13:13:40,101 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,101 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 15
+2025-05-04 13:13:40,102 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 15: HIGH
+2025-05-04 13:13:40,104 - warehouse_replenishment.services.forecast_service - INFO - Processing item 26: demand_4weekly=5.057143168018708, madp=7.022781530328119, track=100.0, total_demand=5.057143168018708
+2025-05-04 13:13:40,104 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 26
+2025-05-04 13:13:40,104 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 26: None
+2025-05-04 13:13:40,106 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,106 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 26
+2025-05-04 13:13:40,106 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 26: HIGH
+2025-05-04 13:13:40,108 - warehouse_replenishment.services.forecast_service - INFO - Processing item 24: demand_4weekly=7.349842393208654, madp=11.680223780365136, track=100.0, total_demand=7.349842393208654
+2025-05-04 13:13:40,108 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 24
+2025-05-04 13:13:40,109 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 24: None
+2025-05-04 13:13:40,109 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,109 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 24
+2025-05-04 13:13:40,109 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 24: HIGH
+2025-05-04 13:13:40,111 - warehouse_replenishment.services.forecast_service - INFO - Processing item 22: demand_4weekly=11.726557133768392, madp=19.85404175901466, track=100.0, total_demand=11.726557133768392
+2025-05-04 13:13:40,111 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 22
+2025-05-04 13:13:40,112 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 22: None
+2025-05-04 13:13:40,112 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,112 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 22
+2025-05-04 13:13:40,112 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 22: HIGH
+2025-05-04 13:13:40,114 - warehouse_replenishment.services.forecast_service - INFO - Processing item 21: demand_4weekly=6.500460315074495, madp=6.758689334778412, track=93.12856837226737, total_demand=6.500460315074495
+2025-05-04 13:13:40,114 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 21
+2025-05-04 13:13:40,114 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 21: None
+2025-05-04 13:13:40,114 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,115 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 21
+2025-05-04 13:13:40,115 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 21: HIGH
+2025-05-04 13:13:40,118 - warehouse_replenishment.services.forecast_service - INFO - Processing item 9: demand_4weekly=41.4758174597319, madp=6.143409082773504, track=100.0, total_demand=41.4758174597319
+2025-05-04 13:13:40,118 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 9
+2025-05-04 13:13:40,118 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 9: None
+2025-05-04 13:13:40,119 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,119 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 9
+2025-05-04 13:13:40,119 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 9: HIGH
+2025-05-04 13:13:40,122 - warehouse_replenishment.services.forecast_service - INFO - Processing item 23: demand_4weekly=18.171993534527278, madp=18.736847334714753, track=100.0, total_demand=18.171993534527278
+2025-05-04 13:13:40,122 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 23
+2025-05-04 13:13:40,123 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 23: None
+2025-05-04 13:13:40,123 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,123 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 23
+2025-05-04 13:13:40,124 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 23: HIGH
+2025-05-04 13:13:40,126 - warehouse_replenishment.services.forecast_service - INFO - Processing item 13: demand_4weekly=21.787594931251505, madp=13.326788206272644, track=100.0, total_demand=21.787594931251505
+2025-05-04 13:13:40,126 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 13
+2025-05-04 13:13:40,126 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 13: None
+2025-05-04 13:13:40,126 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,126 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 13
+2025-05-04 13:13:40,128 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 13: HIGH
+2025-05-04 13:13:40,130 - warehouse_replenishment.services.forecast_service - INFO - Processing item 17: demand_4weekly=6.0, madp=13.595864161710164, track=100.0, total_demand=4.348486427409117
+2025-05-04 13:13:40,130 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 17
+2025-05-04 13:13:40,130 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 17: None
+2025-05-04 13:13:40,131 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,131 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 17
+2025-05-04 13:13:40,131 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 17: HIGH
+2025-05-04 13:13:40,132 - warehouse_replenishment.services.forecast_service - INFO - Processing item 18: demand_4weekly=8.121561319180389, madp=6.313090769229424, track=100.0, total_demand=8.121561319180389
+2025-05-04 13:13:40,132 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 18
+2025-05-04 13:13:40,133 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 18: None
+2025-05-04 13:13:40,133 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,134 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 18
+2025-05-04 13:13:40,134 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 18: HIGH
+2025-05-04 13:13:40,137 - warehouse_replenishment.services.forecast_service - INFO - Processing item 19: demand_4weekly=2.0, madp=10.036775806659747, track=100.0, total_demand=1.656487708015529
+2025-05-04 13:13:40,137 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 19
+2025-05-04 13:13:40,138 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 19: None
+2025-05-04 13:13:40,138 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,138 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 19
+2025-05-04 13:13:40,138 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 19: HIGH
+2025-05-04 13:13:40,141 - warehouse_replenishment.services.forecast_service - INFO - Processing item 20: demand_4weekly=2.0, madp=11.01312378686687, track=100.0, total_demand=1.5348452279935914
+2025-05-04 13:13:40,141 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 20
+2025-05-04 13:13:40,142 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 20: None
+2025-05-04 13:13:40,142 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,142 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 20
+2025-05-04 13:13:40,142 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 20: HIGH
+2025-05-04 13:13:40,145 - warehouse_replenishment.services.forecast_service - INFO - Processing item 16: demand_4weekly=5.313952954951249, madp=21.619363461207296, track=100.0, total_demand=5.313952954951249
+2025-05-04 13:13:40,145 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 16
+2025-05-04 13:13:40,146 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 16: None
+2025-05-04 13:13:40,146 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,146 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 16
+2025-05-04 13:13:40,146 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 16: HIGH
+2025-05-04 13:13:40,149 - warehouse_replenishment.services.forecast_service - INFO - Processing item 7: demand_4weekly=6.125369564125764, madp=14.122418361840685, track=100.0, total_demand=6.125369564125764
+2025-05-04 13:13:40,149 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 7
+2025-05-04 13:13:40,149 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 7: None
+2025-05-04 13:13:40,150 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,150 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 7
+2025-05-04 13:13:40,150 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 7: HIGH
+2025-05-04 13:13:40,153 - warehouse_replenishment.services.forecast_service - INFO - Processing item 6: demand_4weekly=0.8993415242928924, madp=100.0, track=100.0, total_demand=4.2962904241230895
+2025-05-04 13:13:40,153 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 6
+2025-05-04 13:13:40,154 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 6: None
+2025-05-04 13:13:40,154 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,154 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 6
+2025-05-04 13:13:40,154 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 6: HIGH
+2025-05-04 13:13:40,157 - warehouse_replenishment.services.forecast_service - INFO - Processing item 27: demand_4weekly=24.32562777108186, madp=85.35425121442113, track=100.0, total_demand=3.0347003961645367
+2025-05-04 13:13:40,157 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 27
+2025-05-04 13:13:40,157 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 27: None
+2025-05-04 13:13:40,158 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,158 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 27
+2025-05-04 13:13:40,158 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 27: HIGH
+2025-05-04 13:13:40,161 - warehouse_replenishment.services.forecast_service - INFO - Processing item 28: demand_4weekly=12.16281388554093, madp=86.12077876962371, track=100.0, total_demand=1.4193055821837839
+2025-05-04 13:13:40,161 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 28
+2025-05-04 13:13:40,161 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 28: None
+2025-05-04 13:13:40,162 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,162 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 28
+2025-05-04 13:13:40,162 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 28: HIGH
+2025-05-04 13:13:40,164 - warehouse_replenishment.services.forecast_service - INFO - Processing item 4: demand_4weekly=40.348852669617614, madp=30.00946295816759, track=100.0, total_demand=40.348852669617614
+2025-05-04 13:13:40,164 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 4
+2025-05-04 13:13:40,165 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 4: None
+2025-05-04 13:13:40,165 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,165 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 4
+2025-05-04 13:13:40,165 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 4: HIGH
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - Processing item 3: demand_4weekly=279.6680633461273, madp=9.178126788477622, track=100.0, total_demand=279.6680633461273
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 3
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 3: None
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 3
+2025-05-04 13:13:40,169 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 3: HIGH
+2025-05-04 13:13:40,173 - warehouse_replenishment.services.forecast_service - INFO - Processing item 29: demand_4weekly=12.16281388554093, madp=86.46008085355419, track=99.99999999999999, total_demand=1.3843186586854375
+2025-05-04 13:13:40,173 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 29
+2025-05-04 13:13:40,174 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 29: None
+2025-05-04 13:13:40,174 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,174 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 29
+2025-05-04 13:13:40,174 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 29: HIGH
+2025-05-04 13:13:40,176 - warehouse_replenishment.services.forecast_service - INFO - Processing item 25: demand_4weekly=18.244220828311388, madp=86.2790026025107, track=100.0, total_demand=2.2541956177350215
+2025-05-04 13:13:40,176 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 25
+2025-05-04 13:13:40,177 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 25: None
+2025-05-04 13:13:40,177 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,177 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 25
+2025-05-04 13:13:40,177 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 25: HIGH
+2025-05-04 13:13:40,180 - warehouse_replenishment.services.forecast_service - INFO - Processing item 30: demand_4weekly=18.244220828311388, madp=85.82037034822612, track=100.0, total_demand=2.3513681453446704
+2025-05-04 13:13:40,180 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 30
+2025-05-04 13:13:40,181 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 30: None
+2025-05-04 13:13:40,181 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,181 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 30
+2025-05-04 13:13:40,181 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 30: HIGH
+2025-05-04 13:13:40,285 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:40,286 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:40,286 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:40,287 - warehouse_replenishment.services.forecast_service - INFO - Processing item 32: demand_4weekly=2.0, madp=10.706765374240062, track=100.0, total_demand=1.6905341775581757
+2025-05-04 13:13:40,288 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 32
+2025-05-04 13:13:40,288 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 32: None
+2025-05-04 13:13:40,288 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,288 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 32
+2025-05-04 13:13:40,289 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 32: HIGH
+2025-05-04 13:13:40,290 - warehouse_replenishment.services.forecast_service - INFO - Processing item 31: demand_4weekly=6.0, madp=16.56651249795061, track=100.0, total_demand=3.97501121607785
+2025-05-04 13:13:40,291 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 31
+2025-05-04 13:13:40,291 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 31: None
+2025-05-04 13:13:40,291 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,291 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 31
+2025-05-04 13:13:40,292 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 31: HIGH
+2025-05-04 13:13:40,294 - warehouse_replenishment.services.forecast_service - INFO - Processing item 35: demand_4weekly=3.0, madp=11.05116441695418, track=83.75407392068946, total_demand=2.2612692025611616
+2025-05-04 13:13:40,294 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 35
+2025-05-04 13:13:40,294 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 35: None
+2025-05-04 13:13:40,295 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,295 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 35
+2025-05-04 13:13:40,295 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 35: HIGH
+2025-05-04 13:13:40,298 - warehouse_replenishment.services.forecast_service - INFO - Processing item 33: demand_4weekly=4.0, madp=12.679520879790404, track=100.0, total_demand=3.08227798615917
+2025-05-04 13:13:40,298 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 33
+2025-05-04 13:13:40,299 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 33: None
+2025-05-04 13:13:40,299 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,299 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 33
+2025-05-04 13:13:40,299 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 33: HIGH
+2025-05-04 13:13:40,302 - warehouse_replenishment.services.forecast_service - INFO - Processing item 34: demand_4weekly=5.419599186792833, madp=29.414741427321335, track=100.0, total_demand=5.419599186792833
+2025-05-04 13:13:40,302 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 34
+2025-05-04 13:13:40,303 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 34: None
+2025-05-04 13:13:40,303 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,303 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 34
+2025-05-04 13:13:40,303 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 34: HIGH
+2025-05-04 13:13:40,347 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:13:40,348 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:13:40,348 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:13:40,350 - warehouse_replenishment.services.forecast_service - INFO - Processing item 36: demand_4weekly=1.3030229104987425e-07, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:40,350 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 36
+2025-05-04 13:13:40,351 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 36: None
+2025-05-04 13:13:40,351 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,352 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 36
+2025-05-04 13:13:40,352 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 36: HIGH
+2025-05-04 13:13:40,354 - warehouse_replenishment.services.forecast_service - INFO - Processing item 39: demand_4weekly=3.9090687314962265e-08, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:40,354 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 39
+2025-05-04 13:13:40,354 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 39: None
+2025-05-04 13:13:40,354 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,354 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 39
+2025-05-04 13:13:40,355 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 39: HIGH
+2025-05-04 13:13:40,356 - warehouse_replenishment.services.forecast_service - INFO - Processing item 37: demand_4weekly=1.6287786381234284e-07, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:40,356 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 37
+2025-05-04 13:13:40,357 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 37: None
+2025-05-04 13:13:40,357 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,357 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 37
+2025-05-04 13:13:40,357 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 37: HIGH
+2025-05-04 13:13:40,359 - warehouse_replenishment.services.forecast_service - INFO - Processing item 38: demand_4weekly=4.8863359143702836e-08, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:40,359 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 38
+2025-05-04 13:13:40,360 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 38: None
+2025-05-04 13:13:40,360 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,360 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 38
+2025-05-04 13:13:40,360 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 38: HIGH
+2025-05-04 13:13:40,362 - warehouse_replenishment.services.forecast_service - INFO - Processing item 40: demand_4weekly=1.628778638123428e-08, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:13:40,362 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 40
+2025-05-04 13:13:40,362 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 40: None
+2025-05-04 13:13:40,362 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:13:40,362 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 40
+2025-05-04 13:13:40,363 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 40: HIGH
+2025-05-04 13:15:05,246 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:15:05,248 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:15:05,249 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:15:05,251 - warehouse_replenishment.services.forecast_service - INFO - Processing item 2: demand_4weekly=133.6836906003996, madp=23.256851363970974, track=100.0, total_demand=133.6836906003996
+2025-05-04 13:15:05,251 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 2
+2025-05-04 13:15:05,252 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 2: None
+2025-05-04 13:15:05,252 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,252 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 2
+2025-05-04 13:15:05,252 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 2: HIGH
+2025-05-04 13:15:05,259 - warehouse_replenishment.services.forecast_service - INFO - Processing item 1: demand_4weekly=26.247076037360173, madp=28.319093993531435, track=100.0, total_demand=26.247076037360173
+2025-05-04 13:15:05,259 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 1
+2025-05-04 13:15:05,259 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 1: None
+2025-05-04 13:15:05,263 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,263 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 1
+2025-05-04 13:15:05,264 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 1: HIGH
+2025-05-04 13:15:05,267 - warehouse_replenishment.services.forecast_service - INFO - Processing item 8: demand_4weekly=15.163457677548758, madp=13.634427115300825, track=100.0, total_demand=15.163457677548758
+2025-05-04 13:15:05,267 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 8
+2025-05-04 13:15:05,268 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 8: None
+2025-05-04 13:15:05,268 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,268 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 8
+2025-05-04 13:15:05,268 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 8: HIGH
+2025-05-04 13:15:05,271 - warehouse_replenishment.services.forecast_service - INFO - Processing item 5: demand_4weekly=33.02978080178547, madp=14.7279682506268, track=100.0, total_demand=33.02978080178547
+2025-05-04 13:15:05,272 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 5
+2025-05-04 13:15:05,272 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 5: None
+2025-05-04 13:15:05,272 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,272 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 5
+2025-05-04 13:15:05,272 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 5: HIGH
+2025-05-04 13:15:05,275 - warehouse_replenishment.services.forecast_service - INFO - Processing item 10: demand_4weekly=14.64494913630629, madp=16.597398311340413, track=100.0, total_demand=14.64494913630629
+2025-05-04 13:15:05,276 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 10
+2025-05-04 13:15:05,276 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 10: None
+2025-05-04 13:15:05,276 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,276 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 10
+2025-05-04 13:15:05,276 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 10: HIGH
+2025-05-04 13:15:05,279 - warehouse_replenishment.services.forecast_service - INFO - Processing item 11: demand_4weekly=10.738685683601929, madp=27.746102426726573, track=100.0, total_demand=10.738685683601929
+2025-05-04 13:15:05,279 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 11
+2025-05-04 13:15:05,279 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 11: None
+2025-05-04 13:15:05,279 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,280 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 11
+2025-05-04 13:15:05,280 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 11: HIGH
+2025-05-04 13:15:05,282 - warehouse_replenishment.services.forecast_service - INFO - Processing item 12: demand_4weekly=8.604805945194826, madp=22.230618134038973, track=100.0, total_demand=8.604805945194826
+2025-05-04 13:15:05,282 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 12
+2025-05-04 13:15:05,282 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 12: None
+2025-05-04 13:15:05,282 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,282 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 12
+2025-05-04 13:15:05,283 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 12: HIGH
+2025-05-04 13:15:05,285 - warehouse_replenishment.services.forecast_service - INFO - Processing item 14: demand_4weekly=3.0, madp=14.410888601689406, track=90.83770940715607, total_demand=2.05524754445628
+2025-05-04 13:15:05,285 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 14
+2025-05-04 13:15:05,286 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 14: None
+2025-05-04 13:15:05,286 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,286 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 14
+2025-05-04 13:15:05,286 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 14: HIGH
+2025-05-04 13:15:05,290 - warehouse_replenishment.services.forecast_service - INFO - Processing item 15: demand_4weekly=2.0, madp=16.155797416326397, track=100.0, total_demand=1.5222970947549166
+2025-05-04 13:15:05,291 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 15
+2025-05-04 13:15:05,291 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 15: None
+2025-05-04 13:15:05,292 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,292 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 15
+2025-05-04 13:15:05,292 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 15: HIGH
+2025-05-04 13:15:05,296 - warehouse_replenishment.services.forecast_service - INFO - Processing item 26: demand_4weekly=5.057143168018708, madp=7.022781530328119, track=100.0, total_demand=5.057143168018708
+2025-05-04 13:15:05,296 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 26
+2025-05-04 13:15:05,297 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 26: None
+2025-05-04 13:15:05,297 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,297 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 26
+2025-05-04 13:15:05,297 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 26: HIGH
+2025-05-04 13:15:05,301 - warehouse_replenishment.services.forecast_service - INFO - Processing item 24: demand_4weekly=7.349842393208654, madp=11.680223780365136, track=100.0, total_demand=7.349842393208654
+2025-05-04 13:15:05,302 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 24
+2025-05-04 13:15:05,302 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 24: None
+2025-05-04 13:15:05,302 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,302 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 24
+2025-05-04 13:15:05,303 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 24: HIGH
+2025-05-04 13:15:05,307 - warehouse_replenishment.services.forecast_service - INFO - Processing item 22: demand_4weekly=11.726557133768392, madp=19.85404175901466, track=100.0, total_demand=11.726557133768392
+2025-05-04 13:15:05,308 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 22
+2025-05-04 13:15:05,308 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 22: None
+2025-05-04 13:15:05,308 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,308 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 22
+2025-05-04 13:15:05,309 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 22: HIGH
+2025-05-04 13:15:05,312 - warehouse_replenishment.services.forecast_service - INFO - Processing item 21: demand_4weekly=6.500460315074495, madp=6.758689334778412, track=93.12856837226737, total_demand=6.500460315074495
+2025-05-04 13:15:05,312 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 21
+2025-05-04 13:15:05,312 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 21: None
+2025-05-04 13:15:05,314 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,314 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 21
+2025-05-04 13:15:05,314 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 21: HIGH
+2025-05-04 13:15:05,316 - warehouse_replenishment.services.forecast_service - INFO - Processing item 9: demand_4weekly=41.4758174597319, madp=6.143409082773504, track=100.0, total_demand=41.4758174597319
+2025-05-04 13:15:05,317 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 9
+2025-05-04 13:15:05,318 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 9: None
+2025-05-04 13:15:05,318 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,318 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 9
+2025-05-04 13:15:05,318 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 9: HIGH
+2025-05-04 13:15:05,321 - warehouse_replenishment.services.forecast_service - INFO - Processing item 23: demand_4weekly=18.171993534527278, madp=18.736847334714753, track=100.0, total_demand=18.171993534527278
+2025-05-04 13:15:05,322 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 23
+2025-05-04 13:15:05,322 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 23: None
+2025-05-04 13:15:05,322 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,322 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 23
+2025-05-04 13:15:05,322 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 23: HIGH
+2025-05-04 13:15:05,327 - warehouse_replenishment.services.forecast_service - INFO - Processing item 13: demand_4weekly=21.787594931251505, madp=13.326788206272644, track=100.0, total_demand=21.787594931251505
+2025-05-04 13:15:05,327 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 13
+2025-05-04 13:15:05,328 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 13: None
+2025-05-04 13:15:05,328 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,329 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 13
+2025-05-04 13:15:05,329 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 13: HIGH
+2025-05-04 13:15:05,332 - warehouse_replenishment.services.forecast_service - INFO - Processing item 17: demand_4weekly=6.0, madp=13.595864161710164, track=100.0, total_demand=4.348486427409117
+2025-05-04 13:15:05,334 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 17
+2025-05-04 13:15:05,334 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 17: None
+2025-05-04 13:15:05,334 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,334 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 17
+2025-05-04 13:15:05,334 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 17: HIGH
+2025-05-04 13:15:05,339 - warehouse_replenishment.services.forecast_service - INFO - Processing item 18: demand_4weekly=8.121561319180389, madp=6.313090769229424, track=100.0, total_demand=8.121561319180389
+2025-05-04 13:15:05,339 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 18
+2025-05-04 13:15:05,340 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 18: None
+2025-05-04 13:15:05,340 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,340 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 18
+2025-05-04 13:15:05,340 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 18: HIGH
+2025-05-04 13:15:05,344 - warehouse_replenishment.services.forecast_service - INFO - Processing item 19: demand_4weekly=2.0, madp=10.036775806659747, track=100.0, total_demand=1.656487708015529
+2025-05-04 13:15:05,345 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 19
+2025-05-04 13:15:05,345 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 19: None
+2025-05-04 13:15:05,346 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,346 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 19
+2025-05-04 13:15:05,346 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 19: HIGH
+2025-05-04 13:15:05,350 - warehouse_replenishment.services.forecast_service - INFO - Processing item 20: demand_4weekly=2.0, madp=11.01312378686687, track=100.0, total_demand=1.5348452279935914
+2025-05-04 13:15:05,350 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 20
+2025-05-04 13:15:05,351 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 20: None
+2025-05-04 13:15:05,351 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,351 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 20
+2025-05-04 13:15:05,351 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 20: HIGH
+2025-05-04 13:15:05,356 - warehouse_replenishment.services.forecast_service - INFO - Processing item 16: demand_4weekly=5.313952954951249, madp=21.619363461207296, track=100.0, total_demand=5.313952954951249
+2025-05-04 13:15:05,357 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 16
+2025-05-04 13:15:05,357 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 16: None
+2025-05-04 13:15:05,357 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,358 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 16
+2025-05-04 13:15:05,358 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 16: HIGH
+2025-05-04 13:15:05,361 - warehouse_replenishment.services.forecast_service - INFO - Processing item 7: demand_4weekly=6.125369564125764, madp=14.122418361840685, track=100.0, total_demand=6.125369564125764
+2025-05-04 13:15:05,361 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 7
+2025-05-04 13:15:05,362 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 7: None
+2025-05-04 13:15:05,362 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,362 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 7
+2025-05-04 13:15:05,363 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 7: HIGH
+2025-05-04 13:15:05,365 - warehouse_replenishment.services.forecast_service - INFO - Processing item 6: demand_4weekly=0.8993415242928924, madp=100.0, track=100.0, total_demand=4.2962904241230895
+2025-05-04 13:15:05,365 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 6
+2025-05-04 13:15:05,366 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 6: None
+2025-05-04 13:15:05,366 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,366 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 6
+2025-05-04 13:15:05,366 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 6: HIGH
+2025-05-04 13:15:05,369 - warehouse_replenishment.services.forecast_service - INFO - Processing item 27: demand_4weekly=24.32562777108186, madp=85.35425121442113, track=100.0, total_demand=3.0347003961645367
+2025-05-04 13:15:05,369 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 27
+2025-05-04 13:15:05,370 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 27: None
+2025-05-04 13:15:05,370 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,371 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 27
+2025-05-04 13:15:05,371 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 27: HIGH
+2025-05-04 13:15:05,374 - warehouse_replenishment.services.forecast_service - INFO - Processing item 28: demand_4weekly=12.16281388554093, madp=86.12077876962371, track=100.0, total_demand=1.4193055821837839
+2025-05-04 13:15:05,375 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 28
+2025-05-04 13:15:05,375 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 28: None
+2025-05-04 13:15:05,375 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,376 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 28
+2025-05-04 13:15:05,376 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 28: HIGH
+2025-05-04 13:15:05,378 - warehouse_replenishment.services.forecast_service - INFO - Processing item 4: demand_4weekly=40.348852669617614, madp=30.00946295816759, track=100.0, total_demand=40.348852669617614
+2025-05-04 13:15:05,378 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 4
+2025-05-04 13:15:05,379 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 4: None
+2025-05-04 13:15:05,379 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,379 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 4
+2025-05-04 13:15:05,379 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 4: HIGH
+2025-05-04 13:15:05,382 - warehouse_replenishment.services.forecast_service - INFO - Processing item 3: demand_4weekly=279.6680633461273, madp=9.178126788477622, track=100.0, total_demand=279.6680633461273
+2025-05-04 13:15:05,382 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 3
+2025-05-04 13:15:05,382 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 3: None
+2025-05-04 13:15:05,382 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,383 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 3
+2025-05-04 13:15:05,383 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 3: HIGH
+2025-05-04 13:15:05,385 - warehouse_replenishment.services.forecast_service - INFO - Processing item 29: demand_4weekly=12.16281388554093, madp=86.46008085355419, track=99.99999999999999, total_demand=1.3843186586854375
+2025-05-04 13:15:05,386 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 29
+2025-05-04 13:15:05,386 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 29: None
+2025-05-04 13:15:05,386 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,386 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 29
+2025-05-04 13:15:05,386 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 29: HIGH
+2025-05-04 13:15:05,389 - warehouse_replenishment.services.forecast_service - INFO - Processing item 25: demand_4weekly=18.244220828311388, madp=86.2790026025107, track=100.0, total_demand=2.2541956177350215
+2025-05-04 13:15:05,389 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 25
+2025-05-04 13:15:05,390 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 25: None
+2025-05-04 13:15:05,390 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,390 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 25
+2025-05-04 13:15:05,390 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 25: HIGH
+2025-05-04 13:15:05,394 - warehouse_replenishment.services.forecast_service - INFO - Processing item 30: demand_4weekly=18.244220828311388, madp=85.82037034822612, track=100.0, total_demand=2.3513681453446704
+2025-05-04 13:15:05,394 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 30
+2025-05-04 13:15:05,394 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 30: None
+2025-05-04 13:15:05,394 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,395 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 30
+2025-05-04 13:15:05,395 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 30: HIGH
+2025-05-04 13:15:05,512 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:15:05,515 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:15:05,515 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:15:05,516 - warehouse_replenishment.services.forecast_service - INFO - Processing item 32: demand_4weekly=2.0, madp=10.706765374240062, track=100.0, total_demand=1.6905341775581757
+2025-05-04 13:15:05,516 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 32
+2025-05-04 13:15:05,517 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 32: None
+2025-05-04 13:15:05,517 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,517 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 32
+2025-05-04 13:15:05,517 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 32: HIGH
+2025-05-04 13:15:05,521 - warehouse_replenishment.services.forecast_service - INFO - Processing item 31: demand_4weekly=6.0, madp=16.56651249795061, track=100.0, total_demand=3.97501121607785
+2025-05-04 13:15:05,521 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 31
+2025-05-04 13:15:05,521 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 31: None
+2025-05-04 13:15:05,522 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,522 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 31
+2025-05-04 13:15:05,522 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 31: HIGH
+2025-05-04 13:15:05,525 - warehouse_replenishment.services.forecast_service - INFO - Processing item 35: demand_4weekly=3.0, madp=11.05116441695418, track=83.75407392068946, total_demand=2.2612692025611616
+2025-05-04 13:15:05,525 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 35
+2025-05-04 13:15:05,526 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 35: None
+2025-05-04 13:15:05,526 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,526 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 35
+2025-05-04 13:15:05,526 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 35: HIGH
+2025-05-04 13:15:05,530 - warehouse_replenishment.services.forecast_service - INFO - Processing item 33: demand_4weekly=4.0, madp=12.679520879790404, track=100.0, total_demand=3.08227798615917
+2025-05-04 13:15:05,530 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 33
+2025-05-04 13:15:05,531 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 33: None
+2025-05-04 13:15:05,531 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,531 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 33
+2025-05-04 13:15:05,531 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 33: HIGH
+2025-05-04 13:15:05,534 - warehouse_replenishment.services.forecast_service - INFO - Processing item 34: demand_4weekly=5.419599186792833, madp=29.414741427321335, track=100.0, total_demand=5.419599186792833
+2025-05-04 13:15:05,534 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 34
+2025-05-04 13:15:05,534 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 34: None
+2025-05-04 13:15:05,534 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,535 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 34
+2025-05-04 13:15:05,535 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 34: HIGH
+2025-05-04 13:15:05,593 - warehouse_replenishment.services.forecast_service - INFO -  # Apply filters
+2025-05-04 13:15:05,595 - warehouse_replenishment.services.forecast_service - INFO - # Get latest period
+2025-05-04 13:15:05,596 - warehouse_replenishment.services.forecast_service - INFO - # Process results1
+2025-05-04 13:15:05,597 - warehouse_replenishment.services.forecast_service - INFO - Processing item 40: demand_4weekly=1.9742771371193067e-09, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:15:05,597 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 40
+2025-05-04 13:15:05,598 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 40: None
+2025-05-04 13:15:05,598 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,598 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 40
+2025-05-04 13:15:05,598 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 40: HIGH
+2025-05-04 13:15:05,600 - warehouse_replenishment.services.forecast_service - INFO - Processing item 36: demand_4weekly=1.5794217096954454e-08, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:15:05,600 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 36
+2025-05-04 13:15:05,601 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 36: None
+2025-05-04 13:15:05,601 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,601 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 36
+2025-05-04 13:15:05,601 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 36: HIGH
+2025-05-04 13:15:05,603 - warehouse_replenishment.services.forecast_service - INFO - Processing item 39: demand_4weekly=4.738265129086335e-09, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:15:05,604 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 39
+2025-05-04 13:15:05,604 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 39: None
+2025-05-04 13:15:05,605 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,605 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 39
+2025-05-04 13:15:05,605 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 39: HIGH
+2025-05-04 13:15:05,607 - warehouse_replenishment.services.forecast_service - INFO - Processing item 37: demand_4weekly=1.974277137119307e-08, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:15:05,608 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 37
+2025-05-04 13:15:05,608 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 37: None
+2025-05-04 13:15:05,608 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,609 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 37
+2025-05-04 13:15:05,609 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 37: HIGH
+2025-05-04 13:15:05,611 - warehouse_replenishment.services.forecast_service - INFO - Processing item 38: demand_4weekly=5.92283141135792e-09, madp=100.0, track=100.0, total_demand=0.0
+2025-05-04 13:15:05,611 - warehouse_replenishment.services.forecast_service - INFO - Checking demand spike for item 38
+2025-05-04 13:15:05,611 - warehouse_replenishment.services.forecast_service - INFO - Demand spike result for item 38: None
+2025-05-04 13:15:05,611 - warehouse_replenishment.services.forecast_service - INFO - # Tracking signal checks
+2025-05-04 13:15:05,612 - warehouse_replenishment.services.forecast_service - INFO - Checking tracking signal for item 38
+2025-05-04 13:15:05,612 - warehouse_replenishment.services.forecast_service - INFO - Tracking signal result for item 38: HIGH

@@ -632,20 +632,26 @@ class ItemService:
         for item in items:
             try:
                 # Fetch current inventory status
-                inventory = self.session.query(Inventory).filter(
+                inventory = self.session.query(
+                    func.sum(Inventory.quantity).label('total_quantity'),
+                    func.sum(Inventory.allocated_quantity).label('total_allocated'),
+                    func.max(Inventory.last_receipt_date).label('last_receipt'),
+                    func.max(Inventory.last_issue_date).label('last_issue')
+                ).filter(
                     Inventory.item_id == item.id,
                     Inventory.warehouse_id == item.warehouse_id
+                ).group_by(
+                    Inventory.item_id,
+                    Inventory.warehouse_id
                 ).first()
                 
                 if inventory:
                     # Update item's stock status based on inventory
-                    item.on_hand = inventory.quantity
-                    item.reserved = inventory.allocated_quantity
+                    item.on_hand = inventory.total_quantity or 0.0
+                    item.reserved = inventory.total_allocated or 0.0
                     
                     # Calculate available quantity
-                    available = inventory.available_quantity
-                    if available is None:
-                        available = inventory.quantity - inventory.allocated_quantity
+                    available = (inventory.total_quantity or 0.0) - (inventory.total_allocated or 0.0)
                     
                     # Update back orders if available quantity is negative
                     if available < 0:
@@ -654,10 +660,10 @@ class ItemService:
                         item.customer_back_order = 0.0
                     
                     # Update last receipt/issue dates
-                    if inventory.last_receipt_date:
-                        item.last_receipt_date = inventory.last_receipt_date
-                    if inventory.last_issue_date:
-                        item.last_issue_date = inventory.last_issue_date
+                    if inventory.last_receipt:
+                        item.last_receipt_date = inventory.last_receipt
+                    if inventory.last_issue:
+                        item.last_issue_date = inventory.last_issue
                     
                     # Recalculate safety stock based on new inventory levels
                     self._recalculate_safety_stock(item)
