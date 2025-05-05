@@ -3534,3 +3534,20 @@ WHERE inventory.item_id = %(item_id_1)s AND inventory.warehouse_id = %(warehouse
 2025-05-04 12:57:55,973 - batch - INFO - # Step 9: Running AI analysis
 2025-05-04 12:57:56,021 - warehouse_replenishment.services.ai_agent_service - INFO - Saved AI analysis to database with ID: 27
 2025-05-04 12:57:56,022 - batch - INFO - Nightly job completed successfully in 0:00:00.545681. AI Analysis Health: FAIR
+2025-05-04 21:23:33,239 - batch - INFO - Starting nightly job at 2025-05-04 21:23:33.238940
+2025-05-04 21:23:33,240 - batch - INFO - # Step 1: Update stock status
+2025-05-04 21:23:33,240 - batch - ERROR - Error during nightly job: session_scope is only available for PostgreSQL connections
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 244, in run_nightly_job
+    results['processes']['update_stock_status'] = update_stock_status(warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 39, in update_stock_status
+    with session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 224, in session_scope
+    with db.session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 178, in session_scope
+    raise DatabaseError("session_scope is only available for PostgreSQL connections")
+warehouse_replenishment.exceptions.DatabaseError: session_scope is only available for PostgreSQL connections

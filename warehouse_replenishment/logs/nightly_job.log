@@ -329,3 +329,35 @@ Top Recommendations:
 - Address Unresolved Exceptions
 2025-05-04 12:57:56,022 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
 2025-05-04 12:57:56,022 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-04 21:23:33,240 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-04 21:23:33,243 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-04 21:23:33,243 - nightly_job - ERROR - Error during AI analysis: session_scope is only available for PostgreSQL connections
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 244, in run_nightly_job
+    results['processes']['update_stock_status'] = update_stock_status(warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 39, in update_stock_status
+    with session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 224, in session_scope
+    with db.session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 178, in session_scope
+    raise DatabaseError("session_scope is only available for PostgreSQL connections")
+warehouse_replenishment.exceptions.DatabaseError: session_scope is only available for PostgreSQL connections
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 191, in run_ai_analysis
+    with session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 224, in session_scope
+    with db.session_scope() as session:
+  File "C:\Python310\lib\contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\db\connection.py", line 178, in session_scope
+    raise DatabaseError("session_scope is only available for PostgreSQL connections")
+warehouse_replenishment.exceptions.DatabaseError: session_scope is only available for PostgreSQL connections

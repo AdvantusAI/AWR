@@ -38,14 +38,15 @@ logger = logging.getLogger(__name__)
 class ItemService:
     """Service for handling item operations."""
     
-    def __init__(self, session: Session):
+    def __init__(self, session_or_client):
         """Initialize the item service.
         
         Args:
-            session: Database session
+            session_or_client: Database session or Supabase client
         """
-        self.session = session
+        self.session = session_or_client
         self._company_settings = None
+        self._is_supabase = not hasattr(session_or_client, 'query')
     
     @property
     def company_settings(self) -> Dict:
@@ -55,18 +56,24 @@ class ItemService:
             Dictionary with company settings
         """
         if not self._company_settings:
-            company = self.session.query(Company).first()
-            if not company:
-                raise ItemError("Company settings not found")
+            if self._is_supabase:
+                result = self.session.table('company').select('*').limit(1).execute()
+                if not result.data:
+                    raise ItemError("Company settings not found")
+                company = result.data[0]
+            else:
+                company = self.session.query(Company).first()
+                if not company:
+                    raise ItemError("Company settings not found")
             
             self._company_settings = {
-                'service_level_goal': company.service_level_goal,
-                'demand_from_days_out': company.demand_from_days_out,
-                'lead_time_forecast_control': company.lead_time_forecast_control,
-                'history_periodicity_default': company.history_periodicity_default,
-                'forecasting_periodicity_default': company.forecasting_periodicity_default,
-                'slow_mover_limit': company.slow_mover_limit,
-                'lumpy_demand_limit': company.lumpy_demand_limit
+                'service_level_goal': company.get('service_level_goal', 95.0) if self._is_supabase else company.service_level_goal,
+                'demand_from_days_out': company.get('demand_from_days_out', 1) if self._is_supabase else company.demand_from_days_out,
+                'lead_time_forecast_control': company.get('lead_time_forecast_control', 1) if self._is_supabase else company.lead_time_forecast_control,
+                'history_periodicity_default': company.get('history_periodicity_default', 13) if self._is_supabase else company.history_periodicity_default,
+                'forecasting_periodicity_default': company.get('forecasting_periodicity_default', 13) if self._is_supabase else company.forecasting_periodicity_default,
+                'slow_mover_limit': company.get('slow_mover_limit', 10.0) if self._is_supabase else company.slow_mover_limit,
+                'lumpy_demand_limit': company.get('lumpy_demand_limit', 50.0) if self._is_supabase else company.lumpy_demand_limit
             }
         
         return self._company_settings
@@ -117,37 +124,64 @@ class ItemService:
             buyer_id: Optional buyer ID filter
             item_group: Optional item group filter
             buyer_class: Optional list of buyer classes
-            system_class: Optional list of system classes
+            system_class: Optional list of system classes (ignored if field doesn't exist)
             active_only: Whether to include only active items
             
         Returns:
             List of item objects
         """
-        query = self.session.query(Item)
-        
-        if warehouse_id is not None:
-            query = query.filter(Item.warehouse_id == warehouse_id)
+        if self._is_supabase:
+            query = self.session.table('item').select('*')
             
-        if vendor_id is not None:
-            query = query.filter(Item.vendor_id == vendor_id)
+            if warehouse_id is not None:
+                query = query.eq('warehouse_id', warehouse_id)
+                
+            if vendor_id is not None:
+                query = query.eq('vendor_id', vendor_id)
+                
+            if buyer_id is not None:
+                query = query.eq('buyer_id', buyer_id)
+                
+            if item_group is not None:
+                query = query.like('item_group_codes', f'%{item_group}%')
+                
+            if buyer_class:
+                query = query.in_('buyer_class', buyer_class)
+            elif active_only:
+                query = query.in_('buyer_class', ['R', 'W'])
+                
+            result = query.execute()
+            items = []
+            for item_data in result.data or []:
+                try:
+                    items.append(Item(**{k: v for k, v in item_data.items() if hasattr(Item, k)}))
+                except TypeError:
+                    continue
+            return items
+        else:
+            query = self.session.query(Item)
             
-        if buyer_id is not None:
-            query = query.filter(Item.buyer_id == buyer_id)
-            
-        if item_group is not None:
-            # Search within item group codes using LIKE
-            query = query.filter(Item.item_group_codes.like(f'%{item_group}%'))
-            
-        if buyer_class:
-            query = query.filter(Item.buyer_class.in_(buyer_class))
-        elif active_only:
-            # Default to active items (Regular or Watch)
-            query = query.filter(Item.buyer_class.in_(['R', 'W']))  # Use string values that match enum values
-            
-        if system_class:
-            query = query.filter(Item.system_class.in_(system_class))
-            
-        return query.all()
+            if warehouse_id is not None:
+                query = query.filter(Item.warehouse_id == warehouse_id)
+                
+            if vendor_id is not None:
+                query = query.filter(Item.vendor_id == vendor_id)
+                
+            if buyer_id is not None:
+                query = query.filter(Item.buyer_id == buyer_id)
+                
+            if item_group is not None:
+                query = query.filter(Item.item_group_codes.like(f'%{item_group}%'))
+                
+            if buyer_class:
+                query = query.filter(Item.buyer_class.in_(buyer_class))
+            elif active_only:
+                query = query.filter(Item.buyer_class.in_(['R', 'W']))
+                
+            if system_class and hasattr(Item, 'system_class'):
+                query = query.filter(Item.system_class.in_(system_class))
+                
+            return query.all()
     
     def create_item(
         self,

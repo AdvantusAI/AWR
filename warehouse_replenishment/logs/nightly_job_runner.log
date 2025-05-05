@@ -156,3 +156,6 @@
 2025-05-04 12:57:56,024 - nightly_job_runner - INFO - Process 'generate_orders': False
 2025-05-04 12:57:56,024 - nightly_job_runner - INFO -   Generated orders: 1
 2025-05-04 12:57:56,024 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-05-04 21:23:33,237 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-04 21:23:33,238 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-04 21:23:33,244 - nightly_job_runner - ERROR - Nightly job failed: session_scope is only available for PostgreSQL connections

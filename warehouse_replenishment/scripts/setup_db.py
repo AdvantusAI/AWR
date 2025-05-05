@@ -1,3 +1,4 @@
+# warehouse_replenishment/scripts/setup_db.py
 import argparse
 import sys
 from pathlib import Path
@@ -6,7 +7,14 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from models import Base
-from db import db
+from db import (
+    db, 
+    initialize, 
+    get_db_type, 
+    create_all_tables, 
+    drop_all_tables,
+    session_scope
+)
 from config import config
 from logging_setup import get_logger
 
@@ -23,19 +31,30 @@ def setup_database(drop_existing=False):
     """
     try:
         # Initialize database connection
-        db.initialize()
+        initialize()
+        db_type = get_db_type()
         
-        if drop_existing:
-            logger.info("Dropping all existing tables...")
-            db.drop_all_tables()
-            logger.info("All tables dropped successfully.")
+        logger.info(f"Database type: {db_type}")
         
-        logger.info("Creating database tables...")
-        db.create_all_tables()
-        logger.info("Database tables created successfully.")
-        
-        # Initialize with default configuration
-        initialize_default_configuration()
+        if db_type == "postgresql":
+            if drop_existing:
+                logger.info("Dropping all existing tables...")
+                drop_all_tables()
+                logger.info("All tables dropped successfully.")
+            
+            logger.info("Creating database tables...")
+            create_all_tables()
+            logger.info("Database tables created successfully.")
+            
+            # Initialize with default configuration
+            initialize_default_configuration()
+            
+        else:  # Supabase
+            logger.info("Using Supabase. Tables must be created via SQL migrations.")
+            logger.info("Please run your Supabase migration scripts.")
+            
+            # Still initialize default configuration
+            initialize_default_configuration()
         
         return True
     except Exception as e:
@@ -45,13 +64,14 @@ def setup_database(drop_existing=False):
 
 def initialize_default_configuration():
     """Initialize the database with default configuration."""
-    from models import Company
+    from warehouse_replenishment.models import Company
+    from warehouse_replenishment.db import database_adapter
     
     logger.info("Initializing default configuration...")
     
-    with db.session_scope() as session:
-        # Check if company record exists
-        company = session.query(Company).first()
+    try:
+        # Try to get existing company record
+        company = database_adapter.get_by_id(Company, 1)
         
         if not company:
             logger.info("Creating default company record...")
@@ -88,17 +108,61 @@ def initialize_default_configuration():
                 history_periodicity_default=13,
                 forecasting_periodicity_default=13
             )
-            session.add(default_company)
+            
+            # Save using database adapter (works for both PostgreSQL and Supabase)
+            database_adapter.save(default_company)
             logger.info("Default company record created.")
         else:
             logger.info("Company record already exists. Skipping initialization.")
+        
+    except Exception as e:
+        logger.error(f"Error initializing default configuration: {str(e)}")
+        logger.exception(e)
+
+def run_supabase_migration_file(file_path):
+    """Run a Supabase migration SQL file (for PostgreSQL mode test)."""
+    if get_db_type() == "postgresql":
+        with session_scope() as session:
+            with open(file_path, 'r') as f:
+                sql = f.read()
+                session.execute(sql)
+        logger.info(f"Migration file {file_path} executed successfully.")
+    else:
+        logger.info("Cannot run SQL migration file directly for Supabase.")
+        logger.info("Please run these migrations through the Supabase dashboard or CLI.")
 
 def main():
     """Main function for database setup script."""
     parser = argparse.ArgumentParser(description='Set up the Warehouse Replenishment database.')
     parser.add_argument('--drop', action='store_true', help='Drop existing tables before creating new ones')
+    parser.add_argument('--migration', type=str, help='Run a SQL migration file (PostgreSQL only)')
+    parser.add_argument('--test-connection', action='store_true', help='Test database connection')
     
     args = parser.parse_args()
+    
+    if args.test_connection:
+        try:
+            initialize()
+            db_type = get_db_type()
+            logger.info(f"Successfully connected to {db_type} database!")
+            
+            if db_type == "postgresql":
+                with session_scope() as session:
+                    session.execute("SELECT 1")
+                    logger.info("PostgreSQL connection test passed.")
+            else:
+                client = db.get_supabase()
+                result = client.table('company').select('id').limit(1).execute()
+                logger.info(f"Supabase connection test passed. Tables available.")
+            
+            return
+        except Exception as e:
+            logger.error(f"Connection test failed: {str(e)}")
+            sys.exit(1)
+    
+    if args.migration:
+        run_supabase_migration_file(args.migration)
+        return
     
     logger.info("Starting database setup...")
     
