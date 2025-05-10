@@ -246,7 +246,7 @@ class OrderService:
             raise OrderError(f"Item with ID {item_id} already exists in order {order_id}")
             
         # Calculate SOQ in days
-        daily_demand = item.demand_4weekly / 28  # Assuming 28 days in a 4-weekly period
+        daily_demand = item.demand_4weekly / 28 if item.demand_4weekly is not None else 0.0  # Assuming 28 days in a 4-weekly period
         soq_days = round(soq_units / daily_demand, 1) if daily_demand > 0 else 0
         
         # Create order item
@@ -261,9 +261,9 @@ class OrderService:
             is_deal=is_deal,
             is_planned=is_planned,
             is_forward_buy=is_forward_buy,
-            item_order_point_units=item.item_order_point_units,
-            balance_units=item.on_hand + item.on_order,
-            order_up_to_level_units=item.order_up_to_level_units
+            item_order_point_units=item.item_order_point_units or 0.0,
+            balance_units=(item.on_hand or 0.0) + (item.on_order or 0.0),
+            order_up_to_level_units=item.order_up_to_level_units or 0.0
         )
         
         self.session.add(order_item)
@@ -418,17 +418,22 @@ class OrderService:
                 continue
                 
             # Update amounts
-            independent_amount += order_item.soq_units * item.purchase_price
+            if item.purchase_price is not None:
+                independent_amount += order_item.soq_units * item.purchase_price
             independent_eaches += order_item.soq_units
-            independent_weight += order_item.soq_units * (item.weight_per_unit or 0)
-            independent_volume += order_item.soq_units * (item.volume_per_unit or 0)
+            
+            # Update weight and volume
+            if item.weight_per_unit is not None:
+                independent_weight += order_item.soq_units * item.weight_per_unit
+            if item.volume_per_unit is not None:
+                independent_volume += order_item.soq_units * item.volume_per_unit
             
             # Calculate dozens
             if item.units_per_case == 12:
                 independent_dozens += order_item.soq_units / 12
                 
             # Calculate cases
-            if item.units_per_case > 0:
+            if item.units_per_case and item.units_per_case > 0:
                 independent_cases += order_item.soq_units / item.units_per_case
         
         # Update independent totals
@@ -1058,13 +1063,20 @@ class OrderService:
             
             # Check if item is at order point
             if soq_result['is_order_point'] and soq_result['soq_units'] > 0:
+                # Skip items with no purchase price
+                if item.purchase_price is None:
+                    logger.warning(f"Skipping item {item.id} ({item.description}) - no purchase price set")
+                    continue
+                    
                 order_point_items.append({
                     'item': item,
                     'soq_units': soq_result['soq_units'],
                     'soq_days': soq_result['soq_days']
                 })
                 
-                total_amount += soq_result['soq_units'] * item.purchase_price
+                # Calculate amount only if we have a valid purchase price
+                if item.purchase_price is not None:
+                    total_amount += soq_result['soq_units'] * item.purchase_price
         
         # Check if there are any items at order point
         if not order_point_items:

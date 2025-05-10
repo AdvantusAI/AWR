@@ -1,0 +1,372 @@
+2025-05-05 19:37:17,544 - batch - INFO - Starting nightly job at 2025-05-05 19:37:17.543022
+2025-05-05 19:37:17,544 - batch - INFO - # Step 1: Update stock status
+2025-05-05 19:37:17,918 - batch - INFO - # Step 2: Calculate lost sales
+2025-05-05 19:37:17,962 - batch - INFO - # Step 3: Update safety stock levels
+2025-05-05 19:37:18,125 - batch - INFO - # Step 4: Process time-based parameters
+2025-05-05 19:37:18,146 - batch - INFO - # Step 5: Expire deals
+2025-05-05 19:37:18,148 - batch - ERROR - Error during nightly job: No module named 'warehouse_replenishment.services.lead_time_service'
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 266, in run_nightly_job
+    results['processes']['lead_time_forecasts'] = update_lead_time_forecasts(warehouse_id)
+  File "D:\Personal\Code\AWR\warehouse_replenishment\batch\nightly_job.py", line 150, in update_lead_time_forecasts
+    from warehouse_replenishment.services.lead_time_service import LeadTimeService
+ModuleNotFoundError: No module named 'warehouse_replenishment.services.lead_time_service'
+2025-05-05 19:37:18,252 - warehouse_replenishment.services.ai_agent_service - INFO - Saved AI analysis to database with ID: 35
+2025-05-05 19:37:43,995 - batch - INFO - Starting nightly job at 2025-05-05 19:37:43.995955
+2025-05-05 19:37:43,995 - batch - INFO - # Step 1: Update stock status
+2025-05-05 19:37:44,247 - batch - INFO - # Step 2: Calculate lost sales
+2025-05-05 19:37:44,281 - batch - INFO - # Step 3: Update safety stock levels
+2025-05-05 19:37:44,431 - batch - INFO - # Step 4: Process time-based parameters
+2025-05-05 19:37:44,431 - batch - INFO - # Step 5: Expire deals
+2025-05-05 19:37:44,431 - batch - INFO - # Step 7: Generate orders
+2025-05-05 19:37:44,446 - warehouse_replenishment.services.order_service - INFO - Found 5 eligible vendors for order generation
+2025-05-05 19:37:44,447 - warehouse_replenishment.services.order_service - INFO - Processing vendor 1 (Superior Office Supplies)
+2025-05-05 19:37:44,447 - warehouse_replenishment.services.order_service - INFO - Active items: 50
+2025-05-05 19:37:44,447 - warehouse_replenishment.services.order_service - INFO - Vendor type: VendorType.REGULAR
+2025-05-05 19:37:44,447 - warehouse_replenishment.services.order_service - INFO - Deactivate until: None
+2025-05-05 19:37:44,470 - warehouse_replenishment.services.order_service - INFO - Item 7 (Desk Organizer, Mesh):
+2025-05-05 19:37:44,471 - warehouse_replenishment.services.order_service - INFO -   Balance: 24.0
+2025-05-05 19:37:44,472 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.094901085444757
+2025-05-05 19:37:44,472 - warehouse_replenishment.services.order_service - INFO -   OUTL: 6.157585867507639
+2025-05-05 19:37:44,472 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,472 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,473 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,473 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,474 - warehouse_replenishment.services.order_service - INFO - Item 1 (Premium Copy Paper, Case):
+2025-05-05 19:37:44,474 - warehouse_replenishment.services.order_service - INFO -   Balance: 120.0
+2025-05-05 19:37:44,474 - warehouse_replenishment.services.order_service - INFO -   IOP: 13.730070533626455
+2025-05-05 19:37:44,474 - warehouse_replenishment.services.order_service - INFO -   OUTL: 26.853608552306543
+2025-05-05 19:37:44,474 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,475 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,475 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,475 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,475 - warehouse_replenishment.services.order_service - INFO - Item 4 (Sticky Notes, Pad):
+2025-05-05 19:37:44,476 - warehouse_replenishment.services.order_service - INFO -   Balance: 92.0
+2025-05-05 19:37:44,476 - warehouse_replenishment.services.order_service - INFO -   IOP: 21.212103499099268
+2025-05-05 19:37:44,476 - warehouse_replenishment.services.order_service - INFO -   OUTL: 41.38652983390807
+2025-05-05 19:37:44,476 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 12.0
+2025-05-05 19:37:44,476 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 6.0
+2025-05-05 19:37:44,477 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 12.0
+2025-05-05 19:37:44,478 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,478 - warehouse_replenishment.services.order_service - INFO - Item 5 (Ball Point Pens, Box):
+2025-05-05 19:37:44,478 - warehouse_replenishment.services.order_service - INFO -   Balance: 125.0
+2025-05-05 19:37:44,479 - warehouse_replenishment.services.order_service - INFO -   IOP: 16.7076221615419
+2025-05-05 19:37:44,479 - warehouse_replenishment.services.order_service - INFO -   OUTL: 33.22251256243463
+2025-05-05 19:37:44,479 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,479 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,479 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,480 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,480 - warehouse_replenishment.services.order_service - INFO - Item 3 (Paper Clips, Box):
+2025-05-05 19:37:44,480 - warehouse_replenishment.services.order_service - INFO -   Balance: 20.0
+2025-05-05 19:37:44,480 - warehouse_replenishment.services.order_service - INFO -   IOP: 140.21155174799827
+2025-05-05 19:37:44,481 - warehouse_replenishment.services.order_service - INFO -   OUTL: 280.04558342106196
+2025-05-05 19:37:44,481 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 264.0
+2025-05-05 19:37:44,481 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 12.0
+2025-05-05 19:37:44,481 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 24.0
+2025-05-05 19:37:44,482 - warehouse_replenishment.services.order_service - INFO -   Is at order point: True
+2025-05-05 19:37:44,482 - warehouse_replenishment.services.order_service - INFO - Item 6 (Gel Pens, Premium, Box):
+2025-05-05 19:37:44,482 - warehouse_replenishment.services.order_service - INFO -   Balance: 24.0
+2025-05-05 19:37:44,482 - warehouse_replenishment.services.order_service - INFO -   IOP: 0.5974795161281272
+2025-05-05 19:37:44,482 - warehouse_replenishment.services.order_service - INFO -   OUTL: 1.0471502782745734
+2025-05-05 19:37:44,483 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 4.0
+2025-05-05 19:37:44,483 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 4.0
+2025-05-05 19:37:44,483 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 4.0
+2025-05-05 19:37:44,483 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,484 - warehouse_replenishment.services.order_service - INFO - Item 2 (Standard Staples, Box):
+2025-05-05 19:37:44,484 - warehouse_replenishment.services.order_service - INFO -   Balance: 10.0
+2025-05-05 19:37:44,484 - warehouse_replenishment.services.order_service - INFO -   IOP: 68.95720266392036
+2025-05-05 19:37:44,484 - warehouse_replenishment.services.order_service - INFO -   OUTL: 135.79904796412015
+2025-05-05 19:37:44,484 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 130.0
+2025-05-05 19:37:44,485 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 10.0
+2025-05-05 19:37:44,485 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 10.0
+2025-05-05 19:37:44,485 - warehouse_replenishment.services.order_service - INFO -   Is at order point: True
+2025-05-05 19:37:44,486 - warehouse_replenishment.services.order_service - INFO - Item 9 (Binder Clips, Assorted):
+2025-05-05 19:37:44,486 - warehouse_replenishment.services.order_service - INFO -   Balance: 75.0
+2025-05-05 19:37:44,486 - warehouse_replenishment.services.order_service - INFO -   IOP: 20.725928110614674
+2025-05-05 19:37:44,486 - warehouse_replenishment.services.order_service - INFO -   OUTL: 41.463836840480624
+2025-05-05 19:37:44,486 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 10.0
+2025-05-05 19:37:44,487 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 10.0
+2025-05-05 19:37:44,487 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 10.0
+2025-05-05 19:37:44,487 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,488 - warehouse_replenishment.services.order_service - INFO - Item 10 (Whiteboard Markers, Set):
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   Balance: 64.0
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   IOP: 7.435738461127017
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   OUTL: 14.75821302928016
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 4.0
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 4.0
+2025-05-05 19:37:44,489 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 4.0
+2025-05-05 19:37:44,490 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,490 - warehouse_replenishment.services.order_service - INFO - Item 8 (File Folders, Pack of 25):
+2025-05-05 19:37:44,490 - warehouse_replenishment.services.order_service - INFO -   Balance: 60.0
+2025-05-05 19:37:44,490 - warehouse_replenishment.services.order_service - INFO -   IOP: 7.654668409438252
+2025-05-05 19:37:44,491 - warehouse_replenishment.services.order_service - INFO -   OUTL: 15.23639724821263
+2025-05-05 19:37:44,491 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,491 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,491 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,491 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,514 - warehouse_replenishment.services.order_service - ERROR - Error generating order for vendor 1: unsupported operand type(s) for +: 'float' and 'NoneType'
+2025-05-05 19:37:44,516 - warehouse_replenishment.services.order_service - INFO - Processing vendor 2 (Acme Electronics)
+2025-05-05 19:37:44,516 - warehouse_replenishment.services.order_service - INFO - Active items: 35
+2025-05-05 19:37:44,516 - warehouse_replenishment.services.order_service - INFO - Vendor type: VendorType.REGULAR
+2025-05-05 19:37:44,517 - warehouse_replenishment.services.order_service - INFO - Deactivate until: None
+2025-05-05 19:37:44,525 - warehouse_replenishment.services.order_service - INFO - Item 18 (Power Strip, 6-Outlet):
+2025-05-05 19:37:44,525 - warehouse_replenishment.services.order_service - INFO -   Balance: 32.0
+2025-05-05 19:37:44,525 - warehouse_replenishment.services.order_service - INFO -   IOP: 5.315650376637454
+2025-05-05 19:37:44,526 - warehouse_replenishment.services.order_service - INFO -   OUTL: 11.406821366022745
+2025-05-05 19:37:44,526 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,526 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,526 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,526 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,527 - warehouse_replenishment.services.order_service - INFO - Item 16 (HDMI Cable, 10ft):
+2025-05-05 19:37:44,527 - warehouse_replenishment.services.order_service - INFO -   Balance: 28.0
+2025-05-05 19:37:44,527 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.5445390249248043
+2025-05-05 19:37:44,528 - warehouse_replenishment.services.order_service - INFO -   OUTL: 7.53000374113824
+2025-05-05 19:37:44,528 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,528 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,528 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,528 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,529 - warehouse_replenishment.services.order_service - INFO - Item 19 (Laptop Cooling Pad):
+2025-05-05 19:37:44,529 - warehouse_replenishment.services.order_service - INFO -   Balance: 6.0
+2025-05-05 19:37:44,529 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.3128109768139016
+2025-05-05 19:37:44,530 - warehouse_replenishment.services.order_service - INFO -   OUTL: 2.8128109768139016
+2025-05-05 19:37:44,530 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,530 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,530 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,531 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,531 - warehouse_replenishment.services.order_service - INFO - Item 12 (Wireless Mouse):
+2025-05-05 19:37:44,531 - warehouse_replenishment.services.order_service - INFO -   Balance: 40.0
+2025-05-05 19:37:44,531 - warehouse_replenishment.services.order_service - INFO -   IOP: 5.745904838182601
+2025-05-05 19:37:44,532 - warehouse_replenishment.services.order_service - INFO -   OUTL: 12.19950929707872
+2025-05-05 19:37:44,532 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,532 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,532 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,532 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,533 - warehouse_replenishment.services.order_service - INFO - Item 15 (Bluetooth Speaker, Portable):
+2025-05-05 19:37:44,533 - warehouse_replenishment.services.order_service - INFO -   Balance: 15.0
+2025-05-05 19:37:44,533 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.322404164066737
+2025-05-05 19:37:44,533 - warehouse_replenishment.services.order_service - INFO -   OUTL: 2.822404164066737
+2025-05-05 19:37:44,533 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,534 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,534 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,534 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,535 - warehouse_replenishment.services.order_service - INFO - Item 11 (USB Flash Drive, 64GB):
+2025-05-05 19:37:44,535 - warehouse_replenishment.services.order_service - INFO -   Balance: 60.0
+2025-05-05 19:37:44,535 - warehouse_replenishment.services.order_service - INFO -   IOP: 7.248270182884008
+2025-05-05 19:37:44,535 - warehouse_replenishment.services.order_service - INFO -   OUTL: 15.302284445585457
+2025-05-05 19:37:44,536 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,536 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,536 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,536 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,537 - warehouse_replenishment.services.order_service - INFO - Item 14 (Wireless Keyboard):
+2025-05-05 19:37:44,537 - warehouse_replenishment.services.order_service - INFO -   Balance: 12.0
+2025-05-05 19:37:44,537 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.9789044612657527
+2025-05-05 19:37:44,537 - warehouse_replenishment.services.order_service - INFO -   OUTL: 4.228904461265753
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO - Item 20 (Wireless Earbuds):
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Balance: 12.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.3140711712483506
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   OUTL: 2.814071171248351
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,538 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO - Item 13 (USB-C Cable, 6ft):
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   Balance: 90.0
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   IOP: 14.352334374695925
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   OUTL: 30.69303057313455
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,541 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,542 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,542 - warehouse_replenishment.services.order_service - INFO - Item 17 (USB Hub, 4-Port):
+2025-05-05 19:37:44,542 - warehouse_replenishment.services.order_service - INFO -   Balance: 22.0
+2025-05-05 19:37:44,542 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.95373303790746
+2025-05-05 19:37:44,542 - warehouse_replenishment.services.order_service - INFO -   OUTL: 8.45373303790746
+2025-05-05 19:37:44,543 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,543 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,543 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,543 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,544 - warehouse_replenishment.services.order_service - INFO - No order generated for vendor 2: No items at order point
+2025-05-05 19:37:44,546 - warehouse_replenishment.services.order_service - INFO - Processing vendor 3 (Tech Components Inc)
+2025-05-05 19:37:44,546 - warehouse_replenishment.services.order_service - INFO - Active items: 45
+2025-05-05 19:37:44,547 - warehouse_replenishment.services.order_service - INFO - Vendor type: VendorType.REGULAR
+2025-05-05 19:37:44,547 - warehouse_replenishment.services.order_service - INFO - Deactivate until: None
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO - Item 21 (CPU Cooling Fan):
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   Balance: 28.0
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.6912840423583742
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   OUTL: 3.3163991211269974
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,554 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,556 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,556 - warehouse_replenishment.services.order_service - INFO - Item 23 (SATA Cable, 18"):
+2025-05-05 19:37:44,556 - warehouse_replenishment.services.order_service - INFO -   Balance: 80.0
+2025-05-05 19:37:44,556 - warehouse_replenishment.services.order_service - INFO -   IOP: 4.896636703367182
+2025-05-05 19:37:44,557 - warehouse_replenishment.services.order_service - INFO -   OUTL: 9.439635086999003
+2025-05-05 19:37:44,557 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,557 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,557 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,557 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,558 - warehouse_replenishment.services.order_service - INFO - Item 25 (Power Supply, 500W):
+2025-05-05 19:37:44,558 - warehouse_replenishment.services.order_service - INFO -   Balance: 10.0
+2025-05-05 19:37:44,558 - warehouse_replenishment.services.order_service - INFO -   IOP: 6.669475891781013
+2025-05-05 19:37:44,558 - warehouse_replenishment.services.order_service - INFO -   OUTL: 11.23053109885886
+2025-05-05 19:37:44,558 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.2305310988588598
+2025-05-05 19:37:44,559 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,559 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,559 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,560 - warehouse_replenishment.services.order_service - INFO - Item 26 (SSD, 500GB):
+2025-05-05 19:37:44,560 - warehouse_replenishment.services.order_service - INFO -   Balance: 20.0
+2025-05-05 19:37:44,560 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.3163782062963651
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   OUTL: 2.580663998301042
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO - Item 30 (PC Case, Mid-tower):
+2025-05-05 19:37:44,561 - warehouse_replenishment.services.order_service - INFO -   Balance: 10.0
+2025-05-05 19:37:44,563 - warehouse_replenishment.services.order_service - INFO -   IOP: 6.597475891781013
+2025-05-05 19:37:44,563 - warehouse_replenishment.services.order_service - INFO -   OUTL: 11.15853109885886
+2025-05-05 19:37:44,564 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.1585310988588606
+2025-05-05 19:37:44,564 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,564 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,564 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,564 - warehouse_replenishment.services.order_service - INFO - Item 29 (Motherboard, ATX):
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   Balance: 7.0
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   IOP: 4.526652942646373
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   OUTL: 7.567356414031605
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,565 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,566 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,566 - warehouse_replenishment.services.order_service - INFO - Item 28 (Graphics Card, Mid-range):
+2025-05-05 19:37:44,566 - warehouse_replenishment.services.order_service - INFO -   Balance: 8.0
+2025-05-05 19:37:44,566 - warehouse_replenishment.services.order_service - INFO -   IOP: 4.519712217542389
+2025-05-05 19:37:44,568 - warehouse_replenishment.services.order_service - INFO -   OUTL: 7.56041568892762
+2025-05-05 19:37:44,568 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,568 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,568 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,568 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,569 - warehouse_replenishment.services.order_service - INFO - Item 24 (Case Fan, 120mm):
+2025-05-05 19:37:44,569 - warehouse_replenishment.services.order_service - INFO -   Balance: 32.0
+2025-05-05 19:37:44,569 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.9339031188730473
+2025-05-05 19:37:44,569 - warehouse_replenishment.services.order_service - INFO -   OUTL: 3.771363717175211
+2025-05-05 19:37:44,570 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,570 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,570 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,570 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO - Item 22 (Thermal Paste, 5g):
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Balance: 50.0
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.1737687417076654
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   OUTL: 6.105408025149763
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 5.0
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 5.0
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 5.0
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO - Item 27 (RAM, 16GB):
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   Balance: 16.0
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   IOP: 9.008080497769756
+2025-05-05 19:37:44,571 - warehouse_replenishment.services.order_service - INFO -   OUTL: 15.089487440540221
+2025-05-05 19:37:44,573 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,573 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,573 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,574 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,574 - warehouse_replenishment.services.order_service - INFO - No order generated for vendor 3: No items at order point
+2025-05-05 19:37:44,577 - warehouse_replenishment.services.order_service - INFO - Processing vendor 4 (Global Parts Ltd)
+2025-05-05 19:37:44,577 - warehouse_replenishment.services.order_service - INFO - Active items: 30
+2025-05-05 19:37:44,577 - warehouse_replenishment.services.order_service - INFO - Vendor type: VendorType.REGULAR
+2025-05-05 19:37:44,577 - warehouse_replenishment.services.order_service - INFO - Deactivate until: None
+2025-05-05 19:37:44,585 - warehouse_replenishment.services.order_service - INFO - Item 35 (Laptop Memory, 8GB):
+2025-05-05 19:37:44,585 - warehouse_replenishment.services.order_service - INFO -   Balance: 12.0
+2025-05-05 19:37:44,585 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.7225233067082437
+2025-05-05 19:37:44,586 - warehouse_replenishment.services.order_service - INFO -   OUTL: 3.2225233067082435
+2025-05-05 19:37:44,586 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,586 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,586 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,587 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,588 - warehouse_replenishment.services.order_service - INFO - Item 31 (Laptop Battery, Standard):
+2025-05-05 19:37:44,588 - warehouse_replenishment.services.order_service - INFO -   Balance: 20.0
+2025-05-05 19:37:44,588 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.470898282364582
+2025-05-05 19:37:44,588 - warehouse_replenishment.services.order_service - INFO -   OUTL: 6.4708982823645815
+2025-05-05 19:37:44,589 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,589 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,589 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,589 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,590 - warehouse_replenishment.services.order_service - INFO - Item 33 (Laptop Keyboard):
+2025-05-05 19:37:44,590 - warehouse_replenishment.services.order_service - INFO -   Balance: 14.0
+2025-05-05 19:37:44,590 - warehouse_replenishment.services.order_service - INFO -   IOP: 2.3011632912536406
+2025-05-05 19:37:44,590 - warehouse_replenishment.services.order_service - INFO -   OUTL: 4.301163291253641
+2025-05-05 19:37:44,590 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO - Item 32 (Laptop Screen, 15.6"):
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO -   Balance: 7.0
+2025-05-05 19:37:44,591 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.1479119927381154
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   OUTL: 2.1479119927381154
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 1.0
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 1.0
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 1.0
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO - Item 34 (Laptop Charger, Universal):
+2025-05-05 19:37:44,593 - warehouse_replenishment.services.order_service - INFO -   Balance: 26.0
+2025-05-05 19:37:44,595 - warehouse_replenishment.services.order_service - INFO -   IOP: 3.2156152137331397
+2025-05-05 19:37:44,595 - warehouse_replenishment.services.order_service - INFO -   OUTL: 5.925414807129556
+2025-05-05 19:37:44,595 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 2.0
+2025-05-05 19:37:44,595 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 2.0
+2025-05-05 19:37:44,595 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 2.0
+2025-05-05 19:37:44,596 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,596 - warehouse_replenishment.services.order_service - INFO - No order generated for vendor 4: No items at order point
+2025-05-05 19:37:44,597 - warehouse_replenishment.services.order_service - INFO - Processing vendor 5 (QuickShip Logistics)
+2025-05-05 19:37:44,598 - warehouse_replenishment.services.order_service - INFO - Active items: 25
+2025-05-05 19:37:44,598 - warehouse_replenishment.services.order_service - INFO - Vendor type: VendorType.REGULAR
+2025-05-05 19:37:44,598 - warehouse_replenishment.services.order_service - INFO - Deactivate until: None
+2025-05-05 19:37:44,605 - warehouse_replenishment.services.order_service - INFO - Item 39 (Packing Tape, Roll):
+2025-05-05 19:37:44,606 - warehouse_replenishment.services.order_service - INFO -   Balance: 168.0
+2025-05-05 19:37:44,606 - warehouse_replenishment.services.order_service - INFO -   IOP: 1.9209601925232835e-11
+2025-05-05 19:37:44,606 - warehouse_replenishment.services.order_service - INFO -   OUTL: 3.058598878978586e-11
+2025-05-05 19:37:44,606 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 12.0
+2025-05-05 19:37:44,606 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 12.0
+2025-05-05 19:37:44,607 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 12.0
+2025-05-05 19:37:44,607 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,607 - warehouse_replenishment.services.order_service - INFO - Item 40 (Bubble Wrap, Roll):
+2025-05-05 19:37:44,607 - warehouse_replenishment.services.order_service - INFO -   Balance: 60.0
+2025-05-05 19:37:44,607 - warehouse_replenishment.services.order_service - INFO -   IOP: 8.004000802180349e-12
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   OUTL: 1.274416199574411e-11
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 6.0
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 6.0
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 6.0
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO - Item 38 (Shipping Box, Large):
+2025-05-05 19:37:44,608 - warehouse_replenishment.services.order_service - INFO -   Balance: 220.0
+2025-05-05 19:37:44,610 - warehouse_replenishment.services.order_service - INFO -   IOP: 2.4012002406541046e-11
+2025-05-05 19:37:44,610 - warehouse_replenishment.services.order_service - INFO -   OUTL: 3.823248598723233e-11
+2025-05-05 19:37:44,610 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 20.0
+2025-05-05 19:37:44,610 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 20.0
+2025-05-05 19:37:44,610 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 20.0
+2025-05-05 19:37:44,611 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,611 - warehouse_replenishment.services.order_service - INFO - Item 37 (Shipping Box, Small):
+2025-05-05 19:37:44,611 - warehouse_replenishment.services.order_service - INFO -   Balance: 700.0
+2025-05-05 19:37:44,611 - warehouse_replenishment.services.order_service - INFO -   IOP: 8.00400080218035e-11
+2025-05-05 19:37:44,612 - warehouse_replenishment.services.order_service - INFO -   OUTL: 1.2744161995744112e-10
+2025-05-05 19:37:44,612 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 50.0
+2025-05-05 19:37:44,612 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 50.0
+2025-05-05 19:37:44,612 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 50.0
+2025-05-05 19:37:44,612 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,613 - warehouse_replenishment.services.order_service - INFO - Item 36 (Shipping Box, Medium):
+2025-05-05 19:37:44,613 - warehouse_replenishment.services.order_service - INFO -   Balance: 500.0
+2025-05-05 19:37:44,613 - warehouse_replenishment.services.order_service - INFO -   IOP: 6.403200641744279e-11
+2025-05-05 19:37:44,613 - warehouse_replenishment.services.order_service - INFO -   OUTL: 1.0195329596595288e-10
+2025-05-05 19:37:44,614 - warehouse_replenishment.services.order_service - INFO -   Initial SOQ: 25.0
+2025-05-05 19:37:44,614 - warehouse_replenishment.services.order_service - INFO -   Buying multiple: 25.0
+2025-05-05 19:37:44,614 - warehouse_replenishment.services.order_service - INFO -   Minimum quantity: 25.0
+2025-05-05 19:37:44,614 - warehouse_replenishment.services.order_service - INFO -   Is at order point: False
+2025-05-05 19:37:44,614 - warehouse_replenishment.services.order_service - INFO - No order generated for vendor 5: No items at order point
+2025-05-05 19:37:44,615 - warehouse_replenishment.services.order_service - INFO - Order generation complete. Generated 0 orders for 0 items
+2025-05-05 19:37:44,616 - batch - INFO - # Step 8: Purge accepted orders
+2025-05-05 19:37:44,621 - batch - INFO - # Step 9: Running AI analysis
+2025-05-05 19:37:44,683 - warehouse_replenishment.services.ai_agent_service - INFO - Saved AI analysis to database with ID: 36
+2025-05-05 19:37:44,683 - batch - INFO - Nightly job completed successfully in 0:00:00.625127. AI Analysis Health: NEEDS_ATTENTION

@@ -43,3 +43,19 @@
 2025-05-01 23:36:31,233 - nightly_job_runner - INFO - Process 'generate_orders': False
 2025-05-01 23:36:31,233 - nightly_job_runner - INFO -   Generated orders: 1
 2025-05-01 23:36:31,233 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
+2025-05-05 19:37:17,542 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-05 19:37:17,543 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-05 19:37:18,254 - nightly_job_runner - ERROR - Nightly job failed: No module named 'warehouse_replenishment.services.lead_time_service'
+2025-05-05 19:37:43,995 - nightly_job_runner - INFO - Starting nightly job runner...
+2025-05-05 19:37:43,995 - nightly_job_runner - INFO - Warehouse filter: All warehouses
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Nightly job completed successfully
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Duration: 0:00:00.625127
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'update_stock_status': False
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'calculate_lost_sales': False
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'update_safety_stock': False
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO -   Updated items: 40
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'time_based_parameters': False
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'expire_deals': True
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'generate_orders': False
+2025-05-05 19:37:44,683 - nightly_job_runner - INFO - Process 'purge_accepted_orders': False
