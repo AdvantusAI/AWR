@@ -47,11 +47,11 @@ class AIAnalysisService:
             self.session.add(analysis)
             self.session.commit()
             
-            logger.info(f"Created AI analysis for warehouse {warehouse_id} period {period}")
+            logger.info(f"Análisis creado por M8.Sentinel para el cedis: {warehouse_id} en el periodo: {period}")
             return analysis
             
         except Exception as e:
-            logger.error(f"Error analyzing warehouse performance: {str(e)}")
+            logger.error(f"Error al analizar el rendimiento del almacén: {str(e)}")
             self.session.rollback()
             raise
 
@@ -137,7 +137,7 @@ class AIAnalysisService:
         
         # Analyze accuracy
         if metrics['accuracy_rate'] < 80:
-            observations.append(f"Low accuracy rate ({metrics['accuracy_rate']:.2f}%) indicates forecasting challenges.")
+            observations.append(f"Bajo % de precisión ({metrics['accuracy_rate']:.2f}%) indica desafíos de pronóstico.")
         
         # Analyze error distribution
         if metrics['over_forecast'] > metrics['under_forecast']:
@@ -147,7 +147,7 @@ class AIAnalysisService:
         
         # Analyze MAPE
         if metrics['mape'] > 50:
-            observations.append(f"High MAPE ({metrics['mape']:.2f}%) suggests significant forecast errors.")
+            observations.append(f"MAPE alto ({metrics['mape']:.2f}%) sugiere errores de pronóstico significativos.")
         
         # Add observations about top missed forecasts
         if forecast_results['top_missed_forecasts']:
@@ -163,22 +163,22 @@ class AIAnalysisService:
         
         # Recommendations based on accuracy
         if metrics['accuracy_rate'] < 80:
-            recommendations.append("Review and adjust forecasting parameters for low-accuracy items.")
+            recommendations.append("Revisar y ajustar los parámetros de pronóstico para elementos de baja precisión.")
         
         # Recommendations based on error distribution
         if metrics['over_forecast'] > metrics['under_forecast']:
-            recommendations.append("Consider reducing safety stock levels for items with consistent over-forecasting.")
+            recommendations.append("Considere reducir los niveles de existencias de seguridad para los artículos con pronósticos excesivos constantes.")
         elif metrics['under_forecast'] > metrics['over_forecast']:
-            recommendations.append("Consider increasing safety stock levels for items with consistent under-forecasting.")
+            recommendations.append("Considere aumentar los niveles de stock de seguridad para los artículos con pronósticos constantemente inferiores a los esperados.")
         
         # Recommendations based on MAPE
         if metrics['mape'] > 50:
-            recommendations.append("Investigate and address root causes of high forecast errors.")
+            recommendations.append("Investigar y abordar las causas fundamentales de los altos errores de pronóstico.")
         
         # Specific recommendations for top missed forecasts
         if forecast_results['top_missed_forecasts']:
-            recommendations.append("Focus on improving forecasts for items with highest errors:")
+            recommendations.append("Centrarse en mejorar los pronósticos para los artículos con mayores errores:")
             for item in forecast_results['top_missed_forecasts']:
-                recommendations.append(f"- Item {item['item_id']}: Review demand patterns and adjust forecasting model")
+                recommendations.append(f"- Artículo {item['item_id']}: Revisar los patrones de demanda y ajustar el modelo de pronóstico")
         
         return "\n".join(recommendations) 

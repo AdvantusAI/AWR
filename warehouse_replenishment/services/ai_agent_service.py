@@ -224,12 +224,10 @@ class NightlyJobAnalyzer:
     
     def _analyze_stock_status(self, job_results: Dict[str, Any], analysis: Dict[str, Any]):
         """Analyze stock status update results."""
-        stock_status_results = job_results.get('processes', {}).get('update_stock_status', {})
-        
         detailed_analysis = {
-            'total_items': stock_status_results.get('total_items', 0),
-            'updated_items': stock_status_results.get('updated_items', 0),
-            'errors': stock_status_results.get('errors', 0),
+            'total_items': job_results.get('total_items', 0),
+            'updated_items': job_results.get('updated_items', 0),
+            'errors': job_results.get('errors', 0),
             'success_rate': 0.0,
             'key_findings': []
         }
@@ -244,7 +242,7 @@ class NightlyJobAnalyzer:
             insight = {
                 'type': 'CONCERN',
                 'category': 'STOCK_STATUS',
-                'message': f"Stock status update had {detailed_analysis['errors']} errors",
+                'message': f"La actualización del estado del inventario tuvo {detailed_analysis['errors']} errores",
                 'priority': 'HIGH' if detailed_analysis['success_rate'] < 90 else 'MEDIUM'
             }
             analysis['insights'].append(insight)
@@ -252,23 +250,25 @@ class NightlyJobAnalyzer:
         # Generate specific findings
         if detailed_analysis['success_rate'] < 100:
             detailed_analysis['key_findings'].append(
-                f"Only {detailed_analysis['success_rate']:.1f}% of items were successfully updated"
+                f"Solo {detailed_analysis['success_rate']:.1f}% de los artículos se actualizaron correctamente"
             )
         
         # Analyze out of stock items
         out_of_stock_count = self._get_out_of_stock_count()
         if out_of_stock_count > 0:
             detailed_analysis['key_findings'].append(
-                f"{out_of_stock_count} items are currently out of stock"
+                f"Se encontraron {out_of_stock_count} artículos sin stock"
             )
             
-            analysis['insights'].append({
+            insight = {
                 'type': 'CONCERN',
                 'category': 'STOCK_STATUS',
-                'message': f"{out_of_stock_count} items are out of stock",
-                'priority': 'HIGH' if out_of_stock_count > 50 else 'MEDIUM'
-            })
+                'message': f"{out_of_stock_count} artículos están actualmente sin stock",
+                'priority': 'HIGH' if out_of_stock_count > 10 else 'MEDIUM'
+            }
+            analysis['insights'].append(insight)
         
+        # Store the detailed analysis
         analysis['detailed_analysis']['stock_status'] = detailed_analysis
     
     def _analyze_lost_sales(self, job_results: Dict[str, Any], analysis: Dict[str, Any]):
@@ -289,10 +289,10 @@ class NightlyJobAnalyzer:
             detailed_analysis['lost_sales_value'] = lost_sales_value
             
             detailed_analysis['key_findings'].append(
-                f"Calculated {detailed_analysis['calculated_lost_sales']:.1f} units of lost sales"
+                f"Se calcularon {detailed_analysis['calculated_lost_sales']:.1f} unidades de ventas perdidas"
             )
             detailed_analysis['key_findings'].append(
-                f"Estimated lost sales value: ${lost_sales_value:.2f}"
+                f"Valor estimado de ventas perdidas: ${lost_sales_value:.2f}"
             )
             
             # Generate insight for significant lost sales
@@ -300,7 +300,7 @@ class NightlyJobAnalyzer:
                 analysis['insights'].append({
                     'type': 'CONCERN',
                     'category': 'LOST_SALES',
-                    'message': f"Significant lost sales: ${lost_sales_value:.2f}",
+                    'message': f"Ventas perdidas significativas: ${lost_sales_value:.2f}",
                     'priority': 'HIGH' if lost_sales_value > 5000 else 'MEDIUM'
                 })
         
@@ -308,14 +308,17 @@ class NightlyJobAnalyzer:
         frequent_stockout_items = self._identify_frequent_stockout_items()
         if frequent_stockout_items:
             detailed_analysis['key_findings'].append(
-                f"{len(frequent_stockout_items)} items have frequent stockouts"
+                f"{len(frequent_stockout_items)} artículos tienen faltantes frecuentes"
             )
             detailed_analysis['frequent_stockout_items'] = frequent_stockout_items
+            
+            # Get item IDs for the message
+            item_ids = [item['item_id'] for item in frequent_stockout_items]
             
             analysis['insights'].append({
                 'type': 'CONCERN',
                 'category': 'LOST_SALES',
-                'message': f"{len(frequent_stockout_items)} items have frequent stockouts",
+                'message': f"{len(frequent_stockout_items)} Los artículos tienen frecuentes desabastecimientos (IDs: {', '.join(map(str, item_ids))})",
                 'priority': 'HIGH'
             })
         
@@ -336,14 +339,14 @@ class NightlyJobAnalyzer:
         low_ss_items = self._identify_low_safety_stock_items()
         if low_ss_items:
             detailed_analysis['key_findings'].append(
-                f"{len(low_ss_items)} items have insufficient safety stock"
+                f"{len(low_ss_items)} Los artículos no tienen suficiente stock de seguridad"
             )
             detailed_analysis['low_safety_stock_items'] = low_ss_items
             
             analysis['insights'].append({
                 'type': 'CONCERN',
                 'category': 'SAFETY_STOCK',
-                'message': f"{len(low_ss_items)} items have insufficient safety stock",
+                'message': f"{len(low_ss_items)} Los artículos no tienen suficiente stock de seguridad",
                 'priority': 'HIGH'
             })
         
@@ -351,14 +354,14 @@ class NightlyJobAnalyzer:
         high_ss_items = self._identify_excessive_safety_stock_items()
         if high_ss_items:
             detailed_analysis['key_findings'].append(
-                f"{len(high_ss_items)} items have excessive safety stock"
+                f"{len(high_ss_items)} Los artículos tienen un stock de seguridad excesivo"
             )
             detailed_analysis['excessive_safety_stock_items'] = high_ss_items
             
             analysis['insights'].append({
                 'type': 'OPPORTUNITY',
                 'category': 'SAFETY_STOCK',
-                'message': f"{len(high_ss_items)} items have excessive safety stock",
+                'message': f"{len(high_ss_items)} Los artículos tienen un stock de seguridad excesivo",
                 'priority': 'MEDIUM'
             })
         
@@ -383,7 +386,7 @@ class NightlyJobAnalyzer:
             
             if success_rate < 100:
                 detailed_analysis['key_findings'].append(
-                    f"Only {success_rate:.1f}% of time-based parameters were processed successfully"
+                    f"Only {success_rate:.1f}% of Los parámetros basados ​​en el tiempo se procesaron con éxito"
                 )
                 
                 analysis['insights'].append({
@@ -415,13 +418,13 @@ class NightlyJobAnalyzer:
             
             if order_rate < 50:  # Threshold for concern
                 detailed_analysis['key_findings'].append(
-                    f"Only {order_rate:.1f}% of vendors generated orders"
+                    f"Only {order_rate:.1f}% de los proveedores generaron pedidos"
                 )
                 
                 analysis['insights'].append({
                     'type': 'CONCERN',
                     'category': 'ORDER_GENERATION',
-                    'message': f"Low order generation rate: {order_rate:.1f}%",
+                    'message': f"Tasa de generación de pedidos baja: {order_rate:.1f}%",
                     'priority': 'MEDIUM'
                 })
         
@@ -442,7 +445,7 @@ class NightlyJobAnalyzer:
         vendors_without_orders = self._identify_vendors_without_orders()
         if vendors_without_orders:
             detailed_analysis['key_findings'].append(
-                f"{len(vendors_without_orders)} active vendors didn't generate orders"
+                f"{len(vendors_without_orders)} Los proveedores activos no generaron pedidos"
             )
             detailed_analysis['vendors_without_orders'] = vendors_without_orders
             
@@ -450,7 +453,7 @@ class NightlyJobAnalyzer:
                 analysis['insights'].append({
                     'type': 'CONCERN',
                     'category': 'ORDER_GENERATION',
-                    'message': f"{len(vendors_without_orders)} vendors didn't generate orders",
+                    'message': f"{len(vendors_without_orders)} Los proveedores no generaron pedidos",
                     'priority': 'MEDIUM'
                 })
         
@@ -486,11 +489,11 @@ class NightlyJobAnalyzer:
                 'title': 'Address Out of Stock Items',
                 'priority': 'HIGH',
                 'category': 'STOCK_STATUS',
-                'description': f"There are {out_of_stock_count} items currently out of stock.",
+                'description': f"Existen {out_of_stock_count} Artículos actualmente fuera de stock.",
                 'action_items': [
-                    "Review items with zero inventory and expedite orders",
-                    "Investigate root causes for stockouts",
-                    "Consider emergency purchases for critical items"
+                    "Revisar artículos con inventario cero y agilizar pedidos",
+                    "Investigar las causas fundamentales de las faltantes de existencias",
+                    "Considere realizar compras de emergencia de artículos críticos"
                 ]
             })
         
@@ -501,11 +504,11 @@ class NightlyJobAnalyzer:
                 'title': 'Minimize Lost Sales',
                 'priority': 'HIGH',
                 'category': 'LOST_SALES',
-                'description': f"Calculated lost sales: {lost_sales_details['calculated_lost_sales']:.1f} units",
+                'description': f"Ventas perdidas calculadas: {lost_sales_details['calculated_lost_sales']:.1f} units",
                 'action_items': [
-                    "Increase safety stock for items with frequent stockouts",
-                    "Review lead times and order cycles",
-                    "Consider forecasting method adjustments"
+                    "Aumentar el stock de seguridad para artículos con frecuentes desabastecimientos",
+                    "Revisar los plazos de entrega y los ciclos de pedidos",
+                    "Considere ajustes en el método de pronóstico"
                 ]
             })
         
@@ -518,9 +521,9 @@ class NightlyJobAnalyzer:
                 'category': 'SAFETY_STOCK',
                 'description': f"{len(low_ss_items)} items have insufficient safety stock",
                 'action_items': [
-                    "Review service level goals for critical items",
-                    "Consider increasing safety stock for items with high demand variability",
-                    "Review lead time reliability for these items"
+                    "Revisar los objetivos de nivel de servicio para elementos críticos",
+                    "Considere aumentar el stock de seguridad para artículos con alta variabilidad de demanda",
+                    "Revise la confiabilidad del tiempo de entrega para estos artículos"
                 ]
             })
         
@@ -533,9 +536,9 @@ class NightlyJobAnalyzer:
                 'category': 'ORDER_GENERATION',
                 'description': f"Low order generation rate: {order_details['order_generation_rate']:.1f}%",
                 'action_items': [
-                    "Review vendor order cycles",
-                    "Check for deactivated vendors",
-                    "Investigate why vendors aren't reaching order points"
+                    "Revisar los ciclos de pedidos de proveedores",
+                    "Comprobar proveedores desactivados",
+                    "Investigar por qué los proveedores no alcanzan los puntos de pedido"
                 ]
             })
         
@@ -548,9 +551,9 @@ class NightlyJobAnalyzer:
                 'category': 'EXCEPTIONS',
                 'description': f"{unresolved_exceptions} unresolved exceptions in the system",
                 'action_items': [
-                    "Review and resolve tracking signal exceptions",
-                    "Address demand filter exceptions",
-                    "Consider automation for common exception types"
+                    "Revisar y resolver excepciones de señales de seguimiento",
+                    "Abordar las excepciones del filtro de demanda",
+                    "Considere la automatización para tipos de excepciones comunes"
                 ]
             })
         
@@ -562,26 +565,26 @@ class NightlyJobAnalyzer:
         
         # Overall health
         summary_parts.append(
-            f"System Health: {analysis['overall_health']}"
+            f"Salud del sistema: {analysis['overall_health']}"
         )
         
         # Key metrics
         stock_status = analysis['detailed_analysis'].get('stock_status', {})
         summary_parts.append(
             f"- {stock_status.get('updated_items', 0)} of {stock_status.get('total_items', 0)} "
-            f"items updated successfully"
+            f"elementos actualizados exitosamente"
         )
         
         lost_sales = analysis['detailed_analysis'].get('lost_sales', {})
         if lost_sales.get('calculated_lost_sales', 0) > 0:
             summary_parts.append(
-                f"- Lost sales: {lost_sales['calculated_lost_sales']:.1f} units "
+                f"- Ventas perdidas: {lost_sales['calculated_lost_sales']:.1f} unidades "
                 f"(${lost_sales.get('lost_sales_value', 0):.2f})"
             )
         
         order_gen = analysis['detailed_analysis'].get('order_generation', {})
         summary_parts.append(
-            f"- Generated {order_gen.get('generated_orders', 0)} orders for "
+            f"- Generados {order_gen.get('generated_orders', 0)} orders for "
             f"{order_gen.get('total_items', 0)} items"
         )
         

@@ -247,3 +247,95 @@ Top Recommendations:
 - Address Unresolved Exceptions
 2025-05-09 19:53:25,816 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
 2025-05-09 19:53:25,816 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-11 09:47:43,157 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-11 09:47:43,413 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-05-11 09:47:43,413 - nightly_job - INFO - entering item_service.
+2025-05-11 09:47:43,413 - nightly_job - INFO - entering item_service.calculate_lost_sales
+2025-05-11 09:47:43,447 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-05-11 09:47:43,576 - nightly_job - INFO - Processing time-based parameters
+2025-05-11 09:47:43,662 - nightly_job - INFO - Expiring outdated deals
+2025-05-11 09:47:43,664 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-05-11 09:47:43,830 - nightly_job - INFO - Purging accepted orders
+2025-05-11 09:47:43,834 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-11 09:47:43,928 - nightly_job - INFO - AI Analysis completed. Overall health: FAIR
+2025-05-11 09:47:43,929 - nightly_job - INFO - Executive Summary: System Health: FAIR
+- 0 of 0 items updated successfully
+- Generated 2 orders for 3 items
+
+Key Concerns:
+- 24 artículos tienen faltantes frecuentes
+
+Top Recommendations:
+- Improve Order Generation
+- Address Unresolved Exceptions
+2025-05-11 09:47:43,929 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
+2025-05-11 09:47:43,929 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-11 10:21:59,855 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-11 10:22:00,179 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-05-11 10:22:00,179 - nightly_job - INFO - entering item_service.
+2025-05-11 10:22:00,179 - nightly_job - INFO - entering item_service.calculate_lost_sales
+2025-05-11 10:22:00,217 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-05-11 10:22:00,356 - nightly_job - INFO - Processing time-based parameters
+2025-05-11 10:22:00,363 - nightly_job - INFO - Expiring outdated deals
+2025-05-11 10:22:00,363 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-05-11 10:22:00,522 - nightly_job - INFO - Purging accepted orders
+2025-05-11 10:22:00,526 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-11 10:22:00,598 - nightly_job - INFO - AI Analysis completed. Overall health: FAIR
+2025-05-11 10:22:00,599 - nightly_job - INFO - Executive Summary: System Health: FAIR
+- 0 of 0 items updated successfully
+- Generated 2 orders for 3 items
+
+Key Concerns:
+- 24 items have frequent stockouts (IDs: TC-0009, GP-0004, QS-0005, GP-0002, OS-0010, OS-0007, QS-0003, OS-0006, TC-0006, TC-0004, TC-0010, TC-0001, EL-0004, OS-0003, EL-0007, TC-0002, EL-0010, GP-0003, OS-0001, EL-0008, OS-0002, EL-0006, TC-0003, OS-0008)
+
+Top Recommendations:
+- Improve Order Generation
+- Address Unresolved Exceptions
+2025-05-11 10:22:00,599 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
+2025-05-11 10:22:00,599 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-11 13:07:16,228 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-11 13:07:16,477 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-05-11 13:07:16,477 - nightly_job - INFO - entering item_service.
+2025-05-11 13:07:16,477 - nightly_job - INFO - entering item_service.calculate_lost_sales
+2025-05-11 13:07:16,512 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-05-11 13:07:16,657 - nightly_job - INFO - Processing time-based parameters
+2025-05-11 13:07:16,666 - nightly_job - INFO - Expiring outdated deals
+2025-05-11 13:07:16,667 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-05-11 13:07:16,839 - nightly_job - INFO - Purging accepted orders
+2025-05-11 13:07:16,843 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-11 13:07:16,917 - nightly_job - INFO - AI Analysis completed. Overall health: FAIR
+2025-05-11 13:07:16,917 - nightly_job - INFO - Executive Summary: Salud del sistema: FAIR
+- 0 of 0 elementos actualizados exitosamente
+- Generados 2 orders for 3 items
+
+Key Concerns:
+- 24 Los artículos tienen frecuentes desabastecimientos (IDs: TC-0009, GP-0004, QS-0005, GP-0002, OS-0010, OS-0007, QS-0003, OS-0006, TC-0006, TC-0004, TC-0010, TC-0001, EL-0004, OS-0003, EL-0007, TC-0002, EL-0010, GP-0003, OS-0001, EL-0008, OS-0002, EL-0006, TC-0003, OS-0008)
+
+Top Recommendations:
+- Improve Order Generation
+- Address Unresolved Exceptions
+2025-05-11 13:07:16,918 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
+2025-05-11 13:07:16,918 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
+2025-05-11 13:21:27,229 - nightly_job - INFO - Updating stock status for warehouse_id=None
+2025-05-11 13:21:27,513 - nightly_job - INFO - Calculating lost sales for warehouse_id=None
+2025-05-11 13:21:27,513 - nightly_job - INFO - entering item_service.
+2025-05-11 13:21:27,513 - nightly_job - INFO - entering item_service.calculate_lost_sales
+2025-05-11 13:21:27,547 - nightly_job - INFO - Updating safety stock for warehouse_id=None
+2025-05-11 13:21:27,693 - nightly_job - INFO - Processing time-based parameters
+2025-05-11 13:21:27,699 - nightly_job - INFO - Expiring outdated deals
+2025-05-11 13:21:27,699 - nightly_job - INFO - Generating orders for warehouse_id=None
+2025-05-11 13:21:27,863 - nightly_job - INFO - Purging accepted orders
+2025-05-11 13:21:27,866 - nightly_job - INFO - Running AI analysis of nightly job results
+2025-05-11 13:21:27,962 - nightly_job - INFO - AI Analysis completed. Overall health: FAIR
+2025-05-11 13:21:27,962 - nightly_job - INFO - Executive Summary: Salud del sistema: FAIR
+- 0 of 0 elementos actualizados exitosamente
+- Generados 2 orders for 3 items
+
+Key Concerns:
+- 24 Los artículos tienen frecuentes desabastecimientos (IDs: TC-0009, GP-0004, QS-0005, GP-0002, OS-0010, OS-0007, QS-0003, OS-0006, TC-0006, TC-0004, TC-0010, TC-0001, EL-0004, OS-0003, EL-0007, TC-0002, EL-0010, GP-0003, OS-0001, EL-0008, OS-0002, EL-0006, TC-0003, OS-0008)
+
+Top Recommendations:
+- Improve Order Generation
+- Address Unresolved Exceptions
+2025-05-11 13:21:27,963 - nightly_job - INFO - Top Recommendation 1: Improve Order Generation
+2025-05-11 13:21:27,963 - nightly_job - INFO - Top Recommendation 2: Address Unresolved Exceptions
