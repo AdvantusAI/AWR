@@ -145,6 +145,7 @@ class Warehouse(Base):
     vendors = relationship("Vendor", back_populates="warehouse")
     items = relationship("Item", back_populates="warehouse")
     inventory = relationship("Inventory", back_populates="warehouse")
+    item_forecasts = relationship("ItemForecast", back_populates="warehouse")
 
 class Vendor(Base):
     __tablename__ = 'vendor'
@@ -602,6 +603,7 @@ class ItemForecast(Base):
     
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer, ForeignKey('item.id'), nullable=False)
+    warehouse_id = Column(Integer, ForeignKey('warehouse.id'), nullable=False)
     forecast_date = Column(DateTime, default=func.now(), nullable=False)
     period_number = Column(Integer, nullable=False)
     period_year = Column(Integer, nullable=False)
@@ -627,6 +629,7 @@ class ItemForecast(Base):
     
     # Relationships
     item = relationship("Item", back_populates="item_forecast")
+    warehouse = relationship("Warehouse", back_populates="item_forecasts")
     
     __table_args__ = (
         # Index for faster lookups by item and period
@@ -780,12 +783,13 @@ class Inventory(Base):
     __tablename__ = 'inventory'
     
     id = Column(Integer, primary_key=True)
-    item_id = Column(Integer, ForeignKey('item.id'), nullable=False)
+    product_id = Column(Integer, ForeignKey('item.id'), nullable=False)
     warehouse_id = Column(Integer, ForeignKey('warehouse.id'), nullable=False)
     location_id = Column(String(50))  # Physical location in warehouse
     quantity = Column(Float, default=0.0)
     allocated_quantity = Column(Float, default=0.0)  # Reserved for orders
     available_quantity = Column(Float, default=0.0)  # Available for new orders
+    safety_stock = Column(Float, default=0.0)  # Historical safety stock level
     last_count_date = Column(DateTime)
     last_receipt_date = Column(DateTime)
     last_issue_date = Column(DateTime)
@@ -797,5 +801,5 @@ class Inventory(Base):
     warehouse = relationship("Warehouse", back_populates="inventory")
     
     __table_args__ = (
-        Index('idx_inventory_item_warehouse', 'item_id', 'warehouse_id'),
+        Index('idx_inventory_product_warehouse', 'product_id', 'warehouse_id'),
     )

@@ -1,0 +1,1308 @@
+2025-05-11 22:37:31,327 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:37:31,328 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:37:31,485 - forecast_demand - ERROR - Error generating forecasts: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:37:31,485 - forecast_demand - ERROR - (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\forecast_demand.py", line 125, in run_forecast
+    items = query.all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2688, in all
+    return self._iter().all()  # type: ignore
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2842, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2262, in execute
+    return self._execute_internal(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2134, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2001, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1126, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3264, in connect
+    return self._connection_cls(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2426, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:37:57,964 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:37:57,964 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:37:58,065 - forecast_demand - ERROR - Error generating forecasts: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:37:58,066 - forecast_demand - ERROR - (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\forecast_demand.py", line 125, in run_forecast
+    items = query.all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2688, in all
+    return self._iter().all()  # type: ignore
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2842, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2262, in execute
+    return self._execute_internal(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2134, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2001, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1126, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3264, in connect
+    return self._connection_cls(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2426, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:39:43,717 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:39:43,718 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:39:43,819 - forecast_demand - ERROR - Error generating forecasts: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:39:43,819 - forecast_demand - ERROR - (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Personal\Code\AWR\warehouse_replenishment\forecast_demand.py", line 125, in run_forecast
+    items = query.all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2688, in all
+    return self._iter().all()  # type: ignore
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2842, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2262, in execute
+    return self._execute_internal(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2134, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 2001, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1126, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3264, in connect
+    return self._connection_cls(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2426, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-11 22:40:01,739 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:40:01,740 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:40:01,854 - forecast_demand - INFO - Found 30 items to forecast
+2025-05-11 22:40:01,858 - forecast_demand - INFO - Item: OS-0008 (File Folders, Pack of 25)
+2025-05-11 22:40:01,858 - forecast_demand - INFO -   Current forecast: 12.92
+2025-05-11 22:40:01,858 - forecast_demand - INFO -   New forecast: 12.92
+2025-05-11 22:40:01,858 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:40:01,859 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:40:01,859 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,859 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,865 - forecast_demand - INFO - Item: TC-0003 (SATA Cable, 18")
+2025-05-11 22:40:01,866 - forecast_demand - INFO -   Current forecast: 21.58
+2025-05-11 22:40:01,866 - forecast_demand - INFO -   New forecast: 21.58
+2025-05-11 22:40:01,866 - forecast_demand - INFO -   Current MADP: 12.55
+2025-05-11 22:40:01,866 - forecast_demand - INFO -   New MADP: 12.55
+2025-05-11 22:40:01,866 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,867 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,868 - forecast_demand - INFO - Item: OS-0002 (Standard Staples, Box)
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   Current forecast: 98.86
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   New forecast: 98.86
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,869 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,870 - forecast_demand - INFO - Item: OS-0001 (Premium Copy Paper, Case)
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   Current forecast: 20.21
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   New forecast: 20.21
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,871 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,874 - forecast_demand - INFO - Item: OS-0007 (Desk Organizer, Mesh)
+2025-05-11 22:40:01,874 - forecast_demand - INFO -   Current forecast: 4.19
+2025-05-11 22:40:01,874 - forecast_demand - INFO -   New forecast: 4.19
+2025-05-11 22:40:01,874 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,874 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,875 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,875 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,876 - forecast_demand - INFO - Item: TC-0004 (Case Fan, 120mm)
+2025-05-11 22:40:01,877 - forecast_demand - INFO -   Current forecast: 4.92
+2025-05-11 22:40:01,877 - forecast_demand - INFO -   New forecast: 4.92
+2025-05-11 22:40:01,877 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,877 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,878 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,878 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,880 - forecast_demand - INFO - Item: TC-0002 (Thermal Paste, 5g)
+2025-05-11 22:40:01,880 - forecast_demand - INFO -   Current forecast: 8.43
+2025-05-11 22:40:01,880 - forecast_demand - INFO -   New forecast: 8.43
+2025-05-11 22:40:01,880 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,880 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,881 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,881 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,882 - forecast_demand - INFO - Item: OS-0005 (Ball Point Pens, Box)
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   Current forecast: 37.89
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   New forecast: 37.89
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   Current MADP: 8.56
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   New MADP: 8.56
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,883 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,886 - forecast_demand - INFO - Item: OS-0010 (Whiteboard Markers, Set)
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   Current forecast: 10.25
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   New forecast: 10.25
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,886 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,887 - forecast_demand - INFO - Item: EL-0004 (Wireless Keyboard)
+2025-05-11 22:40:01,887 - forecast_demand - INFO -   Current forecast: 1.56
+2025-05-11 22:40:01,887 - forecast_demand - INFO -   New forecast: 1.56
+2025-05-11 22:40:01,888 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,888 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,888 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,888 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,889 - forecast_demand - INFO - Item: EL-0005 (Bluetooth Speaker, Portable)
+2025-05-11 22:40:01,889 - forecast_demand - INFO -   Current forecast: 1.68
+2025-05-11 22:40:01,889 - forecast_demand - INFO -   New forecast: 1.68
+2025-05-11 22:40:01,889 - forecast_demand - INFO -   Current MADP: 6.15
+2025-05-11 22:40:01,890 - forecast_demand - INFO -   New MADP: 6.15
+2025-05-11 22:40:01,890 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,890 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,891 - forecast_demand - INFO - Item: EL-0001 (USB Flash Drive, 64GB)
+2025-05-11 22:40:01,891 - forecast_demand - INFO -   Current forecast: 13.72
+2025-05-11 22:40:01,892 - forecast_demand - INFO -   New forecast: 13.72
+2025-05-11 22:40:01,892 - forecast_demand - INFO -   Current MADP: 14.48
+2025-05-11 22:40:01,892 - forecast_demand - INFO -   New MADP: 14.48
+2025-05-11 22:40:01,892 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,892 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,894 - forecast_demand - INFO - Item: EL-0002 (Wireless Mouse)
+2025-05-11 22:40:01,894 - forecast_demand - INFO -   Current forecast: 10.52
+2025-05-11 22:40:01,894 - forecast_demand - INFO -   New forecast: 10.52
+2025-05-11 22:40:01,894 - forecast_demand - INFO -   Current MADP: 12.12
+2025-05-11 22:40:01,894 - forecast_demand - INFO -   New MADP: 12.12
+2025-05-11 22:40:01,894 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,895 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,896 - forecast_demand - INFO - Item: OS-0009 (Binder Clips, Assorted)
+2025-05-11 22:40:01,896 - forecast_demand - INFO -   Current forecast: 44.02
+2025-05-11 22:40:01,896 - forecast_demand - INFO -   New forecast: 44.02
+2025-05-11 22:40:01,897 - forecast_demand - INFO -   Current MADP: 4.00
+2025-05-11 22:40:01,897 - forecast_demand - INFO -   New MADP: 4.00
+2025-05-11 22:40:01,897 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,897 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,898 - forecast_demand - INFO - Item: TC-0001 (CPU Cooling Fan)
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   Current forecast: 6.91
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   New forecast: 6.91
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   Current MADP: 8.33
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   New MADP: 8.33
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,899 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,901 - forecast_demand - INFO - Item: TC-0006 (SSD, 500GB)
+2025-05-11 22:40:01,901 - forecast_demand - INFO -   Current forecast: 5.41
+2025-05-11 22:40:01,901 - forecast_demand - INFO -   New forecast: 5.41
+2025-05-11 22:40:01,902 - forecast_demand - INFO -   Current MADP: 4.42
+2025-05-11 22:40:01,902 - forecast_demand - INFO -   New MADP: 4.42
+2025-05-11 22:40:01,902 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,902 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,904 - forecast_demand - INFO - Item: EL-0003 (USB-C Cable, 6ft)
+2025-05-11 22:40:01,904 - forecast_demand - INFO -   Current forecast: 24.69
+2025-05-11 22:40:01,904 - forecast_demand - INFO -   New forecast: 24.69
+2025-05-11 22:40:01,905 - forecast_demand - INFO -   Current MADP: 8.78
+2025-05-11 22:40:01,905 - forecast_demand - INFO -   New MADP: 8.78
+2025-05-11 22:40:01,905 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,905 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,906 - forecast_demand - INFO - Item: EL-0007 (USB Hub, 4-Port)
+2025-05-11 22:40:01,906 - forecast_demand - INFO -   Current forecast: 3.11
+2025-05-11 22:40:01,907 - forecast_demand - INFO -   New forecast: 3.11
+2025-05-11 22:40:01,907 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,907 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,907 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,907 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,909 - forecast_demand - INFO - Item: EL-0008 (Power Strip, 6-Outlet)
+2025-05-11 22:40:01,909 - forecast_demand - INFO -   Current forecast: 8.63
+2025-05-11 22:40:01,909 - forecast_demand - INFO -   New forecast: 8.63
+2025-05-11 22:40:01,909 - forecast_demand - INFO -   Current MADP: 6.88
+2025-05-11 22:40:01,909 - forecast_demand - INFO -   New MADP: 6.88
+2025-05-11 22:40:01,909 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,910 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,911 - forecast_demand - INFO - Item: EL-0006 (HDMI Cable, 10ft)
+2025-05-11 22:40:01,911 - forecast_demand - INFO -   Current forecast: 3.88
+2025-05-11 22:40:01,912 - forecast_demand - INFO -   New forecast: 3.88
+2025-05-11 22:40:01,912 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,912 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,913 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,913 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,915 - forecast_demand - INFO - Item: OS-0006 (Gel Pens, Premium, Box)
+2025-05-11 22:40:01,915 - forecast_demand - INFO -   Current forecast: 3.13
+2025-05-11 22:40:01,915 - forecast_demand - INFO -   New forecast: 3.13
+2025-05-11 22:40:01,915 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,916 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,916 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,916 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,918 - forecast_demand - INFO - Item: TC-0007 (RAM, 16GB)
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   Current forecast: 3.56
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   New forecast: 3.56
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   Current MADP: 9.88
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   New MADP: 9.88
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,919 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,920 - forecast_demand - INFO - Item: OS-0004 (Sticky Notes, Pad)
+2025-05-11 22:40:01,920 - forecast_demand - INFO -   Current forecast: 52.46
+2025-05-11 22:40:01,920 - forecast_demand - INFO -   New forecast: 52.46
+2025-05-11 22:40:01,921 - forecast_demand - INFO -   Current MADP: 15.39
+2025-05-11 22:40:01,921 - forecast_demand - INFO -   New MADP: 15.39
+2025-05-11 22:40:01,921 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,921 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,922 - forecast_demand - INFO - Item: OS-0003 (Paper Clips, Box)
+2025-05-11 22:40:01,922 - forecast_demand - INFO -   Current forecast: 305.34
+2025-05-11 22:40:01,923 - forecast_demand - INFO -   New forecast: 305.34
+2025-05-11 22:40:01,923 - forecast_demand - INFO -   Current MADP: 5.60
+2025-05-11 22:40:01,923 - forecast_demand - INFO -   New MADP: 5.60
+2025-05-11 22:40:01,923 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,923 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,924 - forecast_demand - INFO - Item: EL-0009 (Laptop Cooling Pad)
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   Current forecast: 1.35
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   New forecast: 1.35
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,924 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,926 - forecast_demand - INFO - Item: EL-0010 (Wireless Earbuds)
+2025-05-11 22:40:01,926 - forecast_demand - INFO -   Current forecast: 1.07
+2025-05-11 22:40:01,927 - forecast_demand - INFO -   New forecast: 1.07
+2025-05-11 22:40:01,927 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,927 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,927 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,927 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,928 - forecast_demand - INFO - Item: TC-0009 (Motherboard, ATX)
+2025-05-11 22:40:01,928 - forecast_demand - INFO -   Current forecast: 1.65
+2025-05-11 22:40:01,929 - forecast_demand - INFO -   New forecast: 1.65
+2025-05-11 22:40:01,929 - forecast_demand - INFO -   Current MADP: 10.63
+2025-05-11 22:40:01,929 - forecast_demand - INFO -   New MADP: 10.63
+2025-05-11 22:40:01,929 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,929 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,931 - forecast_demand - INFO - Item: TC-0008 (Graphics Card, Mid-range)
+2025-05-11 22:40:01,931 - forecast_demand - INFO -   Current forecast: 1.69
+2025-05-11 22:40:01,931 - forecast_demand - INFO -   New forecast: 1.69
+2025-05-11 22:40:01,931 - forecast_demand - INFO -   Current MADP: 10.62
+2025-05-11 22:40:01,931 - forecast_demand - INFO -   New MADP: 10.62
+2025-05-11 22:40:01,932 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,932 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,933 - forecast_demand - INFO - Item: TC-0010 (PC Case, Mid-tower)
+2025-05-11 22:40:01,934 - forecast_demand - INFO -   Current forecast: 1.55
+2025-05-11 22:40:01,934 - forecast_demand - INFO -   New forecast: 1.55
+2025-05-11 22:40:01,934 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:40:01,934 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:40:01,934 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,935 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,936 - forecast_demand - INFO - Item: TC-0005 (Power Supply, 500W)
+2025-05-11 22:40:01,936 - forecast_demand - INFO -   Current forecast: 2.50
+2025-05-11 22:40:01,937 - forecast_demand - INFO -   New forecast: 2.50
+2025-05-11 22:40:01,937 - forecast_demand - INFO -   Current MADP: 7.94
+2025-05-11 22:40:01,937 - forecast_demand - INFO -   New MADP: 7.94
+2025-05-11 22:40:01,937 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:40:01,937 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:40:01,938 - forecast_demand - INFO - Updated forecasts for 30 items
+2025-05-11 22:40:01,938 - forecast_demand - INFO - Forecast generation completed: 30 processed, 0 errors
+2025-05-11 22:43:14,264 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:43:14,265 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:43:14,385 - forecast_demand - INFO - Found 30 items to forecast
+2025-05-11 22:43:14,389 - forecast_demand - INFO - Item: OS-0008 (File Folders, Pack of 25)
+2025-05-11 22:43:14,389 - forecast_demand - INFO -   Current forecast: 12.92
+2025-05-11 22:43:14,389 - forecast_demand - INFO -   New forecast: 12.92
+2025-05-11 22:43:14,390 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:43:14,390 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:43:14,390 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,390 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,420 - forecast_demand - WARNING - Could not save forecast history for item OS-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (21, 8, 2025-05-11 22:43:14.399947, 5, 2025, 12.923181197065222, 50, 6.872753745044024e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 8, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 399947), 'period_number': 5, 'period_year': 2025, 'forecast_value': 12.923181197065222, 'madp': 50.0, 'track': 6.872753745044024e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,423 - forecast_demand - INFO - Item: TC-0003 (SATA Cable, 18")
+2025-05-11 22:43:14,424 - forecast_demand - INFO -   Current forecast: 21.58
+2025-05-11 22:43:14,424 - forecast_demand - INFO -   New forecast: 21.58
+2025-05-11 22:43:14,424 - forecast_demand - INFO -   Current MADP: 12.55
+2025-05-11 22:43:14,424 - forecast_demand - INFO -   New MADP: 12.55
+2025-05-11 22:43:14,425 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,425 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,429 - forecast_demand - WARNING - Could not save forecast history for item TC-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (22, 23, 2025-05-11 22:43:14.426394, 5, 2025, 21.57685222076589, 12.54609742211755, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 23, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 426394), 'period_number': 5, 'period_year': 2025, 'forecast_value': 21.57685222076589, 'madp': 12.54609742211755, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,432 - forecast_demand - INFO - Item: OS-0002 (Standard Staples, Box)
+2025-05-11 22:43:14,432 - forecast_demand - INFO -   Current forecast: 98.86
+2025-05-11 22:43:14,433 - forecast_demand - INFO -   New forecast: 98.86
+2025-05-11 22:43:14,433 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,433 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,433 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,433 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,439 - forecast_demand - WARNING - Could not save forecast history for item OS-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (23, 2, 2025-05-11 22:43:14.435394, 5, 2025, 98.86458469272321, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 2, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 435394), 'period_number': 5, 'period_year': 2025, 'forecast_value': 98.86458469272321, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,442 - forecast_demand - INFO - Item: OS-0001 (Premium Copy Paper, Case)
+2025-05-11 22:43:14,442 - forecast_demand - INFO -   Current forecast: 20.21
+2025-05-11 22:43:14,442 - forecast_demand - INFO -   New forecast: 20.21
+2025-05-11 22:43:14,442 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,442 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,443 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,443 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,447 - forecast_demand - WARNING - Could not save forecast history for item OS-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (24, 1, 2025-05-11 22:43:14.444396, 5, 2025, 20.20800610256032, 80, 8.790361752588689e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 1, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 444396), 'period_number': 5, 'period_year': 2025, 'forecast_value': 20.20800610256032, 'madp': 80.0, 'track': 8.790361752588689e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,449 - forecast_demand - INFO - Item: OS-0007 (Desk Organizer, Mesh)
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   Current forecast: 4.19
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   New forecast: 4.19
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,450 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,455 - forecast_demand - WARNING - Could not save forecast history for item OS-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (25, 7, 2025-05-11 22:43:14.452485, 5, 2025, 4.194251928108277, 80, 1.058804329024554e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 7, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 452485), 'period_number': 5, 'period_year': 2025, 'forecast_value': 4.194251928108277, 'madp': 80.0, 'track': 1.058804329024554e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,458 - forecast_demand - INFO - Item: TC-0004 (Case Fan, 120mm)
+2025-05-11 22:43:14,458 - forecast_demand - INFO -   Current forecast: 4.92
+2025-05-11 22:43:14,458 - forecast_demand - INFO -   New forecast: 4.92
+2025-05-11 22:43:14,458 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,459 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,459 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,459 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,462 - forecast_demand - WARNING - Could not save forecast history for item TC-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (26, 24, 2025-05-11 22:43:14.460045, 5, 2025, 4.924992259343742, 80, 9.017053966075427e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 24, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 460045), 'period_number': 5, 'period_year': 2025, 'forecast_value': 4.924992259343742, 'madp': 80.0, 'track': 9.017053966075427e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,464 - forecast_demand - INFO - Item: TC-0002 (Thermal Paste, 5g)
+2025-05-11 22:43:14,464 - forecast_demand - INFO -   Current forecast: 8.43
+2025-05-11 22:43:14,464 - forecast_demand - INFO -   New forecast: 8.43
+2025-05-11 22:43:14,464 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,465 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,465 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,465 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,468 - forecast_demand - WARNING - Could not save forecast history for item TC-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (27, 22, 2025-05-11 22:43:14.466335, 5, 2025, 8.432851610400888, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 22, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 466335), 'period_number': 5, 'period_year': 2025, 'forecast_value': 8.432851610400888, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,471 - forecast_demand - INFO - Item: OS-0005 (Ball Point Pens, Box)
+2025-05-11 22:43:14,471 - forecast_demand - INFO -   Current forecast: 37.89
+2025-05-11 22:43:14,471 - forecast_demand - INFO -   New forecast: 37.89
+2025-05-11 22:43:14,472 - forecast_demand - INFO -   Current MADP: 8.56
+2025-05-11 22:43:14,472 - forecast_demand - INFO -   New MADP: 8.56
+2025-05-11 22:43:14,472 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,472 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,476 - forecast_demand - WARNING - Could not save forecast history for item OS-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (28, 5, 2025-05-11 22:43:14.474641, 5, 2025, 37.89439643152406, 8.558196968126145, 7.303174493544544e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 5, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 474641), 'period_number': 5, 'period_year': 2025, 'forecast_value': 37.89439643152406, 'madp': 8.558196968126145, 'track': 7.303174493544544e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,479 - forecast_demand - INFO - Item: OS-0010 (Whiteboard Markers, Set)
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   Current forecast: 10.25
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   New forecast: 10.25
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,479 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,483 - forecast_demand - WARNING - Could not save forecast history for item OS-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (29, 10, 2025-05-11 22:43:14.481643, 5, 2025, 10.245377806171351, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 10, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 481643), 'period_number': 5, 'period_year': 2025, 'forecast_value': 10.245377806171351, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,485 - forecast_demand - INFO - Item: EL-0004 (Wireless Keyboard)
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   Current forecast: 1.56
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   New forecast: 1.56
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,486 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,489 - forecast_demand - WARNING - Could not save forecast history for item EL-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (30, 14, 2025-05-11 22:43:14.487735, 5, 2025, 1.5643706200021512, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 14, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 487735), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.5643706200021512, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,491 - forecast_demand - INFO - Item: EL-0005 (Bluetooth Speaker, Portable)
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   Current forecast: 1.68
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   New forecast: 1.68
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   Current MADP: 6.15
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   New MADP: 6.15
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,492 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,496 - forecast_demand - WARNING - Could not save forecast history for item EL-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (31, 15, 2025-05-11 22:43:14.49424, 5, 2025, 1.676884051673472, 6.1458018624596455, 7.181867388786753e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 15, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 494240), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.676884051673472, 'madp': 6.1458018624596455, 'track': 7.181867388786753e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,498 - forecast_demand - INFO - Item: EL-0001 (USB Flash Drive, 64GB)
+2025-05-11 22:43:14,498 - forecast_demand - INFO -   Current forecast: 13.72
+2025-05-11 22:43:14,499 - forecast_demand - INFO -   New forecast: 13.72
+2025-05-11 22:43:14,499 - forecast_demand - INFO -   Current MADP: 14.48
+2025-05-11 22:43:14,499 - forecast_demand - INFO -   New MADP: 14.48
+2025-05-11 22:43:14,499 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,499 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,503 - forecast_demand - WARNING - Could not save forecast history for item EL-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (32, 11, 2025-05-11 22:43:14.499796, 5, 2025, 13.718252412658343, 14.479816813532587, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 11, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 499796), 'period_number': 5, 'period_year': 2025, 'forecast_value': 13.718252412658343, 'madp': 14.479816813532587, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,505 - forecast_demand - INFO - Item: EL-0002 (Wireless Mouse)
+2025-05-11 22:43:14,505 - forecast_demand - INFO -   Current forecast: 10.52
+2025-05-11 22:43:14,505 - forecast_demand - INFO -   New forecast: 10.52
+2025-05-11 22:43:14,506 - forecast_demand - INFO -   Current MADP: 12.12
+2025-05-11 22:43:14,506 - forecast_demand - INFO -   New MADP: 12.12
+2025-05-11 22:43:14,506 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,506 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,510 - forecast_demand - WARNING - Could not save forecast history for item EL-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (33, 12, 2025-05-11 22:43:14.508305, 5, 2025, 10.517707496046171, 12.124958799690553, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 12, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 508305), 'period_number': 5, 'period_year': 2025, 'forecast_value': 10.517707496046171, 'madp': 12.124958799690553, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,512 - forecast_demand - INFO - Item: OS-0009 (Binder Clips, Assorted)
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   Current forecast: 44.02
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   New forecast: 44.02
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   Current MADP: 4.00
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   New MADP: 4.00
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,512 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,516 - forecast_demand - WARNING - Could not save forecast history for item OS-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (34, 9, 2025-05-11 22:43:14.514305, 5, 2025, 44.02384659670762, 3.9953196241369073, 4.039714646031474e-13, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 9, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 514305), 'period_number': 5, 'period_year': 2025, 'forecast_value': 44.02384659670762, 'madp': 3.9953196241369073, 'track': 4.039714646031474e-13, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,518 - forecast_demand - INFO - Item: TC-0001 (CPU Cooling Fan)
+2025-05-11 22:43:14,518 - forecast_demand - INFO -   Current forecast: 6.91
+2025-05-11 22:43:14,518 - forecast_demand - INFO -   New forecast: 6.91
+2025-05-11 22:43:14,519 - forecast_demand - INFO -   Current MADP: 8.33
+2025-05-11 22:43:14,519 - forecast_demand - INFO -   New MADP: 8.33
+2025-05-11 22:43:14,519 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,519 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,523 - forecast_demand - WARNING - Could not save forecast history for item TC-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (35, 21, 2025-05-11 22:43:14.520306, 5, 2025, 6.909616878734517, 8.332320725601425, 5.14231902327367e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 21, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 520306), 'period_number': 5, 'period_year': 2025, 'forecast_value': 6.909616878734517, 'madp': 8.332320725601425, 'track': 5.14231902327367e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,525 - forecast_demand - INFO - Item: TC-0006 (SSD, 500GB)
+2025-05-11 22:43:14,525 - forecast_demand - INFO -   Current forecast: 5.41
+2025-05-11 22:43:14,525 - forecast_demand - INFO -   New forecast: 5.41
+2025-05-11 22:43:14,525 - forecast_demand - INFO -   Current MADP: 4.42
+2025-05-11 22:43:14,525 - forecast_demand - INFO -   New MADP: 4.42
+2025-05-11 22:43:14,525 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,526 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,529 - forecast_demand - WARNING - Could not save forecast history for item TC-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (36, 26, 2025-05-11 22:43:14.527433, 5, 2025, 5.412295284384577, 4.418344008682947, 1.2380493388556248e-13, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 26, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 527433), 'period_number': 5, 'period_year': 2025, 'forecast_value': 5.412295284384577, 'madp': 4.418344008682947, 'track': 1.2380493388556248e-13, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,531 - forecast_demand - INFO - Item: EL-0003 (USB-C Cable, 6ft)
+2025-05-11 22:43:14,531 - forecast_demand - INFO -   Current forecast: 24.69
+2025-05-11 22:43:14,531 - forecast_demand - INFO -   New forecast: 24.69
+2025-05-11 22:43:14,532 - forecast_demand - INFO -   Current MADP: 8.78
+2025-05-11 22:43:14,532 - forecast_demand - INFO -   New MADP: 8.78
+2025-05-11 22:43:14,532 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,532 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,535 - forecast_demand - WARNING - Could not save forecast history for item EL-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (37, 13, 2025-05-11 22:43:14.533432, 5, 2025, 24.69118156297999, 8.781282318674483, 5.461842096984029e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 13, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 533432), 'period_number': 5, 'period_year': 2025, 'forecast_value': 24.69118156297999, 'madp': 8.781282318674483, 'track': 5.461842096984029e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,538 - forecast_demand - INFO - Item: EL-0007 (USB Hub, 4-Port)
+2025-05-11 22:43:14,538 - forecast_demand - INFO -   Current forecast: 3.11
+2025-05-11 22:43:14,538 - forecast_demand - INFO -   New forecast: 3.11
+2025-05-11 22:43:14,538 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,538 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,539 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,539 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,542 - forecast_demand - WARNING - Could not save forecast history for item EL-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (38, 17, 2025-05-11 22:43:14.540438, 5, 2025, 3.110548890178434, 80, 7.138438030218324e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 17, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 540438), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.110548890178434, 'madp': 80.0, 'track': 7.138438030218324e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,544 - forecast_demand - INFO - Item: EL-0008 (Power Strip, 6-Outlet)
+2025-05-11 22:43:14,545 - forecast_demand - INFO -   Current forecast: 8.63
+2025-05-11 22:43:14,545 - forecast_demand - INFO -   New forecast: 8.63
+2025-05-11 22:43:14,545 - forecast_demand - INFO -   Current MADP: 6.88
+2025-05-11 22:43:14,545 - forecast_demand - INFO -   New MADP: 6.88
+2025-05-11 22:43:14,545 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,546 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,549 - forecast_demand - WARNING - Could not save forecast history for item EL-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (39, 18, 2025-05-11 22:43:14.547437, 5, 2025, 8.634282857138873, 6.884419908633433, 9.961284270332618e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 18, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 547437), 'period_number': 5, 'period_year': 2025, 'forecast_value': 8.634282857138873, 'madp': 6.884419908633433, 'track': 9.961284270332618e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,551 - forecast_demand - INFO - Item: EL-0006 (HDMI Cable, 10ft)
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   Current forecast: 3.88
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   New forecast: 3.88
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,551 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,555 - forecast_demand - WARNING - Could not save forecast history for item EL-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (40, 16, 2025-05-11 22:43:14.553945, 5, 2025, 3.877677455063835, 80, 5.726226781318922e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 16, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 553945), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.877677455063835, 'madp': 80.0, 'track': 5.726226781318922e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,557 - forecast_demand - INFO - Item: OS-0006 (Gel Pens, Premium, Box)
+2025-05-11 22:43:14,557 - forecast_demand - INFO -   Current forecast: 3.13
+2025-05-11 22:43:14,557 - forecast_demand - INFO -   New forecast: 3.13
+2025-05-11 22:43:14,557 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,557 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,557 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,558 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,561 - forecast_demand - WARNING - Could not save forecast history for item OS-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (41, 6, 2025-05-11 22:43:14.559946, 5, 2025, 3.127099902962481, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 6, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 559946), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.127099902962481, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,563 - forecast_demand - INFO - Item: TC-0007 (RAM, 16GB)
+2025-05-11 22:43:14,563 - forecast_demand - INFO -   Current forecast: 3.56
+2025-05-11 22:43:14,563 - forecast_demand - INFO -   New forecast: 3.56
+2025-05-11 22:43:14,563 - forecast_demand - INFO -   Current MADP: 9.88
+2025-05-11 22:43:14,563 - forecast_demand - INFO -   New MADP: 9.88
+2025-05-11 22:43:14,564 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,564 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,567 - forecast_demand - WARNING - Could not save forecast history for item TC-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (42, 27, 2025-05-11 22:43:14.565732, 5, 2025, 3.5626703338676577, 9.879666808425561, 8.411259394465288e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 27, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 565732), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.5626703338676577, 'madp': 9.879666808425561, 'track': 8.411259394465288e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,569 - forecast_demand - INFO - Item: OS-0004 (Sticky Notes, Pad)
+2025-05-11 22:43:14,569 - forecast_demand - INFO -   Current forecast: 52.46
+2025-05-11 22:43:14,569 - forecast_demand - INFO -   New forecast: 52.46
+2025-05-11 22:43:14,569 - forecast_demand - INFO -   Current MADP: 15.39
+2025-05-11 22:43:14,570 - forecast_demand - INFO -   New MADP: 15.39
+2025-05-11 22:43:14,570 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,570 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,573 - forecast_demand - WARNING - Could not save forecast history for item OS-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (43, 4, 2025-05-11 22:43:14.571736, 5, 2025, 52.457326665552124, 15.388348035262414, 2.9340721877862926e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 4, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 571736), 'period_number': 5, 'period_year': 2025, 'forecast_value': 52.457326665552124, 'madp': 15.388348035262414, 'track': 2.9340721877862926e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,575 - forecast_demand - INFO - Item: OS-0003 (Paper Clips, Box)
+2025-05-11 22:43:14,575 - forecast_demand - INFO -   Current forecast: 305.34
+2025-05-11 22:43:14,575 - forecast_demand - INFO -   New forecast: 305.34
+2025-05-11 22:43:14,575 - forecast_demand - INFO -   Current MADP: 5.60
+2025-05-11 22:43:14,576 - forecast_demand - INFO -   New MADP: 5.60
+2025-05-11 22:43:14,576 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,576 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,580 - forecast_demand - WARNING - Could not save forecast history for item OS-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (44, 3, 2025-05-11 22:43:14.578736, 5, 2025, 305.3363527869148, 5.604374587020457, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 3, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 578736), 'period_number': 5, 'period_year': 2025, 'forecast_value': 305.3363527869148, 'madp': 5.604374587020457, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,581 - forecast_demand - INFO - Item: EL-0009 (Laptop Cooling Pad)
+2025-05-11 22:43:14,581 - forecast_demand - INFO -   Current forecast: 1.35
+2025-05-11 22:43:14,581 - forecast_demand - INFO -   New forecast: 1.35
+2025-05-11 22:43:14,581 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:43:14,583 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:43:14,583 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,583 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,585 - forecast_demand - WARNING - Could not save forecast history for item EL-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (45, 19, 2025-05-11 22:43:14.584481, 5, 2025, 1.3494483629001037, 50.000000000000014, 8.227236070294476e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 19, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 584481), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.3494483629001037, 'madp': 50.000000000000014, 'track': 8.227236070294476e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,587 - forecast_demand - INFO - Item: EL-0010 (Wireless Earbuds)
+2025-05-11 22:43:14,587 - forecast_demand - INFO -   Current forecast: 1.07
+2025-05-11 22:43:14,587 - forecast_demand - INFO -   New forecast: 1.07
+2025-05-11 22:43:14,587 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,587 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,588 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,588 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,592 - forecast_demand - WARNING - Could not save forecast history for item EL-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (46, 20, 2025-05-11 22:43:14.58999, 5, 2025, 1.0678425145575976, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 20, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 589990), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.0678425145575976, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,593 - forecast_demand - INFO - Item: TC-0009 (Motherboard, ATX)
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   Current forecast: 1.65
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   New forecast: 1.65
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   Current MADP: 10.63
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   New MADP: 10.63
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,594 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,598 - forecast_demand - WARNING - Could not save forecast history for item TC-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (47, 29, 2025-05-11 22:43:14.596534, 5, 2025, 1.6468351660349265, 10.627111231844298, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 29, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 596534), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.6468351660349265, 'madp': 10.627111231844298, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,600 - forecast_demand - INFO - Item: TC-0008 (Graphics Card, Mid-range)
+2025-05-11 22:43:14,600 - forecast_demand - INFO -   Current forecast: 1.69
+2025-05-11 22:43:14,601 - forecast_demand - INFO -   New forecast: 1.69
+2025-05-11 22:43:14,601 - forecast_demand - INFO -   Current MADP: 10.62
+2025-05-11 22:43:14,601 - forecast_demand - INFO -   New MADP: 10.62
+2025-05-11 22:43:14,601 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,601 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,604 - forecast_demand - WARNING - Could not save forecast history for item TC-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (48, 28, 2025-05-11 22:43:14.602551, 5, 2025, 1.688103847013152, 10.61539214762436, 8.26064130532926e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 28, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 602551), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.688103847013152, 'madp': 10.61539214762436, 'track': 8.26064130532926e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,606 - forecast_demand - INFO - Item: TC-0010 (PC Case, Mid-tower)
+2025-05-11 22:43:14,606 - forecast_demand - INFO -   Current forecast: 1.55
+2025-05-11 22:43:14,606 - forecast_demand - INFO -   New forecast: 1.55
+2025-05-11 22:43:14,607 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:43:14,607 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:43:14,607 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,607 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,610 - forecast_demand - WARNING - Could not save forecast history for item TC-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (49, 30, 2025-05-11 22:43:14.608554, 5, 2025, 1.5521777677838078, 80, 7.152679594234415e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 30, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 608554), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.5521777677838078, 'madp': 80.0, 'track': 7.152679594234415e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,612 - forecast_demand - INFO - Item: TC-0005 (Power Supply, 500W)
+2025-05-11 22:43:14,612 - forecast_demand - INFO -   Current forecast: 2.50
+2025-05-11 22:43:14,613 - forecast_demand - INFO -   New forecast: 2.50
+2025-05-11 22:43:14,613 - forecast_demand - INFO -   Current MADP: 7.94
+2025-05-11 22:43:14,613 - forecast_demand - INFO -   New MADP: 7.94
+2025-05-11 22:43:14,613 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:43:14,613 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:43:14,616 - forecast_demand - WARNING - Could not save forecast history for item TC-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (50, 25, 2025-05-11 22:43:14.614554, 5, 2025, 2.503289065044805, 7.936951717718174, 7.450479528436504e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 25, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 43, 14, 614554), 'period_number': 5, 'period_year': 2025, 'forecast_value': 2.503289065044805, 'madp': 7.936951717718174, 'track': 7.450479528436504e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:43:14,617 - forecast_demand - INFO - Updated forecasts for 30 items
+2025-05-11 22:43:14,617 - forecast_demand - INFO - Forecast generation completed: 30 processed, 0 errors
+2025-05-11 22:44:25,229 - forecast_demand - INFO - Starting demand forecasting...
+2025-05-11 22:44:25,230 - forecast_demand - INFO - Parameters: warehouse_id=1, vendor_id=None, buyer_id=None, item_id=None, periods=12, update=True, recalculate_madp=True, include_inactive=False, dry_run=False
+2025-05-11 22:44:25,342 - forecast_demand - INFO - Found 30 items to forecast
+2025-05-11 22:44:25,348 - forecast_demand - INFO - Item: OS-0008 (File Folders, Pack of 25)
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   Current forecast: 12.92
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   New forecast: 12.92
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,348 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,365 - forecast_demand - WARNING - Could not save forecast history for item OS-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (51, 8, 2025-05-11 22:44:25.357559, 5, 2025, 12.923181197065222, 50, 6.872753745044024e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 8, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 357559), 'period_number': 5, 'period_year': 2025, 'forecast_value': 12.923181197065222, 'madp': 50.0, 'track': 6.872753745044024e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,369 - forecast_demand - INFO - Item: TC-0003 (SATA Cable, 18")
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   Current forecast: 21.58
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   New forecast: 21.58
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   Current MADP: 12.55
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   New MADP: 12.55
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,370 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,376 - forecast_demand - WARNING - Could not save forecast history for item TC-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (52, 23, 2025-05-11 22:44:25.373163, 5, 2025, 21.57685222076589, 12.54609742211755, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 23, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 373163), 'period_number': 5, 'period_year': 2025, 'forecast_value': 21.57685222076589, 'madp': 12.54609742211755, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,378 - forecast_demand - INFO - Item: OS-0002 (Standard Staples, Box)
+2025-05-11 22:44:25,378 - forecast_demand - INFO -   Current forecast: 98.86
+2025-05-11 22:44:25,378 - forecast_demand - INFO -   New forecast: 98.86
+2025-05-11 22:44:25,378 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,378 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,378 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,379 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,383 - forecast_demand - WARNING - Could not save forecast history for item OS-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (53, 2, 2025-05-11 22:44:25.380881, 5, 2025, 98.86458469272321, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 2, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 380881), 'period_number': 5, 'period_year': 2025, 'forecast_value': 98.86458469272321, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,385 - forecast_demand - INFO - Item: OS-0001 (Premium Copy Paper, Case)
+2025-05-11 22:44:25,386 - forecast_demand - INFO -   Current forecast: 20.21
+2025-05-11 22:44:25,387 - forecast_demand - INFO -   New forecast: 20.21
+2025-05-11 22:44:25,387 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,387 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,387 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,387 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,391 - forecast_demand - WARNING - Could not save forecast history for item OS-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (54, 1, 2025-05-11 22:44:25.389216, 5, 2025, 20.20800610256032, 80, 8.790361752588689e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 1, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 389216), 'period_number': 5, 'period_year': 2025, 'forecast_value': 20.20800610256032, 'madp': 80.0, 'track': 8.790361752588689e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,394 - forecast_demand - INFO - Item: OS-0007 (Desk Organizer, Mesh)
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   Current forecast: 4.19
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   New forecast: 4.19
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,394 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,400 - forecast_demand - WARNING - Could not save forecast history for item OS-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (55, 7, 2025-05-11 22:44:25.397616, 5, 2025, 4.194251928108277, 80, 1.058804329024554e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 7, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 397616), 'period_number': 5, 'period_year': 2025, 'forecast_value': 4.194251928108277, 'madp': 80.0, 'track': 1.058804329024554e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,403 - forecast_demand - INFO - Item: TC-0004 (Case Fan, 120mm)
+2025-05-11 22:44:25,403 - forecast_demand - INFO -   Current forecast: 4.92
+2025-05-11 22:44:25,403 - forecast_demand - INFO -   New forecast: 4.92
+2025-05-11 22:44:25,403 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,403 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,404 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,404 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,409 - forecast_demand - WARNING - Could not save forecast history for item TC-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (56, 24, 2025-05-11 22:44:25.406285, 5, 2025, 4.924992259343742, 80, 9.017053966075427e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 24, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 406285), 'period_number': 5, 'period_year': 2025, 'forecast_value': 4.924992259343742, 'madp': 80.0, 'track': 9.017053966075427e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,411 - forecast_demand - INFO - Item: TC-0002 (Thermal Paste, 5g)
+2025-05-11 22:44:25,411 - forecast_demand - INFO -   Current forecast: 8.43
+2025-05-11 22:44:25,411 - forecast_demand - INFO -   New forecast: 8.43
+2025-05-11 22:44:25,411 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,412 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,412 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,412 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,416 - forecast_demand - WARNING - Could not save forecast history for item TC-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (57, 22, 2025-05-11 22:44:25.413623, 5, 2025, 8.432851610400888, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 22, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 413623), 'period_number': 5, 'period_year': 2025, 'forecast_value': 8.432851610400888, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,420 - forecast_demand - INFO - Item: OS-0005 (Ball Point Pens, Box)
+2025-05-11 22:44:25,420 - forecast_demand - INFO -   Current forecast: 37.89
+2025-05-11 22:44:25,420 - forecast_demand - INFO -   New forecast: 37.89
+2025-05-11 22:44:25,420 - forecast_demand - INFO -   Current MADP: 8.56
+2025-05-11 22:44:25,420 - forecast_demand - INFO -   New MADP: 8.56
+2025-05-11 22:44:25,420 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,421 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,424 - forecast_demand - WARNING - Could not save forecast history for item OS-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (58, 5, 2025-05-11 22:44:25.422609, 5, 2025, 37.89439643152406, 8.558196968126145, 7.303174493544544e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 5, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 422609), 'period_number': 5, 'period_year': 2025, 'forecast_value': 37.89439643152406, 'madp': 8.558196968126145, 'track': 7.303174493544544e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,427 - forecast_demand - INFO - Item: OS-0010 (Whiteboard Markers, Set)
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   Current forecast: 10.25
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   New forecast: 10.25
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,427 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,431 - forecast_demand - WARNING - Could not save forecast history for item OS-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (59, 10, 2025-05-11 22:44:25.429158, 5, 2025, 10.245377806171351, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 10, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 429158), 'period_number': 5, 'period_year': 2025, 'forecast_value': 10.245377806171351, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,433 - forecast_demand - INFO - Item: EL-0004 (Wireless Keyboard)
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   Current forecast: 1.56
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   New forecast: 1.56
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,434 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,437 - forecast_demand - WARNING - Could not save forecast history for item EL-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (60, 14, 2025-05-11 22:44:25.435467, 5, 2025, 1.5643706200021512, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 14, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 435467), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.5643706200021512, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,440 - forecast_demand - INFO - Item: EL-0005 (Bluetooth Speaker, Portable)
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   Current forecast: 1.68
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   New forecast: 1.68
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   Current MADP: 6.15
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   New MADP: 6.15
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,440 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,445 - forecast_demand - WARNING - Could not save forecast history for item EL-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (61, 15, 2025-05-11 22:44:25.443055, 5, 2025, 1.676884051673472, 6.1458018624596455, 7.181867388786753e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 15, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 443055), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.676884051673472, 'madp': 6.1458018624596455, 'track': 7.181867388786753e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,446 - forecast_demand - INFO - Item: EL-0001 (USB Flash Drive, 64GB)
+2025-05-11 22:44:25,446 - forecast_demand - INFO -   Current forecast: 13.72
+2025-05-11 22:44:25,446 - forecast_demand - INFO -   New forecast: 13.72
+2025-05-11 22:44:25,447 - forecast_demand - INFO -   Current MADP: 14.48
+2025-05-11 22:44:25,447 - forecast_demand - INFO -   New MADP: 14.48
+2025-05-11 22:44:25,447 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,447 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,451 - forecast_demand - WARNING - Could not save forecast history for item EL-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (62, 11, 2025-05-11 22:44:25.448733, 5, 2025, 13.718252412658343, 14.479816813532587, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 11, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 448733), 'period_number': 5, 'period_year': 2025, 'forecast_value': 13.718252412658343, 'madp': 14.479816813532587, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,453 - forecast_demand - INFO - Item: EL-0002 (Wireless Mouse)
+2025-05-11 22:44:25,453 - forecast_demand - INFO -   Current forecast: 10.52
+2025-05-11 22:44:25,453 - forecast_demand - INFO -   New forecast: 10.52
+2025-05-11 22:44:25,454 - forecast_demand - INFO -   Current MADP: 12.12
+2025-05-11 22:44:25,454 - forecast_demand - INFO -   New MADP: 12.12
+2025-05-11 22:44:25,454 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,454 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,457 - forecast_demand - WARNING - Could not save forecast history for item EL-0002: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (63, 12, 2025-05-11 22:44:25.455892, 5, 2025, 10.517707496046171, 12.124958799690553, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 12, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 455892), 'period_number': 5, 'period_year': 2025, 'forecast_value': 10.517707496046171, 'madp': 12.124958799690553, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,459 - forecast_demand - INFO - Item: OS-0009 (Binder Clips, Assorted)
+2025-05-11 22:44:25,459 - forecast_demand - INFO -   Current forecast: 44.02
+2025-05-11 22:44:25,459 - forecast_demand - INFO -   New forecast: 44.02
+2025-05-11 22:44:25,459 - forecast_demand - INFO -   Current MADP: 4.00
+2025-05-11 22:44:25,459 - forecast_demand - INFO -   New MADP: 4.00
+2025-05-11 22:44:25,459 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,460 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,464 - forecast_demand - WARNING - Could not save forecast history for item OS-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (64, 9, 2025-05-11 22:44:25.46205, 5, 2025, 44.02384659670762, 3.9953196241369073, 4.039714646031474e-13, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 9, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 462050), 'period_number': 5, 'period_year': 2025, 'forecast_value': 44.02384659670762, 'madp': 3.9953196241369073, 'track': 4.039714646031474e-13, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,466 - forecast_demand - INFO - Item: TC-0001 (CPU Cooling Fan)
+2025-05-11 22:44:25,466 - forecast_demand - INFO -   Current forecast: 6.91
+2025-05-11 22:44:25,466 - forecast_demand - INFO -   New forecast: 6.91
+2025-05-11 22:44:25,466 - forecast_demand - INFO -   Current MADP: 8.33
+2025-05-11 22:44:25,466 - forecast_demand - INFO -   New MADP: 8.33
+2025-05-11 22:44:25,466 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,467 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,470 - forecast_demand - WARNING - Could not save forecast history for item TC-0001: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (65, 21, 2025-05-11 22:44:25.468912, 5, 2025, 6.909616878734517, 8.332320725601425, 5.14231902327367e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 21, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 468912), 'period_number': 5, 'period_year': 2025, 'forecast_value': 6.909616878734517, 'madp': 8.332320725601425, 'track': 5.14231902327367e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,472 - forecast_demand - INFO - Item: TC-0006 (SSD, 500GB)
+2025-05-11 22:44:25,472 - forecast_demand - INFO -   Current forecast: 5.41
+2025-05-11 22:44:25,472 - forecast_demand - INFO -   New forecast: 5.41
+2025-05-11 22:44:25,472 - forecast_demand - INFO -   Current MADP: 4.42
+2025-05-11 22:44:25,472 - forecast_demand - INFO -   New MADP: 4.42
+2025-05-11 22:44:25,472 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,474 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,476 - forecast_demand - WARNING - Could not save forecast history for item TC-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (66, 26, 2025-05-11 22:44:25.475513, 5, 2025, 5.412295284384577, 4.418344008682947, 1.2380493388556248e-13, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 26, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 475513), 'period_number': 5, 'period_year': 2025, 'forecast_value': 5.412295284384577, 'madp': 4.418344008682947, 'track': 1.2380493388556248e-13, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,478 - forecast_demand - INFO - Item: EL-0003 (USB-C Cable, 6ft)
+2025-05-11 22:44:25,478 - forecast_demand - INFO -   Current forecast: 24.69
+2025-05-11 22:44:25,478 - forecast_demand - INFO -   New forecast: 24.69
+2025-05-11 22:44:25,478 - forecast_demand - INFO -   Current MADP: 8.78
+2025-05-11 22:44:25,479 - forecast_demand - INFO -   New MADP: 8.78
+2025-05-11 22:44:25,479 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,479 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,483 - forecast_demand - WARNING - Could not save forecast history for item EL-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (67, 13, 2025-05-11 22:44:25.481279, 5, 2025, 24.69118156297999, 8.781282318674483, 5.461842096984029e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 13, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 481279), 'period_number': 5, 'period_year': 2025, 'forecast_value': 24.69118156297999, 'madp': 8.781282318674483, 'track': 5.461842096984029e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,486 - forecast_demand - INFO - Item: EL-0007 (USB Hub, 4-Port)
+2025-05-11 22:44:25,486 - forecast_demand - INFO -   Current forecast: 3.11
+2025-05-11 22:44:25,487 - forecast_demand - INFO -   New forecast: 3.11
+2025-05-11 22:44:25,487 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,487 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,487 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,487 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,491 - forecast_demand - WARNING - Could not save forecast history for item EL-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (68, 17, 2025-05-11 22:44:25.489613, 5, 2025, 3.110548890178434, 80, 7.138438030218324e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 17, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 489613), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.110548890178434, 'madp': 80.0, 'track': 7.138438030218324e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,493 - forecast_demand - INFO - Item: EL-0008 (Power Strip, 6-Outlet)
+2025-05-11 22:44:25,493 - forecast_demand - INFO -   Current forecast: 8.63
+2025-05-11 22:44:25,493 - forecast_demand - INFO -   New forecast: 8.63
+2025-05-11 22:44:25,493 - forecast_demand - INFO -   Current MADP: 6.88
+2025-05-11 22:44:25,493 - forecast_demand - INFO -   New MADP: 6.88
+2025-05-11 22:44:25,494 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,494 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,497 - forecast_demand - WARNING - Could not save forecast history for item EL-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (69, 18, 2025-05-11 22:44:25.495913, 5, 2025, 8.634282857138873, 6.884419908633433, 9.961284270332618e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 18, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 495913), 'period_number': 5, 'period_year': 2025, 'forecast_value': 8.634282857138873, 'madp': 6.884419908633433, 'track': 9.961284270332618e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,499 - forecast_demand - INFO - Item: EL-0006 (HDMI Cable, 10ft)
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   Current forecast: 3.88
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   New forecast: 3.88
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,500 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,505 - forecast_demand - WARNING - Could not save forecast history for item EL-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (70, 16, 2025-05-11 22:44:25.503206, 5, 2025, 3.877677455063835, 80, 5.726226781318922e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 16, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 503206), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.877677455063835, 'madp': 80.0, 'track': 5.726226781318922e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,507 - forecast_demand - INFO - Item: OS-0006 (Gel Pens, Premium, Box)
+2025-05-11 22:44:25,507 - forecast_demand - INFO -   Current forecast: 3.13
+2025-05-11 22:44:25,507 - forecast_demand - INFO -   New forecast: 3.13
+2025-05-11 22:44:25,508 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,508 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,508 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,508 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,512 - forecast_demand - WARNING - Could not save forecast history for item OS-0006: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (71, 6, 2025-05-11 22:44:25.50981, 5, 2025, 3.127099902962481, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 6, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 509810), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.127099902962481, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,513 - forecast_demand - INFO - Item: TC-0007 (RAM, 16GB)
+2025-05-11 22:44:25,513 - forecast_demand - INFO -   Current forecast: 3.56
+2025-05-11 22:44:25,515 - forecast_demand - INFO -   New forecast: 3.56
+2025-05-11 22:44:25,515 - forecast_demand - INFO -   Current MADP: 9.88
+2025-05-11 22:44:25,515 - forecast_demand - INFO -   New MADP: 9.88
+2025-05-11 22:44:25,515 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,515 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,518 - forecast_demand - WARNING - Could not save forecast history for item TC-0007: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (72, 27, 2025-05-11 22:44:25.51668, 5, 2025, 3.5626703338676577, 9.879666808425561, 8.411259394465288e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 27, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 516680), 'period_number': 5, 'period_year': 2025, 'forecast_value': 3.5626703338676577, 'madp': 9.879666808425561, 'track': 8.411259394465288e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,521 - forecast_demand - INFO - Item: OS-0004 (Sticky Notes, Pad)
+2025-05-11 22:44:25,521 - forecast_demand - INFO -   Current forecast: 52.46
+2025-05-11 22:44:25,521 - forecast_demand - INFO -   New forecast: 52.46
+2025-05-11 22:44:25,522 - forecast_demand - INFO -   Current MADP: 15.39
+2025-05-11 22:44:25,522 - forecast_demand - INFO -   New MADP: 15.39
+2025-05-11 22:44:25,522 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,522 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,525 - forecast_demand - WARNING - Could not save forecast history for item OS-0004: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (73, 4, 2025-05-11 22:44:25.524236, 5, 2025, 52.457326665552124, 15.388348035262414, 2.9340721877862926e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 4, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 524236), 'period_number': 5, 'period_year': 2025, 'forecast_value': 52.457326665552124, 'madp': 15.388348035262414, 'track': 2.9340721877862926e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,527 - forecast_demand - INFO - Item: OS-0003 (Paper Clips, Box)
+2025-05-11 22:44:25,527 - forecast_demand - INFO -   Current forecast: 305.34
+2025-05-11 22:44:25,527 - forecast_demand - INFO -   New forecast: 305.34
+2025-05-11 22:44:25,527 - forecast_demand - INFO -   Current MADP: 5.60
+2025-05-11 22:44:25,528 - forecast_demand - INFO -   New MADP: 5.60
+2025-05-11 22:44:25,528 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,528 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,532 - forecast_demand - WARNING - Could not save forecast history for item OS-0003: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (74, 3, 2025-05-11 22:44:25.530074, 5, 2025, 305.3363527869148, 5.604374587020457, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 3, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 530074), 'period_number': 5, 'period_year': 2025, 'forecast_value': 305.3363527869148, 'madp': 5.604374587020457, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,534 - forecast_demand - INFO - Item: EL-0009 (Laptop Cooling Pad)
+2025-05-11 22:44:25,534 - forecast_demand - INFO -   Current forecast: 1.35
+2025-05-11 22:44:25,534 - forecast_demand - INFO -   New forecast: 1.35
+2025-05-11 22:44:25,534 - forecast_demand - INFO -   Current MADP: 50.00
+2025-05-11 22:44:25,535 - forecast_demand - INFO -   New MADP: 50.00
+2025-05-11 22:44:25,535 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,535 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,538 - forecast_demand - WARNING - Could not save forecast history for item EL-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (75, 19, 2025-05-11 22:44:25.536878, 5, 2025, 1.3494483629001037, 50.000000000000014, 8.227236070294476e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 19, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 536878), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.3494483629001037, 'madp': 50.000000000000014, 'track': 8.227236070294476e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,540 - forecast_demand - INFO - Item: EL-0010 (Wireless Earbuds)
+2025-05-11 22:44:25,540 - forecast_demand - INFO -   Current forecast: 1.07
+2025-05-11 22:44:25,540 - forecast_demand - INFO -   New forecast: 1.07
+2025-05-11 22:44:25,540 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,540 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,540 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,542 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,544 - forecast_demand - WARNING - Could not save forecast history for item EL-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (76, 20, 2025-05-11 22:44:25.543353, 5, 2025, 1.0678425145575976, 80, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 20, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 543353), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.0678425145575976, 'madp': 80.0, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,546 - forecast_demand - INFO - Item: TC-0009 (Motherboard, ATX)
+2025-05-11 22:44:25,546 - forecast_demand - INFO -   Current forecast: 1.65
+2025-05-11 22:44:25,546 - forecast_demand - INFO -   New forecast: 1.65
+2025-05-11 22:44:25,546 - forecast_demand - INFO -   Current MADP: 10.63
+2025-05-11 22:44:25,546 - forecast_demand - INFO -   New MADP: 10.63
+2025-05-11 22:44:25,548 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,548 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,551 - forecast_demand - WARNING - Could not save forecast history for item TC-0009: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (77, 29, 2025-05-11 22:44:25.549706, 5, 2025, 1.6468351660349265, 10.627111231844298, 0, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 29, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 549706), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.6468351660349265, 'madp': 10.627111231844298, 'track': 0.0, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,553 - forecast_demand - INFO - Item: TC-0008 (Graphics Card, Mid-range)
+2025-05-11 22:44:25,553 - forecast_demand - INFO -   Current forecast: 1.69
+2025-05-11 22:44:25,553 - forecast_demand - INFO -   New forecast: 1.69
+2025-05-11 22:44:25,553 - forecast_demand - INFO -   Current MADP: 10.62
+2025-05-11 22:44:25,554 - forecast_demand - INFO -   New MADP: 10.62
+2025-05-11 22:44:25,554 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,554 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,557 - forecast_demand - WARNING - Could not save forecast history for item TC-0008: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (78, 28, 2025-05-11 22:44:25.556034, 5, 2025, 1.688103847013152, 10.61539214762436, 8.26064130532926e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 28, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 556034), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.688103847013152, 'madp': 10.61539214762436, 'track': 8.26064130532926e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,558 - forecast_demand - INFO - Item: TC-0010 (PC Case, Mid-tower)
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   Current forecast: 1.55
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   New forecast: 1.55
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   Current MADP: 80.00
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   New MADP: 80.00
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,559 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,562 - forecast_demand - WARNING - Could not save forecast history for item TC-0010: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (79, 30, 2025-05-11 22:44:25.560799, 5, 2025, 1.5521777677838078, 80, 7.152679594234415e-15, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 30, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 560799), 'period_number': 5, 'period_year': 2025, 'forecast_value': 1.5521777677838078, 'madp': 80.0, 'track': 7.152679594234415e-15, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,564 - forecast_demand - INFO - Item: TC-0005 (Power Supply, 500W)
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   Current forecast: 2.50
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   New forecast: 2.50
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   Current MADP: 7.94
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   New MADP: 7.94
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   Current Track: 0.00
+2025-05-11 22:44:25,564 - forecast_demand - INFO -   New Track: 0.00
+2025-05-11 22:44:25,569 - forecast_demand - WARNING - Could not save forecast history for item TC-0005: Failed to save forecast history: (psycopg2.errors.NotNullViolation) el valor nulo en la columna «warehouse_id» de la relación «item_forecast» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (80, 25, 2025-05-11 22:44:25.567376, 5, 2025, 2.503289065044805, 7.936951717718174, 7.450479528436504e-14, E3_ENHANCED_AVS, f, null, null, null, null, Generated by forecast_demand.py, using 12 periods of history, null, null).
+
+[SQL: INSERT INTO item_forecast (item_id, forecast_date, period_number, period_year, forecast_value, madp, track, forecast_method, seasonality_applied, seasonal_profile_id, actual_value, error, error_pct, notes, created_by) VALUES (%(item_id)s, %(forecast_date)s, %(period_number)s, %(period_year)s, %(forecast_value)s, %(madp)s, %(track)s, %(forecast_method)s, %(seasonality_applied)s, %(seasonal_profile_id)s, %(actual_value)s, %(error)s, %(error_pct)s, %(notes)s, %(created_by)s) RETURNING item_forecast.id]
+[parameters: {'item_id': 25, 'forecast_date': datetime.datetime(2025, 5, 11, 22, 44, 25, 567376), 'period_number': 5, 'period_year': 2025, 'forecast_value': 2.503289065044805, 'madp': 7.936951717718174, 'track': 7.450479528436504e-14, 'forecast_method': 'E3_ENHANCED_AVS', 'seasonality_applied': False, 'seasonal_profile_id': None, 'actual_value': None, 'error': None, 'error_pct': None, 'notes': 'Generated by forecast_demand.py, using 12 periods of history', 'created_by': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-11 22:44:25,569 - forecast_demand - INFO - Updated forecasts for 30 items
+2025-05-11 22:44:25,570 - forecast_demand - INFO - Forecast generation completed: 30 processed, 0 errors

@@ -1,0 +1,4 @@
+2025-05-11 22:42:12,225 - app - INFO - Warehouse Replenishment System initialized
+2025-05-11 22:42:12,226 - app - INFO - Using database: postgresql at localhost:5433
+2025-05-11 22:42:12,227 - app - INFO - Database name: m8_aws
+2025-05-11 22:42:12,227 - app - INFO - Warehouse Replenishment System ready

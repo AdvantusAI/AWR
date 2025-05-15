@@ -633,7 +633,7 @@ class ItemService:
             try:
                 # Fetch current inventory status
                 inventory = self.session.query(Inventory).filter(
-                    Inventory.item_id == item.id,
+                    Inventory.product_id == item.id,
                     Inventory.warehouse_id == item.warehouse_id
                 ).first()
                 

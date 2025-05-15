@@ -1178,10 +1178,13 @@ class ForecastService:
         Returns:
             ID of the created forecast record
         """
-        # Check if item exists
+        # Check if item exists and get its warehouse_id
         item = self.session.query(Item).get(item_id)
         if not item:
             raise ForecastError(f"Item with ID {item_id} not found")
+        
+        if not item.warehouse_id:
+            raise ForecastError(f"Item {item_id} has no warehouse assigned")
         
         # Get forecast method if not provided
         if forecast_method is None:
@@ -1220,6 +1223,7 @@ class ForecastService:
         # Create new forecast history record
         forecast_history = ItemForecast(
             item_id=item_id,
+            warehouse_id=item.warehouse_id,  # Use the warehouse_id from the item
             period_number=period_number,
             period_year=period_year,
             forecast_value=forecast_value,
